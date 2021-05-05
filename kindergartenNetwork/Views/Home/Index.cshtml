@@ -1,0 +1,342 @@
+﻿@model kindergartenNetwork.Models.NewsModels.StaticPageModel
+@{
+    ViewBag.Title = kindergartenNetwork.Resources.PublicNews.Home + " | " + kindergartenNetwork.Resources.PublicNews.ProjectName;
+    Layout = "~/Views/Shared/_DefLayout.cshtml";
+}
+
+    <!-- Start Banner Area -->
+    <section class="banner-area f5f6fa-bg-color">
+        <div class="container-fluid social">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="banner-content">
+                        <h1 class="wow fadeInLeft" data-wow-delay="0.3s">
+                            @Model.OStaticPage.Title
+                        </h1>
+                        <p class="wow fadeInLeft" data-wow-delay="0.6s">
+                            @Html.Raw(Model.OStaticPage.Description)
+                        </p>
+
+                        <a href="@Url.Action("Contact", "Home", null, Request.Url.Scheme)" class="default-btn wow fadeInLeft" data-wow-delay="0.9s">
+                            تواصل معنا
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="banner-img wow fadeInRight" data-wow-delay="0.3s">
+                        <img src="/Content/UploadedFile/News/Original/@Model.OStaticPage.Image" alt="Image">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Start Social Wrap -->
+            <ul class="social-wrap">
+                <li class="follow-us">
+                    لمتابعتنا عبر:
+                </li>
+                <li>
+                    <a href="#" target="_blank">
+                        <i class="bx bxl-twitter"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" target="_blank">
+                        <i class="bx bxl-instagram"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" target="_blank">
+                        <i class="bx bxl-facebook"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" target="_blank">
+                        <i class="bx bxl-linkedin"></i>
+                    </a>
+                </li>
+            </ul>
+            <!-- End Social Wrap -->
+        </div>
+    </section>
+    <!-- End Banner Area -->
+    <!-- Start Achieve Area -->
+    <section class="achieve-area f5f6fa-bg-color pt-100 pb-70">
+        <div class="container">
+            <div class="section-title">
+                <span>في أهدافنا</span>
+                <h2>من خلال مؤسستنا نهدف إلى</h2>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-3 col-sm-6">
+                    <div class="single-achieve">
+                        <div class="achieve-shape shape-1">
+                            <img src="/Content/defaultTheme/assets/img/achieve-shape/achieve-shape-1.png" alt="Image">
+                            <i class="flaticon-skills"></i>
+                        </div>
+
+                        <h3>استخدام نص لوريم إيبسوم</h3>
+                        <p>يتم استخدام نص لوريم إيبسوم لأنها تعطي توزيعاَ طبيعياَ للأحرف الموجودة في اللغة العربية</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-sm-6">
+                    <div class="single-achieve">
+                        <div class="achieve-shape shape-2">
+                            <img src="/Content/defaultTheme/assets/img/achieve-shape/achieve-shape-2.png" alt="Image">
+                            <i class="flaticon-career"></i>
+                        </div>
+
+                        <h3>استخدام نص لوريم إيبسوم</h3>
+                        <p>يتم استخدام نص لوريم إيبسوم لأنها تعطي توزيعاَ طبيعياَ للأحرف الموجودة في اللغة العربية</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-sm-6">
+                    <div class="single-achieve">
+                        <div class="achieve-shape shape-3">
+                            <img src="/Content/defaultTheme/assets/img/achieve-shape/achieve-shape-3.png" alt="Image">
+                            <i class="flaticon-certificate"></i>
+                        </div>
+
+                        <h3>استخدام نص لوريم إيبسوم</h3>
+                        <p>يتم استخدام نص لوريم إيبسوم لأنها تعطي توزيعاَ طبيعياَ للأحرف الموجودة في اللغة العربية</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-sm-6">
+                    <div class="single-achieve">
+                        <div class="achieve-shape shape-4">
+                            <img src="/Content/defaultTheme/assets/img/achieve-shape/achieve-shape-4.png" alt="Image">
+                            <i class="flaticon-group"></i>
+                        </div>
+
+                        <h3>استخدام نص لوريم إيبسوم</h3>
+                        <p>يتم استخدام نص لوريم إيبسوم لأنها تعطي توزيعاَ طبيعياَ للأحرف الموجودة في اللغة العربية</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Achieve Area -->
+    <!-- Start Counter Area -->
+    <section class="counter-area ebeef5-bg-color pt-100 pb-70">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-sm-6">
+                    <div class="single-counter">
+                        <div class="counter-shape shape-1">
+                            <img src="/Content/defaultTheme/assets/img/counter-shape/counter-shape-1.png" alt="Image">
+
+                            <h2>
+                                <span class="odometer" data-count="100">00</span>
+                                <span class="target">%</span>
+                            </h2>
+                        </div>
+
+                        <p>نص لوريم إيبسوم</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-sm-6">
+                    <div class="single-counter">
+                        <div class="counter-shape shape-2">
+                            <img src="/Content/defaultTheme/assets/img/counter-shape/counter-shape-2.png" alt="Image">
+
+                            <h2>
+                                <span class="odometer" data-count="5253">00</span>
+                            </h2>
+                        </div>
+
+                        <p>نص لوريم إيبسوم</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-sm-6">
+                    <div class="single-counter">
+                        <div class="counter-shape shape-3">
+                            <img src="/Content/defaultTheme/assets/img/counter-shape/counter-shape-3.png" alt="Image">
+
+                            <h2>
+                                <span class="odometer" data-count="325">00</span>
+                            </h2>
+                        </div>
+
+                        <p>نص لوريم إيبسوم</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-sm-6">
+                    <div class="single-counter">
+                        <div class="counter-shape shape-4">
+                            <img src="/Content/defaultTheme/assets/img/counter-shape/counter-shape-4.png" alt="Image">
+
+                            <h2>
+                                <span class="odometer" data-count="565">00</span>
+                            </h2>
+                        </div>
+
+                        <p>نص لوريم إيبسوم</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Counter Area -->
+    <!-- Start Events Area -->
+    <section class="event-area ptb-70">
+        <div class="container">
+            <div class="section-title">
+                <span>أخبار المؤسسة</span>
+                <h2>أحدث الأخبار والفعاليات</h2>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6 col-sm-6">
+                    <div class="single-event">
+                        <a href="single-event.html">
+                            <img src="/Content/defaultTheme/assets/img/event-img/event-img-11.png" alt="Image">
+                        </a>
+
+                        <div class="event-content">
+                            <ul>
+                                <li>
+                                    <i class="bx bx-calendar"></i>
+                                    Apr 18, 2021
+                                </li>
+                                <li>
+                                    <i class="bx bx-time"></i>
+                                    Monday 3:00AM - 5:00PM
+                                </li>
+                            </ul>
+
+                            <a href="single-event.html">
+                                <h3>يتم استخدام نص لوريم إيبسوم لأنها تعطي توزيعاَ طبيعياَ للأحرف الموجودة </h3>
+                            </a>
+
+                            <span>
+                                <i class="bx bxs-location-plus"></i>
+                                Palestine, Gaza
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-sm-6">
+                    <div class="single-event">
+                        <a href="single-event.html">
+                            <img src="/Content/defaultTheme/assets/img/event-img/event-img-22.png" alt="Image">
+                        </a>
+
+                        <div class="event-content">
+                            <ul>
+                                <li>
+                                    <i class="bx bx-calendar"></i>
+                                    Apr 18, 2021
+                                </li>
+                                <li>
+                                    <i class="bx bx-time"></i>
+                                    Monday 3:00AM - 5:00PM
+                                </li>
+                            </ul>
+
+                            <a href="single-event.html">
+                                <h3>يتم استخدام نص لوريم إيبسوم لأنها تعطي توزيعاَ طبيعياَ للأحرف الموجودة </h3>
+                            </a>
+
+                            <span>
+                                <i class="bx bxs-location-plus"></i>
+                                Palestine, Gaza
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-sm-6">
+                    <div class="single-event">
+                        <a href="single-event.html">
+                            <img src="/Content/defaultTheme/assets/img/event-img/event-img-33.png" alt="Image">
+                        </a>
+
+                        <div class="event-content">
+                            <ul>
+                                <li>
+                                    <i class="bx bx-calendar"></i>
+                                    Apr 18, 2021
+                                </li>
+                                <li>
+                                    <i class="bx bx-time"></i>
+                                    Monday 3:00AM - 5:00PM
+                                </li>
+                            </ul>
+
+                            <a href="single-event.html">
+                                <h3>يتم استخدام نص لوريم إيبسوم لأنها تعطي توزيعاَ طبيعياَ للأحرف الموجودة </h3>
+                            </a>
+
+                            <span>
+                                <i class="bx bxs-location-plus"></i>
+                                Palestine, Gaza
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-sm-6">
+                    <div class="single-event">
+                        <a href="single-event.html">
+                            <img src="/Content/defaultTheme/assets/img/event-img/event-img-44.png" alt="Image">
+                        </a>
+
+                        <div class="event-content">
+                            <ul>
+                                <li>
+                                    <i class="bx bx-calendar"></i>
+                                    Apr 18, 2021
+                                </li>
+                                <li>
+                                    <i class="bx bx-time"></i>
+                                    Monday 3:00AM - 5:00PM
+                                </li>
+                            </ul>
+
+                            <a href="single-event.html">
+                                <h3>يتم استخدام نص لوريم إيبسوم لأنها تعطي توزيعاَ طبيعياَ للأحرف الموجودة </h3>
+                            </a>
+
+                            <span>
+                                <i class="bx bxs-location-plus"></i>
+                                Palestine, Gaza
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Events Area -->
+    <!--Start Subscribe Area-->
+    <section class="subscribe-area ebeef5-bg-color ptb-100">
+        <div class="container">
+            <div class="subscribe-wrap">
+                <h2>إشترك معنا</h2>
+                <p>اشترك في النشرة الإخبارية لدينا وابقى على اطلاع</p>
+
+                <form class="newsletter-form" data-toggle="validator">
+                    <input type="email" class="form-control" placeholder="عنوان بريدك الإكتروني" name="EMAIL" required
+                           autocomplete="off">
+
+                    <button class="default-btn" type="submit">
+                        إشترك الأن
+                    </button>
+
+                    <div id="validator-newsletter" class="form-result"></div>
+                </form>
+                <div class="subscribe-img">
+                    <img src="/Content/defaultTheme/assets/img/subscribe-img.png" alt="Image">
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Subscribe Area-->
