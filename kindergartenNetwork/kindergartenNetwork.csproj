@@ -155,16 +155,18 @@
     <Compile Include="Models\DataTableModels\DataTableProcessModel.cs" />
     <Compile Include="Models\DataTableModels\jQueryDataTableParamModel.cs" />
     <Compile Include="Models\DataTableModels\ObjectProcess.cs" />
-    <Compile Include="Models\NewsModels\AppSettings.cs" />
+    <Compile Include="Models\NewsModels\AppSettingsModel.cs" />
     <Compile Include="Models\NewsModels\AttachmentModel.cs" />
-    <Compile Include="Models\NewsModels\ContactUs.cs" />
+    <Compile Include="Models\NewsModels\TeamMembersModel.cs" />
+    <Compile Include="Models\NewsModels\ContactUsModel.cs" />
     <Compile Include="Models\NewsModels\MediaAlbumsModel.cs" />
     <Compile Include="Models\NewsModels\NewsModel.cs" />
-    <Compile Include="Models\NewsModels\Social.cs" />
+    <Compile Include="Models\NewsModels\SocialModel.cs" />
     <Compile Include="Models\NewsModels\StaticPageModel.cs" />
     <Compile Include="Models\MainModels\PageModel.cs" />
     <Compile Include="Models\MainModels\UserModel.cs" />
     <Compile Include="Models\MainModels\UserPermissionModel.cs" />
+    <Compile Include="Models\PublicNews\News.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\main.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -7524,6 +7526,7 @@
     <Content Include="Content\defaultTheme\assets\fonts\Flaticon.woff" />
     <Content Include="Content\defaultTheme\assets\fonts\Flaticon.woff2" />
     <Content Include="db-5-5-2021.bak" />
+    <Content Include="db-6-5-2021.bak" />
     <None Include="Scripts\default\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\default\jquery-3.4.1.js" />
     <Content Include="Scripts\default\jquery-3.4.1.min.js" />
@@ -7593,6 +7596,18 @@
     <Content Include="Views\ControlPanel\Categories.cshtml" />
     <Content Include="Views\ControlPanel\News.cshtml" />
     <Content Include="Views\ControlPanel\NewsParts\_NewsSaveModal.cshtml" />
+    <Content Include="Views\ControlPanel\AppSettings.cshtml" />
+    <Content Include="Views\ControlPanel\AppSettingsParts\_AppSettingsSaveModal.cshtml" />
+    <Content Include="Views\ControlPanel\ContactUs.cshtml" />
+    <Content Include="Views\ControlPanel\Social.cshtml" />
+    <Content Include="Views\Shared\LayoutParts\_ViewContactUS.cshtml" />
+    <Content Include="Views\Shared\LayoutParts\_TopMessage.cshtml" />
+    <Content Include="Views\ControlPanel\Articles.cshtml" />
+    <Content Include="Views\ControlPanel\TeamMembers.cshtml" />
+    <Content Include="Views\ControlPanel\TeamMemberParts\_TeamMemberSaveModal.cshtml" />
+    <Content Include="Views\ControlPanel\MediaAlbums.cshtml" />
+    <Content Include="Views\ControlPanel\MediaParts\_MediaAlbumsSaveModal.cshtml" />
+    <Content Include="Views\ControlPanel\MediaParts\_MediaSaveModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\assets\apps\img\" />
@@ -7643,11 +7658,11 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Default\DAL\DAL.csproj">
+    <ProjectReference Include="..\DAL\DAL.csproj">
       <Project>{8ffb8159-d0e3-441a-be78-a2cf634791a6}</Project>
       <Name>DAL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Default\DTO\DTO.csproj">
+    <ProjectReference Include="..\DTO\DTO.csproj">
       <Project>{f5e90130-4923-4453-828c-77a1802b6d13}</Project>
       <Name>DTO</Name>
     </ProjectReference>

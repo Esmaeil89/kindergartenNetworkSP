@@ -12,6 +12,12 @@
 body {
     font-family: 'JFFlatRegular' !important;
 }
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'JFFlatRegular' !important;
+}
 .page-header .page-header-menu .hor-menu .navbar-nav>li .dropdown-menu li>* {
+    font-family: 'JFFlatRegular' !important;
+}
+.dropdown-menu {
     font-family: 'JFFlatRegular' !important;
 }

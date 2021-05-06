@@ -217,6 +217,190 @@ var gsShowModal=function(btn) {
 //    });
 //}
 
+var getVideoId = function (url) {
+    if (url.indexOf('v=') !== -1) {
+        var videoId = url.split('v=')[1];
+        if (videoId.indexOf('&') !== -1) {
+            videoId = videoId.substring(0, v);
+        }
+        return videoId;
+    } else
+        return url.split('/').pop();
+};
+var convertToEmbed = function (url) {
+    url = url.replace('youtu.be', 'www.youtube.com/embed');
+    return url.replace("watch?v=", 'embed/');
+}
+
+var getViewContactUsModal = function () {
+    var bsModal = $("#basicModal");
+    $(".btnViewContactUs").off('click').click(function () {
+        var id = $(this).attr("data-id");
+        var _this = this;
+        bsModal.html('');
+        setTimeout(function () {
+            bsModal.load('/ControlPanel/ViewContactUs?id=' + id, '', function () {
+                bsModal.modal('show');
+                replyContactUs();
+                if ($(_this).attr("data-isRead") === "true")
+                    return false;
+                else {
+                    $(".page-header").find("li[data-id='" + id + "']").remove().remove();
+                    $(".page-header").find(".msgCounter")
+                        .text(parseInt($(".page-header").find(".msgCounter").last().text()) - 1);
+                    contactUsDataTableUpdate();
+                }
+            });
+        }, 100);
+    });
+};
+var replyContactUs = function () {
+    $('#ReplyContactUsForm').submit(function () {
+        var form = this;
+        var postData = $(form).serializeArray();
+        var formUrl = $(form).attr("action");
+        $.ajax({
+            type: "POST",
+            cache: false,
+            url: formUrl,
+            data: postData,
+            dataType: "json",
+            success: function (data) {
+                gsEnableSubmitButton(form);
+                if (data.cStatus === "success") {
+                    completedSuccessfuly(data.cMsg);
+                    contactUsDataTableUpdate();
+                    $(".scroll-to-top").click();
+                } else if (data.cStatus === "notValid") {
+                    notValidOperations(data.cMsg);
+                }
+                else {
+                    notValidOperations(data.cMsg);
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                gsNotifyMsg('' + Messages.noResultFound + '', "error");
+                gsEnableSubmitButton(form);
+            }
+        });
+    });
+}
+var contactUsDataTable = function () {
+    $('#tblContactUs').dataTable({
+        "language": {
+            "url": "../Content/assets/global/plugins/DataTables-1.10.12/languages/ar.json"
+        },
+        "bServerSide": true,
+        "sAjaxSource": "/ControlPanel/getContactUsDataTable",
+        "bProcessing": true,
+        "dom": '<"bottom"t<"col-sm-3 "l><"col-sm-4"i><"col-sm-5"p>><"clear">',
+        "aaSorting": [[7, 'asc']],
+        //"fnServerParams": function (aoData) {
+        //    aoData.push({ "name": "Id", "value": $("#txtContactUsSearch").attr("data-Id") },
+        //        { "name": "Type", "value": $("#ddlType").val() });
+        //},
+        "bStateSave": true,
+        "aoColumns": [
+            { "sType": "html", "sWidth": '10%', "mDataProp": "Name", "sClass": "tdCenter" },
+            { "sType": "html", "sWidth": '15%', "mDataProp": "Email" },
+            { "sType": "html", "sWidth": '20%', "mDataProp": "Subject" },
+            { "sType": "html", "sWidth": '20%', "mDataProp": "Message" },
+            { "sType": "html", "sWidth": '15%', "mDataProp": "InsertedDate", "bSortable": false },
+            { "sType": "html", "sWidth": '10%', "mDataProp": "IsAnswered" },
+            { "sType": "html", "sWidth": '10%', "mDataProp": "IsRead" },
+            { "sType": "html", "sWidth": '5%', "mDataProp": "Id", "sClass": "tdCenter" }
+        ],
+        "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+
+            if (true) {
+                $('td:eq(7)', nRow).html('<div class="btn-group">' +
+                    '<a class="btn btnx  dark btn-outline btn-xs" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">' +
+                    '<i class="fa fa-cog fa-fw fa-xs"></i>' +
+                    '</a>' +
+                    ' <ul class="dropdown-menu pull-right">' +
+                    '<li>' +
+                    '<a href="javascript:;" class="lnk btnViewContactUs" data-id="' + aData.Id + '" data-isRead="' + aData.IsRead + '"><i class="fa fa-edit fa-fw"></i> ' + Messages.view + '</a>' +
+                    ' </li>' +
+                    ' <li>' +
+                    '<a href="javascript:;" class="lnk btnDeleteContactUs" data-id ="' + aData.Id + '"><i class="fa fa-trash fa-fw"></i> ' + Messages.delete + '</a>' +
+                    ' </li>' +
+                    ' </li>' +
+                    '</ul>' +
+                    ' </div>');
+            }
+            if (aData.IsAnswered === true) {
+                $('td:eq(5)', nRow).html("<span class='font-green-meadow fa fa-fw fa-check-circle-o fa-lg'></span>");
+            } else {
+                $('td:eq(5)', nRow).html("<span class='font-red-thunderbird fa fa-fw fa-times-circle-o fa-lg'></span>");
+            }
+
+            if (aData.IsRead === true) {
+                $('td:eq(6)', nRow).html("<span class='font-green-meadow fa fa-fw fa-check-circle-o fa-lg'></span>");
+            } else {
+                $('td:eq(6)', nRow).html("<span class='font-red-thunderbird fa fa-fw fa-times-circle-o fa-lg'></span>");
+            }
+            $(nRow).dblclick(function () {
+                viewContactUsModel($(this).find(".btnViewContactUs").attr("data-id"), $("#basicModal"), $(".btnViewContactUs"));
+            });
+        },
+        "fnDrawCallback": function (oSettings) {
+            getViewContactUsModal();
+            deleteContactUs();
+        },
+        "bFilter": false
+        //"sPaginationType": "bootstrap"
+    });
+};
+var contactUsDataTableUpdate = function () {
+    var oTable = $('#tblContactUs').dataTable();
+    oTable.fnDraw(false);
+};
+var viewContactUsModel = function (id, bsModal, btn) {
+    bsModal.html('');
+    setTimeout(function () {
+        bsModal.load('/ControlPanel/ViewContactUs?id=' + id, '', function () {
+            bsModal.modal('show');
+            replyContactUs();
+            if (btn.attr("data-isRead") === "true")
+                return false;
+            else {
+                $(".page-header").find("li[data-id='" + id + "']").remove().remove();
+                $(".page-header").find(".msgCounter")
+                    .text(parseInt($(".page-header").find(".msgCounter").last().text()) - 1);
+                contactUsDataTableUpdate();
+            }
+        });
+    }, 100);
+}
+var deleteContactUs = function () {
+    $(".btnDeleteContactUs").off('click').click(function () {
+        var id = $(this).attr('data-Id');
+        gsConfirm('' + Messages.deleteConfirm + '', function (result) {
+            if (result) {
+                $.ajax({
+                    type: "POST",
+                    cache: false,
+                    url: '/ControlPanel/DeleteContactUs',
+                    dataType: "JSON",
+                    data: { 'id': id },
+                    success: function (data) {
+                        if (data.cStatus === "success") {
+                            gsNotifyMsg(data.cMsg, data.cStatus);
+                            contactUsDataTableUpdate();
+
+                        } else {
+                            gsNotifyMsg(data.cMsg, data.cStatus);
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        gsNotifyMsg('' + Messages.noResultFound + '', "error");
+                    }
+                });
+            }
+        });
+    });
+};
+
 var gsAutoFocus=function(btn) {
     $('.modal').on('shown.bs.modal',
         function() {

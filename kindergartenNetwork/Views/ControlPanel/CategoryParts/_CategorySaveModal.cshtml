@@ -7,13 +7,13 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                 @if (Model.OCategory.Id > 0)
                 {
-                <h4 class="modal-title"> @kindergartenNetwork.Resources.PublicNews.Edit @kindergartenNetwork.Resources.PublicNews.NewsCategory </h4>
+                <h4 class="modal-title"> @kindergartenNetwork.Resources.PublicNews.Edit @kindergartenNetwork.Resources.PublicNews.Category </h4>
                     <input type="hidden" value="@Model.OCategory.Id" Name="Id" data-field="" />
 
                 }
                 else
                 {
-                    <h4 class="modal-title"> @kindergartenNetwork.Resources.PublicNews.Add @kindergartenNetwork.Resources.PublicNews.NewsCategory </h4>
+                    <h4 class="modal-title"> @kindergartenNetwork.Resources.PublicNews.Add @kindergartenNetwork.Resources.PublicNews.Category </h4>
 
                 }
             </div>

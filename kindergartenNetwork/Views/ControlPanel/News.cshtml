@@ -1,6 +1,6 @@
 ﻿@model kindergartenNetwork.Models.NewsModels.NewsModel
 @{
-    ViewBag.PageTitle = ViewBag.LangId == 1 ? Model.OCategory.NameAr : Model.OCategory.NameEn;
+    ViewBag.PageTitle = Model.OCategory.NameAr ;
 }
 <div class="contentDiv" id="SaveModal" style="display:none">
 
@@ -10,7 +10,7 @@
     <div class="portlet-title">
         <div class="caption">
             <i class="icon-layers font-red-thunderbird"></i>
-            <span class="caption-subject font-red-thunderbird bold uppercase">@(ViewBag.LangId == 1 ? Model.OCategory.NameAr : Model.OCategory.NameEn)</span>
+            <span class="caption-subject font-red-thunderbird bold uppercase">@Model.OCategory.NameAr</span>
         </div>
         @*<div class="actions portelActionPadding">
                 <a href="javascript:;" class="btn btn-circle btn-default Add btnSaveNews" data-id="0">
@@ -20,11 +20,12 @@
     </div>
     <div class="portle-body">
         <form id="SearchForm" role="form">
+            <input type="hidden" id="ddlCategories" class="dontReset" value="1"/>
             <div class="row">
 
                 <div class="col-md-6  col-md-offset-2">
                     <div class="form-group">
-                        <input type="text" class="form-control" dir="rtl" id="txtNewsSearch" placeholder="@kindergartenNetwork.Resources.PublicNews.Search..." style="width:100%" />
+                        <input type="text" class="form-control" dir="rtl" id="txtNewsSearch" placeholder="@kindergartenNetwork.Resources.PublicNews.Search..." style="width: 100%"/>
                     </div>
                     <!-- /input-group -->
                 </div>
@@ -35,10 +36,10 @@
 
 
                 <div class="col-md-2 col-md-offset-2">
-                    <input id="tbFromDate" name="tbFromDate" class="form-control date-picker" type="text" placeholder="@kindergartenNetwork.Resources.PublicNews.Date @kindergartenNetwork.Resources.PublicNews.From" data-field="@kindergartenNetwork.Resources.PublicNews.Date @kindergartenNetwork.Resources.PublicNews.From" data-date-format="dd-MM-yyyy" value="" />
+                    <input id="tbFromDate" name="tbFromDate" class="form-control date-picker" type="text" placeholder="@kindergartenNetwork.Resources.PublicNews.Date @kindergartenNetwork.Resources.PublicNews.From" data-field="@kindergartenNetwork.Resources.PublicNews.Date @kindergartenNetwork.Resources.PublicNews.From" data-date-format="dd-MM-yyyy" value=""/>
                 </div>
                 <div class="col-md-2">
-                    <input id="tbToDate" name="tbToDate" class="form-control date-picker" type="text" placeholder="@kindergartenNetwork.Resources.PublicNews.To @kindergartenNetwork.Resources.PublicNews.Date" data-field="@kindergartenNetwork.Resources.PublicNews.To @kindergartenNetwork.Resources.PublicNews.Date" formatdata-date-format="dd-MM-yyyy" value="@DateTime.Now.Date.AddDays(1).ToString("dd-MM-yyyy")" />
+                    <input id="tbToDate" name="tbToDate" class="form-control date-picker" type="text" placeholder="@kindergartenNetwork.Resources.PublicNews.To @kindergartenNetwork.Resources.PublicNews.Date" data-field="@kindergartenNetwork.Resources.PublicNews.To @kindergartenNetwork.Resources.PublicNews.Date" formatdata-date-format="dd-MM-yyyy" value="@DateTime.Now.Date.AddDays(1).ToString("dd-MM-yyyy")"/>
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">
@@ -67,11 +68,11 @@
                         <tr>
                             <th scope="col"> @kindergartenNetwork.Resources.PublicNews.Image</th>
                             <th scope="col"> @kindergartenNetwork.Resources.PublicNews.Address</th>
-                            @*<th scope="col"> @kindergartenNetwork.Resources.PublicNews.Category</th>*@
+                            <th scope="col"> @kindergartenNetwork.Resources.PublicNews.Category</th>
                             <th scope="col"> @kindergartenNetwork.Resources.PublicNews.InsertedDate</th>
                             <th scope="col"> @kindergartenNetwork.Resources.PublicNews.User</th>
                             <th scope="col"> @kindergartenNetwork.Resources.PublicNews.IsActive</th>
-                            <th scope="col"> @kindergartenNetwork.Resources.PublicNews.Status</th>
+                            @*<th scope="col"> @kindergartenNetwork.Resources.PublicNews.Status</th>*@
                             @*<th scope="col"> @kindergartenNetwork.Resources.PublicNews.Language</th>*@
                             <th scope="col"><i class="icon-settings"></i></th>
                         </tr>

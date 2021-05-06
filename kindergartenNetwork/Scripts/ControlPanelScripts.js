@@ -258,26 +258,9 @@
                         },
                         success: function (data) {
                             flag = true;
-                            $("#hdAvatar").attr("value", data.Filename);
+                            $("#hdImage").attr("value", data.Filename);
                             $("#imgAvatar").attr("src", "/Content/UploadedFile/Account/Avatar/Thumbnail/" + data.Filename);
-                            $.ajax({
-                                type: "POST",
-                                cache: false,
-                                url: "/ControlPanel/SaveUserAvatar",
-                                data: { "Id": $(".tbAccountId").attr("data-accountId"), "Avatar": data.Filename },
-                                dataType: "json",
-                                success: function (data) {
-
-                                    if (data.cStatus === "success") {
-                                        gsNotifyMsg(data.cMsg, data.cStatus);
-                                        clubsDataTableUpdate();
-                                    } else if (data.cStatus === "notValid") {
-                                        notValidOperations(data.cMsg);
-                                    } else {
-                                        notValidOperations(data.cMsg);
-                                    }
-                                },
-                            });
+                            
                         }
                     });
                 } else {
@@ -427,7 +410,21 @@
     };
 
     /* ***** News ******* */
-    var newsDataTable = function (category) {
+    function fnHideCol(iCol, tblname) {
+        /* Get the DataTables object again - this is not a recreation, just a get of the object */
+        var oTable = $("#" + tblname).dataTable();
+
+        var bVis = oTable.fnSettings().aoColumns[iCol].bVisible;
+        oTable.fnSetColumnVis(iCol, false);
+    }
+    function fnShowCol(iCol, tblname) {
+        /* Get the DataTables object again - this is not a recreation, just a get of the object */
+        var oTable = $("#" + tblname).dataTable();
+
+        var bVis = oTable.fnSettings().aoColumns[iCol].bVisible;
+        oTable.fnSetColumnVis(iCol, true);
+    }
+    var newsDataTable = function (isArticle) {
         $('#tblNews').dataTable({
             "language": {
                 "url": "/Content/assets/global/plugins/DataTables-1.10.12/languages/ar.json"
@@ -439,7 +436,8 @@
             "aaSorting": [[6, 'asc']],
             "fnServerParams": function (aoData) {
                 aoData.push({ "name": "NewsSearch", "value": $("#txtNewsSearch").val() });
-                aoData.push({ "name": "Category", "value": category });
+                aoData.push({ "name": "Category", "value": $("#ddlCategories").val() });
+                aoData.push({ "name": "isArticle", "value": isArticle });
                 aoData.push({ "name": "InsertedBy", "value": $("#ddlUsers").val() });
                 aoData.push({ "name": "FromDate", "value": $("#tbFromDate").val() });
                 aoData.push({ "name": "ToDate", "value": $("#tbToDate").val() });
@@ -447,53 +445,40 @@
             "bStateSave": true,
             "aoColumns": [
                 { "sType": "html", "sWidth": '10%', "mDataProp": "Image", "bSortable": false, "sClass": "tdCenter" },
-                { "sType": "html", "sWidth": '45%', "mDataProp": "Title", "bSortable": false, "sClass": "titlejustify" },
-                //{ "sType": "html", "sWidth": '20%', "mDataProp": "NameAr", "bSortable": false },
+                { "sType": "html", "sWidth": '33%', "mDataProp": "Title", "bSortable": false, "sClass": "titlejustify" },
+                { "sType": "html", "sWidth": '20%', "mDataProp": "NameAr", "bSortable": false },
                 { "sType": "html", "sWidth": '15%', "mDataProp": "PublishDate", "bSortable": false },
                 { "sType": "html", "sWidth": '10%', "mDataProp": "InsertedByName", "bSortable": false },
                 { "sType": "html", "sWidth": '7%', "mDataProp": "IsActive", "bSortable": false, "sClass": "tdCenter" },
-                { "sType": "html", "sWidth": '8%', "mDataProp": "Status", "bSortable": false, "sClass": "tdCenter" },
                 //{ "sType": "html", "sWidth": '8%', "mDataProp": "LangId", "bSortable": false, "sClass": "tdCenter" },
                 { "sType": "html", "sWidth": '5%', "mDataProp": "Id", "sClass": "tdCenter" }
             ],
             "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-                    $('td:eq(6)', nRow).html('<div class="btn-group">' +
-                        '<a class="btn btnx  dark btn-outline btn-xs" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">' +
-                        '<i class="fa fa-cog fa-fw fa-xs"></i>' +
-                        '</a>' +
-                        ' <ul class="dropdown-menu pull-right">' +
-                        '<li>' +
-                        '<a href="javascript:;" class="lnk btnSaveNews"data-categoryId="' + aData.CategoryId + '" data-id="' + aData.Id + '"><i class="fa fa-edit fa-fw"></i> ' + Messages.edit + '</a>' +
-                        ' </li>' +
-                        ' <li>' +
-                        '<a href="javascript:;" class="lnk btnDeleteNews" data-id ="' + aData.Id + '"><i class="fa fa-trash fa-fw"></i> ' + Messages.delete + '</a>' +
-                        ' </li>' +
-                        '</ul>' +
-                        ' </div>');
+                var a = 0;
+                if (isArticle)
+                    a = 1;
                     $('td:eq(0)', nRow).html('<img  style="width: 100px;" alt="" src="/Content/UploadedFile/News/Thumbnail/' + aData.Image + ' " onError="this.onerror=null;this.src=\'/Content/UploadedFile/Account/Avatar/NoImage.png\';"/>');
                 
-                if (aData.LangId === 1) {
-                    $('td:eq(6)', nRow).html('<span>' + Messages.ar +'</span>');
-
-                }
-                else if (aData.LangId === 2) {
-                    $('td:eq(6)', nRow).html('<span>' + Messages.en +'</span>');
-
-                }
                 if (aData.IsActive === true) {
-                    $('td:eq(4)', nRow).html("<span class='font-green-meadow fa fa-fw fa-check-circle-o fa-lg'></span>");
+                    $('td:eq(' + (4 + a) +')', nRow).html("<span class='font-green-meadow fa fa-fw fa-check-circle-o fa-lg'></span>");
                 } else {
-                    $('td:eq(4)', nRow).html("<span class='font-red-thunderbird fa fa-fw fa-times-circle-o fa-lg'></span>");
+                    $('td:eq(' + (4 + a) +')', nRow).html("<span class='font-red-thunderbird fa fa-fw fa-times-circle-o fa-lg'></span>");
                 }
-                if (aData.Status === 1) {
-                    $('td:eq(5)', nRow).html("<span>فعال</span>");
-                } else if (aData.Status === 2) {
-                    $('td:eq(5)', nRow).html("<span>قيد الانتظار</span>");
-                } else if (aData.Status === 3) {
-                    $('td:eq(5)', nRow).html("<span>مرفوض</span>");
-                }
+                $('td:eq(' + (5 + a) + ')', nRow).html('<div class="btn-group">' +
+                    '<a class="btn btnx  dark btn-outline btn-xs" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">' +
+                    '<i class="fa fa-cog fa-fw fa-xs"></i>' +
+                    '</a>' +
+                    ' <ul class="dropdown-menu pull-right">' +
+                    '<li>' +
+                    '<a href="javascript:;" class="lnk btnSaveNews"data-categoryId="' + aData.CategoryId + '" data-id="' + aData.Id + '"><i class="fa fa-edit fa-fw"></i> ' + Messages.edit + '</a>' +
+                    ' </li>' +
+                    ' <li>' +
+                    '<a href="javascript:;" class="lnk btnDeleteNews" data-id ="' + aData.Id + '"><i class="fa fa-trash fa-fw"></i> ' + Messages.delete + '</a>' +
+                    ' </li>' +
+                    '</ul>' +
+                    ' </div>');
                 $(nRow).dblclick(function () {
-                    saveNewsModal($(this).find(".btnSaveNews").attr("data-id"), $(this).find(".btnSaveNews").attr("data-categoryId"), $("#SaveModal"));
+                    saveNewsModal($(this).find(".btnSaveNews").attr("data-id"), $("#ddlCategories").val(), $("#SaveModal"));
                 });
             },
             "fnDrawCallback": function (oSettings) {
@@ -569,14 +554,6 @@
                 });
                 $("#tbNewsKeyWords").tagsinput();
                 $(".page-content").LoadingOverlay("hide", true);
-                $("#cbIsInHome").change(function () {
-                    if ($(this).is(':checked')) {
-                        $("#ddlHomePosition").closest(".formElement").show();
-                    }
-                    else {
-                        $("#ddlHomePosition").closest(".formElement").hide();
-                    }
-                });
             });
         }, 100);
     }
@@ -584,7 +561,7 @@
         var bsModal = $("#SaveModal");
         $(".btnSaveNews").off('click').click(function () {
             var id = $(this).attr("data-id");
-            var categoryId = $(this).attr("data-categoryId");
+            var categoryId = $("#ddlCategories").val();
             bsModal.html('');
             $(".page-content").LoadingOverlay("show");
             setTimeout(function () {
@@ -601,14 +578,6 @@
                     $('#tbPublishDate').datetimepicker({ format: 'YYYY-MM-DD HH:mm' });
                     $("#tbNewsKeyWords").tagsinput();
                     $(".page-content").LoadingOverlay("hide", true);
-                    $("#cbIsInHome").change(function () {
-                        if ($(this).is(':checked')) {
-                            $("#ddlHomePosition").closest(".formElement").show();
-                        }
-                        else {
-                            $("#ddlHomePosition").closest(".formElement").hide();
-                        }
-                    });
                 });
             }, 100);
         });
@@ -620,7 +589,6 @@
             var postData = $(form).serializeArray();
             var formUrl = $(form).attr("action");
             postData.push({ name: "Keywords", value: $("#tbNewsKeyWords").val() });
-            postData.push({ name: "HomePosition", value: $("#ddlHomePosition").val() });
             $.ajax({
                 type: "POST",
                 cache: false,
@@ -680,7 +648,7 @@
     };
     var newsSearchAutoComplete = function () {
         //if (!$('#txtNewsSearch').hasClass('tt-input')) {
-        //    var catId = $("#tblNews").attr("data-categoryId");
+        //    var catId = $("#ddlCategories").val();
         //    var news = new Bloodhound({
         //        datumTokenizer: function (d) { return d.tokens; },
         //        queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -737,7 +705,6 @@
     var resetNewsDataTable = function () {
         $("#btnClearForm").off("click").click(function () {
             $("#txtNewsSearch").removeAttr("data-id");
-            $("#ddlNewsCategory").val("0");
             $("#txtNewsSearch").val("");
             gsResetInsertForm("SearchForm");
             newsDataTableUpdate();
@@ -889,19 +856,18 @@
             "sAjaxSource": "/ControlPanel/getAlbumsDataTable",
             "bProcessing": true,
             "dom": '<"bottom"t<"col-sm-12"p>><"clear">',
-            "aaSorting": [[3, 'asc']],
+            "aaSorting": [[2, 'asc']],
             "fnServerParams": function (aoData) {
                 aoData.push({ "name": "Id", "value": $("#txtAlbumSearch").attr("data-id") });
             },
             "bStateSave": true,
             "aoColumns": [
                 { "sType": "html", "sWidth": '10%', "mDataProp": "Thumbinal", "bSortable": false, "sClass": "tdCenter" },
-                { "sType": "html", "sWidth": '45%', "mDataProp": "NameAr", "bSortable": false },
-                { "sType": "html", "sWidth": '45%', "mDataProp": "NameEn", "bSortable": false },
+                { "sType": "html", "sWidth": '45%', "mDataProp": "Name", "bSortable": false },
                 { "sType": "html", "sWidth": '10%', "mDataProp": "Id", "sClass": "tdCenter" }
             ],
             "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-                $('td:eq(3)', nRow).html('<div class="btn-group">' +
+                $('td:eq(2)', nRow).html('<div class="btn-group">' +
                     '<a class="btn btnx  dark btn-outline btn-xs" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">' +
                     '<i class="fa fa-cog fa-fw fa-xs"></i>' +
                     '</a>' +
@@ -1453,9 +1419,9 @@
             "bStateSave": true,
             "aoColumns": [
                 { "sType": "html", "sWidth": '25%', "mDataProp": "FilePath", "sClass": "tdCenter" },
-                { "sType": "html", "sWidth": '25%', "mDataProp": lang === "ar" ? "MediaTypeAr" : "MediaTypeEn", "bSortable": false },
-                { "sType": "html", "sWidth": '20%', "mDataProp": lang === "ar" ? "CaptionAr" : "CaptionEn" },
-                { "sType": "html", "sWidth": '25%', "mDataProp": lang === "ar" ? "AlbumAr" : "AlbumEn", "bSortable": false },
+                { "sType": "html", "sWidth": '25%', "mDataProp": "MediaTypeName", "bSortable": false },
+                { "sType": "html", "sWidth": '20%', "mDataProp": "Caption" },
+                { "sType": "html", "sWidth": '25%', "mDataProp": "AlbumName" , "bSortable": false },
                 { "sType": "html", "sWidth": '5%', "mDataProp": "Id", "sClass": "tdCenter" }
             ],
             "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
@@ -2057,11 +2023,183 @@
         });
     }
     /***************/
+    var teamMembersDataTable = function () {
+        $('#tblTeamMembers').dataTable({
+            "language": {
+                "url": "/Content/assets/global/plugins/DataTables-1.10.12/languages/ar.json"
+            },
+            "bServerSide": true,
+            "sAjaxSource": "/ControlPanel/GetTeamMembersDataTable",
+            "bProcessing": true,
+            "dom": '<"bottom"t<"col-sm-3 "l><"col-sm-4"i><"col-sm-5"p>><"clear">',
+            "aaSorting": [[3, 'asc']],
+            "fnServerParams": function (aoData) {
+                aoData.push({ "name": "Name", "value": $("#txtSearch").val() });
+            },
+            "bStateSave": true,
+            "aoColumns": [
+                { "sType": "html", "sWidth": '10%', "mDataProp": "Avatar", "bSortable": false, "sClass": "tdCenter" },
+                { "sType": "html", "sWidth": '55%', "mDataProp": "Name", "bSortable": false },
+                { "sType": "html", "sWidth": '30%', "mDataProp": "JobTitle", "bSortable": false },
+                { "sType": "html", "sWidth": '5%', "mDataProp": "Id", "sClass": "tdCenter" }
+            ],
+            "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                $('td:eq(0)', nRow).html('<img  style="width: 100px;" alt="" src="/Content/UploadedFile/Account/Avatar/Thumbnail/' + aData.Avatar + ' " onError="this.onerror=null;this.src=\'/Content/UploadedFile/Account/Avatar/NoImage.png\';"/>');
+
+                $('td:eq(3)', nRow).html('<div class="btn-group">' +
+                    '<a class="btn btnx  dark btn-outline btn-xs" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">' +
+                    '<i class="fa fa-cog fa-fw fa-xs"></i>' +
+                    '</a>' +
+                    ' <ul class="dropdown-menu pull-right">' +
+                    '<li>' +
+                    '<a href="javascript:;" class="lnk btnSave" data-id="' + aData.Id + '"><i class="fa fa-edit fa-fw"></i> ' + Messages.edit + '</a>' +
+                    ' </li>' +
+                    ' <li>' +
+                    '<a href="javascript:;" class="lnk btnDelete" data-id ="' + aData.Id + '"><i class="fa fa-trash fa-fw"></i> ' + Messages.delete + '</a>' +
+                    ' </li>' +
+                    '</ul>' +
+                    ' </div>');
+                $(nRow).dblclick(function () {
+                    saveTeamMemberModal($(this).find(".btnSave").attr("data-id"), $("#SaveModal"));
+                });
+            },
+            "fnDrawCallback": function (oSettings) {
+                getSaveTeamMemberModal();
+                deleteTeamMember();
+            },
+            "bFilter": false
+            //"sPaginationType": "bootstrap"
+        });
+    };
+    var teamMembersDataTableUpdate = function () {
+        var oTable = $('#tblTeamMembers').dataTable();
+        oTable.fnDraw(false);
+    };
+    var saveTeamMemberModal = function (id, bsModal) {
+        bsModal.html('');
+        $(".page-content").LoadingOverlay("show");
+        setTimeout(function () {
+            bsModal.load('/ControlPanel/SaveTeamMemberModal?id=' + id , '', function () {
+                $(".contentDiv").show();
+                $(".tableDiv").hide();
+                resetbooststrapSelect();
+                handleBootstrapSelect();
+                closeModal();
+                saveTeamMember();
+                uploadAvatar();
+                $(".page-content").LoadingOverlay("hide", true);
+            });
+        }, 100);
+    }
+    var getSaveTeamMemberModal = function () {
+        var bsModal = $("#SaveModal");
+        $(".btnSaveMember").off('click').click(function () {
+            var id = $(this).attr("data-id");
+            bsModal.html('');
+            $(".page-content").LoadingOverlay("show");
+            setTimeout(function () {
+                bsModal.load('/ControlPanel/SaveTeamMemberModal?id=' + id , '', function () {
+                    $(".contentDiv").show();
+                    $(".tableDiv").hide();
+                    resetbooststrapSelect();
+                    handleBootstrapSelect();
+                    closeModal();
+                    saveTeamMember();
+                    uploadAvatar();
+                    $(".page-content").LoadingOverlay("hide", true);
+                });
+            }, 100);
+        });
+    };
+    var saveTeamMember = function () {
+        $('#SaveTeamMemberForm').on("submit", function (event) {
+            var form = this;
+            gsDisablSubmitButton(form);
+            var postData = $(form).serializeArray();
+            var formUrl = $(form).attr("action");
+            $.ajax({
+                type: "POST",
+                cache: false,
+                url: formUrl,
+                data: postData,
+                dataType: "json",
+                success: function (data) {
+                    gsEnableSubmitButton(form);
+                    if (data.cStatus === "success") {
+                        completedSuccessfuly(data.cMsg);
+                        teamMembersDataTableUpdate();
+                        $("#teamMemberId").val(data.id);
+                        $(".scroll-to-top").click();
+                    } else if (data.cStatus === "notValid") {
+                        notValidOperations(data.cMsg);
+                        $(".scroll-to-top").click();
+                    }
+                    else {
+                        notValidOperations(data.cMsg);
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    gsNotifyMsg('' + Messages.noResultFound + '', "error");
+                    gsEnableSubmitButton(form);
+                }
+            });
+        });
+    };
+
+    var deleteTeamMember = function () {
+        $(".btnDelete").off('click').click(function () {
+            var id = $(this).attr('data-Id');
+            gsConfirm('' + Messages.deleteConfirm + '', function (result) {
+                if (result) {
+                    $.ajax({
+                        type: "POST",
+                        cache: false,
+                        url: '/ControlPanel/DeleteTeamMember',
+                        dataType: "JSON",
+                        data: { 'id': id },
+                        success: function (data) {
+                            if (data.cStatus === "success") {
+                                gsNotifyMsg(data.cMsg, data.cStatus);
+                                teamMembersDataTableUpdate();
+
+                            } else {
+                                gsNotifyMsg(data.cMsg, data.cStatus);
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            gsNotifyMsg('' + Messages.noResultFound + '', "error");
+                        }
+                    });
+                }
+            });
+        });
+    };
+    var teamMembersSearch = function () {
+        $("#btnSearch").off('click').click(function () {
+            teamMembersDataTableUpdate();
+        });
+    };
+    var resetTeamMembersDataTable = function () {
+        $("#btnClearForm").off("click").click(function () {
+            $("#txtNewsSearch").removeAttr("data-id");
+            $("#txtNewsSearch").val("");
+            gsResetInsertForm("SearchForm");
+            teamMembersDataTableUpdate();
+        });
+    };
 
 
     return {
         initNews: function() {
-            newsDataTable($("#tblNews").attr("data-categoryid"));
+            newsDataTable(false);
+            newsSearchAutoComplete();
+            newsSearch();
+            resetNewsDataTable();
+            handleDatePickers();
+            fnHideCol(2, "tblNews");
+        },
+        initArticles: function() {
+            newsDataTable(true);
             newsSearchAutoComplete();
             newsSearch();
             resetNewsDataTable();
@@ -2092,6 +2230,11 @@
             uploadImg($("#imgUploadUser3"), $("#hdImage3"));
 
             saveStaticPages();
+        },
+        initTeamMembers: function () {
+            teamMembersDataTable();
+            teamMembersSearch();
+            resetTeamMembersDataTable();
         },
         initAds: function() {
             adsDataTable();

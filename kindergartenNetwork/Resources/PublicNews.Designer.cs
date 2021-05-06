@@ -331,7 +331,7 @@ namespace kindergartenNetwork.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to الرجوع لقائمة الاعضاء.
+        ///   Looks up a localized string similar to الرجوع لقائمة فريق العمل.
         /// </summary>
         public static string BackToMembersList {
             get {
@@ -1096,6 +1096,15 @@ namespace kindergartenNetwork.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to رابط فيس بوك.
+        /// </summary>
+        public static string FaceBookUrl {
+            get {
+                return ResourceManager.GetString("FaceBookUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to فاكس.
         /// </summary>
         public static string Fax {
@@ -1384,6 +1393,15 @@ namespace kindergartenNetwork.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to رابط انستغرام.
+        /// </summary>
+        public static string InstgramUrl {
+            get {
+                return ResourceManager.GetString("InstgramUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to مفعل.
         /// </summary>
         public static string IsActive {
@@ -1474,6 +1492,15 @@ namespace kindergartenNetwork.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to المسمى الوظيفي.
+        /// </summary>
+        public static string JobTitle {
+            get {
+                return ResourceManager.GetString("JobTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to اللغة.
         /// </summary>
         public static string Language {
@@ -1524,6 +1551,15 @@ namespace kindergartenNetwork.Resources {
         public static string Link {
             get {
                 return ResourceManager.GetString("Link", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to رابط لينكد ان.
+        /// </summary>
+        public static string LinkedInUrl {
+            get {
+                return ResourceManager.GetString("LinkedInUrl", resourceCulture);
             }
         }
         
@@ -2104,7 +2140,7 @@ namespace kindergartenNetwork.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parent.
+        ///   Looks up a localized string similar to الاب.
         /// </summary>
         public static string Parent {
             get {
@@ -2113,7 +2149,7 @@ namespace kindergartenNetwork.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parent Constant.
+        ///   Looks up a localized string similar to الثابت الرئيسي.
         /// </summary>
         public static string ParentConstant {
             get {
@@ -2122,7 +2158,7 @@ namespace kindergartenNetwork.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parent Name.
+        ///   Looks up a localized string similar to اسم الاب.
         /// </summary>
         public static string ParentName {
             get {
@@ -3009,6 +3045,15 @@ namespace kindergartenNetwork.Resources {
         public static string TeacherEn {
             get {
                 return ResourceManager.GetString("TeacherEn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to عضو فريق العمل.
+        /// </summary>
+        public static string TeamMember {
+            get {
+                return ResourceManager.GetString("TeamMember", resourceCulture);
             }
         }
         

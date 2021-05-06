@@ -17,15 +17,15 @@
                 <div class="form-horizontal">
                     @Html.AntiForgeryToken()
                     <div class="form-group">
-                        <label class="col-md-3 control-label">الاسم عربي</label>
+                        <label class="col-md-3 control-label">@kindergartenNetwork.Resources.PublicNews.Name</label>
                         <div class="col-md-9">
                             <div class="formElement">
-                                <input type="text" id="tbName" name="NameAr" class="form-control input-inline input-medium" placeholder="@kindergartenNetwork.Resources.PublicNews.Name" data-field="@kindergartenNetwork.Resources.PublicNews.Name" />
+                                <input type="text" id="tbName" name="Name" class="form-control input-inline input-medium" placeholder="@kindergartenNetwork.Resources.PublicNews.Name" data-field="@kindergartenNetwork.Resources.PublicNews.Name" />
                                 <span class="help-inline"></span>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
+                    @*<div class="form-group">
                         <label class="col-md-3 control-label">@kindergartenNetwork.Resources.PublicNews.NameEn</label>
                         <div class="col-md-9">
                             <div class="formElement">
@@ -33,7 +33,7 @@
                                 <span class="help-inline"></span>
                             </div>
                         </div>
-                    </div>
+                    </div>*@
                     <div class="form-group">
                         <label class="col-md-3 control-label">@kindergartenNetwork.Resources.PublicNews.Comment</label>
                         <div class="col-md-9">
@@ -60,7 +60,7 @@
                                     <option value="0">@kindergartenNetwork.Resources.PublicNews.ParentConstant</option>
                                     @foreach (var constant in Model.LstConstants)
                                     {
-                                        <option value="@constant.Id">@constant.NameAr</option>
+                                        <option value="@constant.Id">@constant.Name</option>
                                     }
                                 </select>
                                 <span class="help-inline"></span>

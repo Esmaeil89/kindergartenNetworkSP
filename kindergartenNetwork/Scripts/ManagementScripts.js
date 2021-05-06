@@ -17,13 +17,13 @@
             "bStateSave": false,
             "aoColumns": [
                 { "sType": "html", "sWidth": '5%', "mDataProp": "Id"},
-                { "sType": "html", "sWidth": '45%', "mDataProp": "ConstantName", "bSortable": false },
+                { "sType": "html", "sWidth": '45%', "mDataProp": "Name", "bSortable": false },
                 { "sType": "html", "sWidth": '45%', "mDataProp": "ParentName", "bSortable": false },
                 { "sType": "html", "sWidth": '5%', "mDataProp": "Id" }
             ],
             "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
                 if (aData.ParentName === null) {
-                    $('td:eq(2)', nRow).html("<u>Parent Constant</u>");
+                    $('td:eq(2)', nRow).html("<u>ثابت رئيسي</u>");
                 }
                     $('td:eq(3)', nRow).html('<div class="btn-group">' +
                         '<a class="btn btnx  dark btn-outline btn-xs" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">' +
@@ -377,7 +377,7 @@
                 dir: true
             }, {
                 name: 'search-constant',
-                displayKey: 'NameAr',
+                displayKey: 'Name',
                 source: constant.ttAdapter(),
                     limit: 20,
                     dir: true,
@@ -395,7 +395,7 @@
                         '</div>',
                         '<div class="media-body">',
                         ' ',
-                        ' <h5 class="media-heading">{{NameAr}} &nbsp &nbsp {{NameEn}}</h5>',
+                        ' <h5 class="media-heading">{{Name}}</h5>',
                         '</div>',
                         '</div>',
                     ].join(''))
@@ -1575,363 +1575,11 @@
             userTypeListDataTable();
         });
     };
-    var userTypereset = function () {
+    var userTypeReset = function () {
         $("#btnClearForm").off("click").click(function () {
             $("#txtUserTypeSearch").val("");
             userTypeListDataTable();
         });
-    };
-
-    //AccountTypes
-    var accountTypeList = function () {
-        $("#tblAccountType").dataTable({
-            "language": {
-                "url": "/Content/assets/global/plugins/DataTables-1.10.12/languages/ar.json"
-            },
-            "paging": false,
-            "info": false,
-            "bServerSide": true,
-            "sAjaxSource":  "/Management/AccountTypeTableAjax",
-            "bProcessing": true,
-            "dom": '<"bottom"t<"col-sm-3 "l><"col-sm-4"i><"col-sm-5"p>><"clear">',
-            "aaSorting": [[0, 'asc']],
-            "fnServerParams": function (aoData) {
-                aoData.push({ "name": "Name", "value": $("#txtAccountTypeSearch").val() });
-            },
-            //"bStateSave": true,
-            "aoColumns": [
-                { "sType": "html", "sWidth": "100%", "mDataProp": "Name" }
-            ],
-            "aoColumnDefs": [],
-
-            "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-            },
-
-            "fnDrawCallback": function (oSettings) {
-
-            },
-            "bFilter": false,
-            //"sPaginationType": "bootstrap"
-        });
-    }
-    var accountTypeListDataTable = function () {
-        var oTable = $('#tblAccountType').dataTable();
-        oTable.fnDraw();
-    };
-    var accountTypeSearch = function () {
-        $("#btnSearch").off('click').click(function () {
-            accountTypeListDataTable();
-        });
-    };
-    var accountTypereset = function () {
-        $("#btnClearForm").off("click").click(function () {
-            $("#txtAccountTypeSearch").val("");
-            accountTypeListDataTable();
-        });
-    };
-
-    //Accounts
-    var accountsDataTable = function () {
-        $('#tblAccounts').dataTable({
-            "language": {
-                "url": "/Content/assets/global/plugins/DataTables-1.10.12/languages/ar.json"
-            },
-            "paging": false,
-            "info": false,
-            "bServerSide": true,
-            "sAjaxSource":  "/Management/GetAccountsDataTable",
-            "bProcessing": true,
-            "dom": '<"bottom"t<"col-sm-3 "l><"col-sm-4"i><"col-sm-5"p>><"clear">',
-            "aaSorting": [[0, 'desc']],
-            "fnServerParams": function (aoData) {
-                aoData.push({ "name": "CategoryId", "value": $("#ddlCategory").val() },
-                            { "name": "TypeId", "value": $("#ddlType").val() });
-            },
-            "bStateSave": true,
-            "aoColumns": [
-
-                { "sType": "html", "sWidth": '20%', "mDataProp": "ID" },
-                { "sType": "html", "sWidth": '20%', "mDataProp": "Name", "bSortable": false },
-                { "sType": "html", "sWidth": '20%', "mDataProp": "Parm2", "bSortable": false },
-                { "sType": "html", "sWidth": '20%', "mDataProp": "Parm4", "bSortable": false },
-                { "sType": "html", "sWidth": '15%', "mDataProp": "Parm1", "bSortable": false },
-                { "sType": "html", "sWidth": '5%', "mDataProp": "Page", "bSortable": false }
-            ],
-            "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-                    $('td:eq(5)', nRow).html('<div class="btn-group">' +
-                        '<a class="btn btnx  dark btn-outline btn-xs" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">' +
-                        '<i class="fa fa-cog fa-fw fa-xs"></i>' +
-                        '</a>' +
-                        ' <ul class="dropdown-menu pull-right">' +
-                        '<li>' +
-                        '<a href="javascript:;" class="lnk btnUpdateAccount" data-id="' + aData.ID + '"><i class="fa fa-edit fa-fw"></i> ' + Messages.edit + '</a>' +
-                        ' </li>' +
-                        ' <li>' +
-                        '<a href="javascript:;" class="lnk btnDeleteAccount" data-id ="' + aData.ID + '"><i class="fa fa-trash fa-fw"></i> ' + Messages.delete + '</a>' +
-                        ' </li>' +
-                        '</ul>' +
-                        ' </div>');
-                $(nRow).dblclick(function () {
-                    updateAccountModel($(this).find(".btnUpdateAccount").attr("data-id"), $("#basicModal"));
-                });
-            },
-            "fnDrawCallback": function (oSettings) {
-                getUpdateAccountModal();
-                deleteAccount();
-            },
-            "bFilter": false
-            //"sPaginationType": "bootstrap"
-        });
-    };
-    var accountsDataTableUpdateWithReSort = function () {
-        var oTable = $('#tblAccounts').dataTable();
-        oTable.fnDraw();
-    };
-    var accountsDataTableUpdate = function () {
-        var oTable = $('#tblAccounts').dataTable();
-        oTable.fnDraw(false);
-    };
-    var accountsSearch = function () {
-        $("#btnSearch").off('click').click(function () {
-            accountsDataTableUpdateWithReSort();
-        });
-    };
-    var resetAccountsDataTable = function () {
-        $("#btnClearForm").off("click").click(function () {
-            $("#txtAccountsSearch").removeAttr("data-id");
-            $("#ddlBranch").val("0");
-            $("#ddlType").val("0");
-            $("#txtAccountsSearch").val("");
-            accountsDataTableUpdateWithReSort();
-        });
-    };
-    var getInsertAccountsModal = function () {
-        var bsModal = $("#basicModal");
-        $("#btnGetInsertAccountsModal").off('click').click(function () {
-            bsModal.html('');
-            setTimeout(function () {
-                bsModal.load( '/Management/InsertUpdateAccountsModal', '', function () {
-                    bsModal.modal('show'); resetbooststrapSelect();
-                    validateInsertUpdateAccountsForm();
-                    handleBootstrapSelect();
-                });
-            }, 10);
-        });
-    };
-    var getUpdateAccountModal = function () {
-        var bsModal = $("#basicModal");
-        $(".btnUpdateAccount").off('click').click(function () {
-            var id = $(this).attr("data-id");
-            bsModal.html('');
-            setTimeout(function () {
-                bsModal.load( '/Management/InsertUpdateAccountsModal?Id=' + id, '', function () {
-                    bsModal.modal('show'); resetbooststrapSelect();
-                    validateInsertUpdateAccountsForm();
-                    handleBootstrapSelect();
-                });
-            }, 100);
-        });
-    };
-    var updateAccountModel = function (id, bsModal) {
-        bsModal.html('');
-        setTimeout(function () {
-            bsModal.load( '/Management/InsertUpdateAccountsModal?id=' + id, '', function () {
-                bsModal.modal('show'); resetbooststrapSelect();
-                validateInsertUpdateAccountsForm();
-                handleBootstrapSelect();
-            });
-        }, 100);
-    }
-    var validateInsertUpdateAccountsForm = function () {
-        // for more info visit the official plugin documentation: 
-        // http://docs.jquery.com/Plugins/Validation
-
-        var form2 = $('#InsertUpdateAccountsForm');
-        var error2 = $('.alert-danger', form2);
-        var success2 = $('.alert-success', form2);
-
-        form2.validate({
-            ignoreTitle: true,
-            errorElement: 'span', //default input error message container
-            errorClass: 'help-block help-block-error', // default input error message class
-            focusInvalid: false, // do not focus the last invalid input
-            ignore: "", // validate all fields including form hidden input
-            rules: {
-                Id: {
-                },
-                Name: {
-                    minlength: 3,
-                    maxlength: 50,
-                    required: true
-                },
-                NameAr: {
-                    minlength: 3,
-                    maxlength: 50,
-                    required: true
-                },
-                AccCon_AccountType: {
-                    required: true
-                },
-                AccCon_AccountCategory: {
-                    required: true
-                },
-                CurrencyId: {
-                    required: true
-                }
-
-
-            },
-            invalidHandler: function (event, validator) { //display error alert on form submit 
-                success2.hide();
-                var errors = validator.numberOfInvalids();
-                var messageDetails = '';
-                if (errors) {
-                    $.each(validator.errorList, function () {
-                        messageDetails += '<li><u><b>' + this.element.attributes["data-field"].nodeValue + "</b></u> : " + this.message + '</li>';
-                    });
-                    var message;
-                    if (errors === 1) {
-                        message = '' + Messages.errorInField + '';
-                    }
-                    else if (errors > 1 && errors < 11) {
-                        message = '' + Messages.there + ' ' + errors + ' ' + Messages.errorInField1 + '';
-                    } else {
-                        message = '' + Messages.there + ' ' + errors + ' ' + Messages.errorInField1 + '';
-                    }
-                    message += '<button class="close" data-close="alert"></button><br><ul>' + messageDetails + '</ul>';
-                    error2.html(message);
-                    error2.show();
-                } else {
-                    error2.hide();
-                }
-            },
-            errorPlacement: function (error, element) { // render error placement for each input type
-
-            },
-            highlight: function (element) { // hightlight error inputs
-                $(element).closest('.formElement').addClass('has-error'); // set error class to the control group
-                $(element).closest('.formElement').removeClass('has-success');
-            },
-            unhighlight: function (element) { // revert the change done by hightlight
-                $(element).closest('.formElement').removeClass('has-error'); // set error class to the control group
-                $(element).closest('.formElement').addClass('has-success');
-            },
-            success: function (label) {
-                label.closest('.formElement').removeClass('has-error').addClass('has-success'); // set success class to the control group
-            },
-            submitHandler: function (form) {
-                gsDisablSubmitButton(form2); success2.show();
-                error2.hide();
-                insertupdateAccounts();
-            }
-        });
-    };
-
-    var insertupdateAccounts = function () {
-        var form = $("#InsertUpdateAccountsForm");
-        var postData = $(form).serializeArray();
-        var formUrl = $(form).attr("action");
-        $.ajax({
-            type: "POST",
-            cache: false,
-            url: formUrl,
-            data: postData,
-            dataType: "json",
-            success: function (data) {
-                gsEnableSubmitButton(form);
-                if (data.cStatus === "success") {
-                    completedSuccessfuly(data.cMsg);
-
-                    accountsDataTableUpdate();
-                } else if (data.cStatus === "notValid") {
-                    notValidOperations(data.cMsg);
-                }
-                else {
-                    notValidOperations(data.cMsg);
-                }
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                gsNotifyMsg('' + Messages.noResultFound + '', "error");
-                gsEnableSubmitButton(form);
-            }
-        });
-    };
-    var deleteAccount = function () {
-        $(".btnDeleteAccount").off('click').click(function () {
-            var id = $(this).attr('data-Id');
-            gsConfirm('' + Messages.deleteConfirm + '', function (result) {
-                if (result) {
-                    $.ajax({
-                        type: "POST",
-                        cache: false,
-                        url: '/Management/DeleteAccount',
-                        dataType: "JSON",
-                        data: { 'id': id },
-                        success: function (data) {
-                            if (data.cStatus === "success") {
-                                gsNotifyMsg(data.cMsg, data.cStatus);
-                                accountsDataTableUpdateWithReSort();
-
-                            } else {
-                                gsNotifyMsg(data.cMsg, data.cStatus);
-                            }
-
-                        },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            gsNotifyMsg('' + Messages.noResultFound + '', "error");
-                            gsEnableSubmitButton(form);
-                        }
-                    });
-                }
-            });
-        });
-    };
-    var accountsSearchAutoComplete = function () {
-        if (!$('#txtAccountsSearch').hasClass('tt-input')) {
-            var accounts = new Bloodhound({
-                datumTokenizer: function (d) { return d.tokens; },
-                queryTokenizer: Bloodhound.tokenizers.whitespace,
-                remote: {
-                    url: '/Management/AccountsSearchAutoComplete/%QUERY',
-                    wildcard: '%QUERY'
-                }
-            });
-
-            accounts.initialize();
-
-            $('#txtAccountsSearch').typeahead({
-                hint: true,
-                highlight: true,
-                minLength: 1,
-            }, {
-                name: 'search-accounts',
-                displayKey: 'Name',
-                source: accounts.ttAdapter(),
-
-                templates: {
-                    empty: [
-                        '<div class="empty-message">',
-                        '' + Messages.noResultFound + '',
-                        '</div>'
-                    ].join('\n'),
-                    suggestion: Handlebars.compile([
-                       '<div class="media">',
-                        '<div class="pull-left">',
-                        '<div class="media-object">',
-                        '</div>',
-                        '</div>',
-                        '<div class="media-body">',
-                        ' ',
-                        ' <h4 class="media-heading">{{NameAr}}</h4>',
-                        '</div>',
-                        '</div>',
-                    ].join(''))
-                },
-
-            }).on('typeahead:selected', function ($e, datum) {
-                $("#txtAccountsSearch").attr('data-id', datum.Id);
-            });
-        }
     };
 
     //global setting 
@@ -2287,7 +1935,7 @@
                 "url": "/Content/assets/global/plugins/DataTables-1.10.12/languages/ar.json"
             },
             "bServerSide": true,
-            "sAjaxSource":  "/Management/GetErrorsLogsataTable",
+            "sAjaxSource":  "/Management/GetErrorsLogsDataTable",
             "bProcessing": true,
             "dom": '<"bottom"t<"col-sm-3 "l><"col-sm-4"i><"col-sm-5"p>><"clear">',
             "aaSorting": [[9, 'desc']],
@@ -2676,7 +2324,7 @@
         initUserTypes: function () {
             userTypeList();
             userTypeSearch();
-            userTypereset();
+            userTypeReset();
 
         },
         initGlobalSetting: function () {

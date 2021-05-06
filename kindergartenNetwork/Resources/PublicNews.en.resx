@@ -462,6 +462,9 @@
   <data name="ExternalTournament" xml:space="preserve">
     <value>External Tournament</value>
   </data>
+  <data name="FaceBookUrl" xml:space="preserve">
+    <value>FaceBook url</value>
+  </data>
   <data name="Fax" xml:space="preserve">
     <value>Fax</value>
   </data>
@@ -558,6 +561,9 @@
   <data name="InsertedDate" xml:space="preserve">
     <value>InsertedDate</value>
   </data>
+  <data name="InstgramUrl" xml:space="preserve">
+    <value>Instgram url</value>
+  </data>
   <data name="IsActive" xml:space="preserve">
     <value>Is Active</value>
   </data>
@@ -588,6 +594,9 @@
   <data name="JobPlace" xml:space="preserve">
     <value>Job Place</value>
   </data>
+  <data name="JobTitle" xml:space="preserve">
+    <value>Job Title</value>
+  </data>
   <data name="Language" xml:space="preserve">
     <value>Language</value>
   </data>
@@ -605,6 +614,9 @@
   </data>
   <data name="Link" xml:space="preserve">
     <value>Link</value>
+  </data>
+  <data name="LinkedInUrl" xml:space="preserve">
+    <value>LinkedIn url</value>
   </data>
   <data name="Local" xml:space="preserve">
     <value>Local</value>
@@ -1101,6 +1113,9 @@
   </data>
   <data name="TeacherEn" xml:space="preserve">
     <value>Teacher English</value>
+  </data>
+  <data name="TeamMember" xml:space="preserve">
+    <value>Team Member</value>
   </data>
   <data name="TermsConditions" xml:space="preserve">
     <value>Terms Conditions</value>

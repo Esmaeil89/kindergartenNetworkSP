@@ -21,7 +21,7 @@
                 </a>
             </div>
         </div>
-        <div class="portle-body">
+        <div class="portlet-body">
 
             <div class="modal-body">
                 <div class="alert alert-danger display-hide">
@@ -34,14 +34,41 @@
 
                     @Html.AntiForgeryToken()
                     <input type="hidden" value="@Model.ONews.Id" Name="Id" id="newsId" data-field="" />
-                    <input type="hidden" value="@ViewBag.CategoryId" name="CategoryId" id="hdCategoryId" />
                     <div class="form-group">
-                        <label class="col-md-2 control-label">@kindergartenNetwork.Resources.PublicNews.PublishDate</label>
-                        <div class="col-md-3">
-                            <div class="formElement">
-                                <input type="text" id="tbPublishDate" autocomplete="off" value="@(Model.ONews.PublishDate != DateTime.MinValue ?  Model.ONews.PublishDate.ToString("yyyy-MM-dd hh:mm") : DateTime.UtcNow.ToString("yyyy-MM-dd hh:mm"))" name="PublishDate" class="form-control" placeholder="@kindergartenNetwork.Resources.PublicNews.PublishDate" data-field="@kindergartenNetwork.Resources.PublicNews.PublishDate" />
+                        <label class="col-md-1 control-label"></label>
+                        <div class="col-md-2">
+                            <div class="mt-checkbox-inline">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox" id="cbIsActive" name="IsActive" value="true" @(Model.ONews.IsActive == true ? "checked" : "")>@kindergartenNetwork.Resources.PublicNews.IsActive
+                                    <span></span>
+                                </label>
                             </div>
                         </div>
+                        <label class="col-md-2 control-label">@kindergartenNetwork.Resources.PublicNews.PublishDate</label>
+                        <div class="col-md-2">
+                            <div class="formElement">
+                                <input type="text" id="tbPublishDate" autocomplete="off" value="@(Model.ONews.PublishDate != DateTime.MinValue ? Model.ONews.PublishDate.ToString("yyyy-MM-dd hh:mm") : DateTime.UtcNow.ToString("yyyy-MM-dd hh:mm"))" name="PublishDate" class="form-control" placeholder="@kindergartenNetwork.Resources.PublicNews.PublishDate" data-field="@kindergartenNetwork.Resources.PublicNews.PublishDate" />
+                            </div>
+                        </div>
+                        @if (ViewBag.CategoryId == 1)
+                        {
+                            <input type="hidden" value="@ViewBag.CategoryId" name="CategoryId" id="hdCategoryId" />
+                        }
+                        else
+                        {
+                            <label class="col-md-2 control-label">@kindergartenNetwork.Resources.PublicNews.Category</label>
+                            <div class="col-md-2">
+                                <div class="formElement">
+                                    <select class="selectpicker form-control" name="CategoryId" id="ddlCategories">
+                                        <option value="">@kindergartenNetwork.Resources.PublicNews.Category</option>
+                                        @foreach (var obj in Model.LstCategory)
+                                        {
+                                            <option value="@obj.Id">@obj.NameAr</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        }
                     </div>
                     <div class="form-group">
                         <label class="col-md-1 control-label">@kindergartenNetwork.Resources.PublicNews.Address</label>
@@ -97,18 +124,6 @@
                                 <input type="text" id="tbNewsKeyWords" data-role="tagsinput" value="@Model.ONews.Keywords" name="" class="form-control" placeholder="@kindergartenNetwork.Resources.PublicNews.Tags" data-field="@kindergartenNetwork.Resources.PublicNews.Tags" />
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-1 control-label"></label>
-                        <div class="col-md-2">
-                            <div class="mt-checkbox-inline">
-                                <label class="mt-checkbox">
-                                    <input type="checkbox" id="cbIsActive" name="IsActive" value="true" @(Model.ONews.IsActive == true ? "checked" : "")>@kindergartenNetwork.Resources.PublicNews.IsActive
-                                    <span></span>
-                                </label>
-                            </div>
-                        </div>
-
                     </div>
 
                 </div>

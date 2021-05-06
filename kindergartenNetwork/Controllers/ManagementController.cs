@@ -71,7 +71,7 @@ using kindergartenNetwork.Models;
                              {
                                  q.Id,
                                  q.Name,
-                                 ParentNameAr = q.OParent.Name,
+                                 ParentName = q.OParent.Name,
                                  q.ParentId,
                                  q.Comment,
                                  q.Icon
@@ -937,7 +937,7 @@ using kindergartenNetwork.Models;
         {
             return View();
         }
-        public JsonResult GetErrorsLogsataTable(JQueryDataTableParamModel param)
+        public JsonResult GetErrorsLogsDataTable(JQueryDataTableParamModel param)
         {
             var oErrorLog = new ErrorsLogs();
 

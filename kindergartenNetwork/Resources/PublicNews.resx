@@ -208,7 +208,7 @@
     <value>الرجوع لقائمة الاندية</value>
   </data>
   <data name="BackToMembersList" xml:space="preserve">
-    <value>الرجوع لقائمة الاعضاء</value>
+    <value>الرجوع لقائمة فريق العمل</value>
   </data>
   <data name="BackToMenu" xml:space="preserve">
     <value>الرجوع للقائمة</value>
@@ -462,6 +462,9 @@
   <data name="ExternalTournament" xml:space="preserve">
     <value>بطولة خارجية</value>
   </data>
+  <data name="FaceBookUrl" xml:space="preserve">
+    <value>رابط فيس بوك</value>
+  </data>
   <data name="Fax" xml:space="preserve">
     <value>فاكس</value>
   </data>
@@ -558,6 +561,9 @@
   <data name="InsertedDate" xml:space="preserve">
     <value>تاريخ الاضافة</value>
   </data>
+  <data name="InstgramUrl" xml:space="preserve">
+    <value>رابط انستغرام</value>
+  </data>
   <data name="IsActive" xml:space="preserve">
     <value>مفعل</value>
   </data>
@@ -588,6 +594,9 @@
   <data name="JobPlace" xml:space="preserve">
     <value>مكان العمل</value>
   </data>
+  <data name="JobTitle" xml:space="preserve">
+    <value>المسمى الوظيفي</value>
+  </data>
   <data name="Language" xml:space="preserve">
     <value>اللغة</value>
   </data>
@@ -605,6 +614,9 @@
   </data>
   <data name="Link" xml:space="preserve">
     <value>رابط</value>
+  </data>
+  <data name="LinkedInUrl" xml:space="preserve">
+    <value>رابط لينكد ان</value>
   </data>
   <data name="Local" xml:space="preserve">
     <value>داخلية</value>
@@ -799,13 +811,13 @@
     <value>نوع الصفحة</value>
   </data>
   <data name="Parent" xml:space="preserve">
-    <value>Parent</value>
+    <value>الاب</value>
   </data>
   <data name="ParentConstant" xml:space="preserve">
-    <value>Parent Constant</value>
+    <value>الثابت الرئيسي</value>
   </data>
   <data name="ParentName" xml:space="preserve">
-    <value>Parent Name</value>
+    <value>اسم الاب</value>
   </data>
   <data name="ParentNameAr" xml:space="preserve">
     <value>الاسم العربي لل Parent</value>
@@ -1100,6 +1112,9 @@
   </data>
   <data name="TeacherEn" xml:space="preserve">
     <value>المحاضر إنجليزي</value>
+  </data>
+  <data name="TeamMember" xml:space="preserve">
+    <value>عضو فريق العمل</value>
   </data>
   <data name="TermsConditions" xml:space="preserve">
     <value>الشروط</value>

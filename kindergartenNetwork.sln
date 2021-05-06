@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kindergartenNetwork", "kindergartenNetwork\kindergartenNetwork.csproj", "{0C43EC6F-0165-43F9-AA5C-C73DEE125E42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTO", "..\Default\DTO\DTO.csproj", "{F5E90130-4923-4453-828C-77A1802B6D13}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTO", "DTO\DTO.csproj", "{F5E90130-4923-4453-828C-77A1802B6D13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "..\Default\DAL\DAL.csproj", "{8FFB8159-D0E3-441A-BE78-A2CF634791A6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{8FFB8159-D0E3-441A-BE78-A2CF634791A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

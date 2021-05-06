@@ -18,15 +18,15 @@
                     <input type="hidden" value="@Model.OConstant.Id" Name="Id" data-field="" />
                     @Html.AntiForgeryToken()
                     <div class="form-group">
-                        <label class="col-md-3 control-label"> @kindergartenNetwork.Resources.PublicNews.NameAr</label>
+                        <label class="col-md-3 control-label"> @kindergartenNetwork.Resources.PublicNews.Name</label>
                         <div class="col-md-9">
                             <div class="formElement">
-                                <input type="text" id="tbNameAr" name="NameAr" class="form-control input-inline input-medium" placeholder="@kindergartenNetwork.Resources.PublicNews.NameAr" data-field="@kindergartenNetwork.Resources.PublicNews.NameAr" value="@Model.OConstant.NameAr" />
+                                <input type="text" id="tbNameAr" name="Name" class="form-control input-inline input-medium" placeholder="@kindergartenNetwork.Resources.PublicNews.Name" data-field="@kindergartenNetwork.Resources.PublicNews.Name" value="@Model.OConstant.Name" />
                                 <span class="help-inline"></span>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
+                    @*<div class="form-group">
                         <label class="col-md-3 control-label"> @kindergartenNetwork.Resources.PublicNews.NameEn</label>
                         <div class="col-md-9">
                             <div class="formElement">
@@ -34,7 +34,7 @@
                                 <span class="help-inline"></span>
                             </div>
                         </div>
-                    </div>
+                    </div>*@
                     <div class="form-group">
                         <label class="col-md-3 control-label">@kindergartenNetwork.Resources.PublicNews.Comment</label>
                         <div class="col-md-9">
@@ -61,7 +61,7 @@
                                     <option @(Model.OConstant.ParentId == 0 ? "selected" : "" ) value="0">@kindergartenNetwork.Resources.PublicNews.ParentConstant</option>
                                     @foreach (var constant in Model.LstConstants)
                                     {
-                                        <option @(constant.Id == Model.OConstant.ParentId ? "selected" : "" ) value="@constant.Id">@constant.NameAr</option>
+                                        <option @(constant.Id == Model.OConstant.ParentId ? "selected" : "" ) value="@constant.Id">@constant.Name</option>
                                     }
                                 </select>
 

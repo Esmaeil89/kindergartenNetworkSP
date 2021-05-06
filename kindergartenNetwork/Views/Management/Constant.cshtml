@@ -23,7 +23,7 @@
                             <option value="">@kindergartenNetwork.Resources.PublicNews.SelectParent</option>
                             @foreach (var constant in Model.LstConstants)
                         {
-                            <option value="@constant.Id">@constant.NameAr</option>
+                            <option value="@constant.Id">@constant.Name</option>
                     }
                         </select>
                     </div>
@@ -43,7 +43,7 @@
                         <tr>
                             <th scope="col"> @kindergartenNetwork.Resources.PublicNews.Num</th>
                             <th scope="col"> @kindergartenNetwork.Resources.PublicNews.Name</th>
-                            <th scope="col"> @kindergartenNetwork.Resources.PublicNews.Code</th>
+                            <th scope="col"> @kindergartenNetwork.Resources.PublicNews.Parent</th>
                             <th scope="col"><i class="icon-settings"></i></th>
                         </tr>
                     </thead>
