@@ -63,7 +63,7 @@
                                         <option value="">@kindergartenNetwork.Resources.PublicNews.Category</option>
                                         @foreach (var obj in Model.LstCategory)
                                         {
-                                            <option value="@obj.Id">@obj.NameAr</option>
+                                            <option value="@obj.Id" @(Model.ONews.CategoryId == obj.Id ? "selected" : "")>@obj.NameAr</option>
                                         }
                                     </select>
                                 </div>
@@ -88,9 +88,9 @@
                     </div>
                     <input type="hidden" id="hdImage" name="Image" value="@Model.ONews.Image" />
                     <div class="form-group">
-                        <label class="col-md-1 control-label">@kindergartenNetwork.Resources.PublicNews.Image</label>
+                        <label class="col-md-1 control-label">@kindergartenNetwork.Resources.PublicNews.Image <span dir="ltr">(810 x 500)</span></label>
                         <div class="col-md-11">
-                            <div class="fileinput fileinput-new @*@(Model.ONews.Image != null ? " fileinput fileinput-exists" : "fileinput fileinput-new" )*@" data-provides="fileinput" style="width:100%">
+                            <div class="fileinput fileinput-new" data-provides="fileinput" style="width:100%">
                                 <div class="fileinput-new thumbnail" style="width: 100%;">
                                     <img id="img" src="@(Model.ONews.Id > 0 ? "/Content/UploadedFile/News/Large/" + Model.ONews.Image : "http://www.placehold.it/600x250/EFEFEF/AAAAAA&amp;text=no+image")" alt="" />
                                 </div>

@@ -1,9 +1,15 @@
-﻿<!DOCTYPE html>
+﻿@using kindergartenNetwork.Resources
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewBag.Title</title>
+    <meta name="description" content="@ViewBag.MetaDescription">
+    <meta name="keywords" content="@ViewBag.MetaKeywords">
+    @RenderSection("meta", false)
 
     <!-- Bootstrap Rtl Min CSS -->
     <link rel="stylesheet" href="/Content/defaultTheme/assets/css/bootstrap.rtl.min.css">
@@ -31,6 +37,9 @@
     <link rel="stylesheet" href="/Content/defaultTheme/assets/css/responsive.css">
     <!-- Rtl CSS -->
     <link rel="stylesheet" href="/Content/defaultTheme/assets/css/rtl.css">
+    <link rel="stylesheet" href="~/Content/assets/global/plugins/font-awesome/css/font-awesome.min.css">
+    <link href="~/Content/assets/global/plugins/jssocials/jssocials.css" rel="stylesheet" />
+    <link href="~/Content/assets/global/plugins/jssocials/jssocials-theme-flat.css" rel="stylesheet" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/Content/defaultTheme/assets/img/logo2.png">
@@ -71,7 +80,7 @@
                         <ul class="navbar-nav m-auto">
                             <li class="nav-item">
                                 <a href="@Url.Action("Index","Home",null,Request.Url.Scheme)" class="nav-link active">
-                                    الرئيسية
+                                    @PublicNews.Home
                                 </a>
 
                             <li class="nav-item">
@@ -79,60 +88,38 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    الأخبار
-                                    <i class="bx bx-chevron-down"></i>
+                                <a href="@Url.Action("Index","News",null,Request.Url.Scheme)" class="nav-link">
+                                    @PublicNews.News
                                 </a>
-
-                                <ul class="dropdown-menu">
-                                    <li class="nav-item">
-                                        <a href="@Url.Action("Index","News",null,Request.Url.Scheme)" class="nav-link">الأخبار</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="@Url.Action("Details","News",null,Request.Url.Scheme)" class="nav-link">تفاصيل الخبر</a>
-                                    </li>
-                                </ul>
-
                             </li>
 
 
                             <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    المقالات
-                                    <i class="bx bx-chevron-down"></i>
+                                <a href="@Url.Action("Index","Articles",null,Request.Url.Scheme)" class="nav-link">
+                                    @PublicNews.Articles
                                 </a>
-
-                                <ul class="dropdown-menu">
-                                    <li class="nav-item">
-                                        <a href="@Url.Action("Index","Articles",null,Request.Url.Scheme)" class="nav-link">المقالات</a>
-                                    </li>
-
-                                    <li class="nav-item">
-                                        <a href="@Url.Action("Details","Articles",null,Request.Url.Scheme)" class="nav-link">تفاصيل المقالة</a>
-                                    </li>
-                                </ul>
                             </li>
 
                             <li class="nav-item">
-                                <a href="#" class="nav-link">
+                                <a href="javascript:;" class="nav-link">
                                     المصادر
                                     <i class="bx bx-chevron-down"></i>
                                 </a>
 
                                 <ul class="dropdown-menu">
                                     <li class="nav-item">
-                                        <a href="courses.html" class="nav-link">المصادر التعليمية</a>
+                                        <a href="@Url.Action("EducationalResources","Sources",null,Request.Url.Scheme)" class="nav-link">المصادر التعليمية</a>
                                     </li>
 
                                     <li class="nav-item">
-                                        <a href="instructors.html" class="nav-link">مصادر المعلومات</a>
+                                        <a href="@Url.Action("Instructors","Sources",null,Request.Url.Scheme)" class="nav-link">مصادر المعلومات</a>
                                     </li>
                                 </ul>
                             </li>
 
 
                             <li class="nav-item">
-                                <a href="#" class="nav-link">
+                                <a href="javascript:;" class="nav-link">
                                     المعرض
                                     <i class="bx bx-chevron-down"></i>
                                 </a>
@@ -182,7 +169,7 @@
                 <p>
                     جميع الحقوق محفوظة&copy;
                     <script>document.write(new Date().getFullYear())</script>
-                    لمنتدى غزة للطفولة المبكرة.صمم بواسطة <a href="https://bosala.tech/" target="blank">فريق بوصلة</a>
+                    لمنتدى غزة للطفولة المبكرة.
                 </p>
 
             </div>
@@ -223,6 +210,24 @@
     <script src="/Content/defaultTheme/assets/js/ajaxchimp.min.js"></script>
     <!-- Custom JS -->
     <script src="/Content/defaultTheme/assets/js/custom.js"></script>
+    <script src="~/Content/assets/global/plugins/jssocials/jssocials.min.js"></script>
+    <script>
+        @{
+            string FBURL = "https://connect.facebook.net/en_GB/sdk.js#xfbml=1&autoLogAppEvents=1&version=v3.0";
+            if (Convert.ToString(ViewBag.LangTowLetterCode) == "ar")
+            {
+                FBURL = "https://connect.facebook.net/ar_AR/sdk.js#xfbml=1&autoLogAppEvents=1&version=v3.0";
+            }
+        }
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = '@Html.Raw(FBURL)';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+    @RenderSection("scripts", false)
     <script>
         jQuery(document).ready(function () {
             @RenderSection("OnReadyScripts", required: false)

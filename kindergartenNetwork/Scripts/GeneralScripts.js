@@ -245,7 +245,7 @@ var getViewContactUsModal = function () {
                 if ($(_this).attr("data-isRead") === "true")
                     return false;
                 else {
-                    $(".page-header").find("li[data-id='" + id + "']").remove().remove();
+                    $(".page-header").find(".btnViewContactUs[data-id='" + id + "']").remove().remove();
                     $(".page-header").find(".msgCounter")
                         .text(parseInt($(".page-header").find(".msgCounter").last().text()) - 1);
                     contactUsDataTableUpdate();
@@ -387,6 +387,169 @@ var deleteContactUs = function () {
                         if (data.cStatus === "success") {
                             gsNotifyMsg(data.cMsg, data.cStatus);
                             contactUsDataTableUpdate();
+
+                        } else {
+                            gsNotifyMsg(data.cMsg, data.cStatus);
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        gsNotifyMsg('' + Messages.noResultFound + '', "error");
+                    }
+                });
+            }
+        });
+    });
+};
+
+var getViewCommentModal = function () {
+    var bsModal = $("#basicModal");
+    $(".btnViewComment").off('click').click(function () {
+        var id = $(this).attr("data-id");
+        bsModal.html('');
+        setTimeout(function () {
+            bsModal.load('/ControlPanel/ViewComment?id=' + id, '', function () {
+                bsModal.modal('show');
+                approveComment();
+            });
+        }, 100);
+    });
+};
+var commentsDataTable = function () {
+    $('#tblComments').dataTable({
+        "language": {
+            "url": "../Content/assets/global/plugins/DataTables-1.10.12/languages/ar.json"
+        },
+        "bServerSide": true,
+        "sAjaxSource": "/ControlPanel/getCommentsDataTable",
+        "bProcessing": true,
+        "dom": '<"bottom"t<"col-sm-3 "l><"col-sm-4"i><"col-sm-5"p>><"clear">',
+        "aaSorting": [[4, 'desc']],
+        "fnServerParams": function (aoData) {
+            aoData.push(
+                { "name": "Name", "value": $("#txtNameSearch").val() },
+                { "name": "Email", "value": $("#txtEmailSearch").val() });
+        },
+        "bStateSave": false,
+        "aoColumns": [
+            { "sType": "html", "sWidth": '20%', "mDataProp": "Title", "sClass": "tdCenter", "bSortable": false },
+            { "sType": "html", "sWidth": '10%', "mDataProp": "Name", "sClass": "tdCenter" },
+            { "sType": "html", "sWidth": '10%', "mDataProp": "Email" },
+            { "sType": "html", "sWidth": '30%', "mDataProp": "Comment" },
+            { "sType": "html", "sWidth": '15%', "mDataProp": "Date" },
+            { "sType": "html", "sWidth": '10%', "mDataProp": "IsApproved" },
+            { "sType": "html", "sWidth": '5%', "mDataProp": "Id", "sClass": "tdCenter", "bSortable": false }
+        ],
+        "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+
+            if (true) {
+                var html = '<div class="btn-group">' +
+                    '<a class="btn btnx  dark btn-outline btn-xs" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">' +
+                    '<i class="fa fa-cog fa-fw fa-xs"></i>' +
+                    '</a>' +
+                    ' <ul class="dropdown-menu pull-right">' +
+                    '<li>' +
+                    '<a href="javascript:;" class="lnk btnViewComment" data-id="' + aData.Id + '" data-isRead="' + aData.IsRead + '"><i class="fa fa-edit fa-fw"></i> ' + Messages.view + '</a>' +
+                    ' </li>' +
+                    ' <li>' +
+                    '<a href="javascript:;" class="lnk btnDeleteComment" data-id ="' + aData.Id + '"><i class="fa fa-trash fa-fw"></i> ' + Messages.delete + '</a>' +
+                    ' </li>';
+                if (!aData.IsApproved) {
+                    html += ' <li>' +
+                        '<a href="javascript:;" class="lnk btnApproveComment" data-id ="' + aData.Id + '"><i class="fa fa-check fa-fw"></i> ' + Messages.approve + '</a>' +
+                        ' </li>';
+                }
+                html += '</ul>' + ' </div>';
+                $('td:eq(6)', nRow).html(html);
+            }
+            if (aData.IsApproved) {
+                $('td:eq(5)', nRow).html("<span class='font-green-meadow fa fa-fw fa-check-circle-o fa-lg'></span>");
+            } else {
+                $('td:eq(5)', nRow).html("<span class='font-red-thunderbird fa fa-fw fa-times-circle-o fa-lg'></span>");
+            }
+
+            $(nRow).dblclick(function () {
+                viewCommentModel($(this).find(".btnViewComment").attr("data-id"), $("#basicModal"), $(".btnViewComment"));
+            });
+        },
+        "fnDrawCallback": function (oSettings) {
+            getViewCommentModal();
+            approveComment();
+            deleteComment();
+        },
+        "bFilter": false
+        //"sPaginationType": "bootstrap"
+    });
+};
+var commentsDataTableUpdate = function () {
+    var oTable = $('#tblComments').dataTable();
+    oTable.fnDraw(false);
+};
+var commentsSearch = function () {
+    $("#btnSearch").off('click').click(function () {
+        commentsDataTableUpdate();
+    });
+};
+var resetCommentsDataTable = function () {
+    $("#btnClearForm").off("click").click(function () {
+        gsResetInsertForm("SearchForm");
+        commentsDataTableUpdate();
+    });
+};
+var viewCommentModel = function (id, bsModal, btn) {
+    bsModal.html('');
+    setTimeout(function () {
+        bsModal.load('/ControlPanel/ViewComment?id=' + id, '', function () {
+            bsModal.modal('show');
+            approveComment();
+        });
+    }, 100);
+}
+var deleteComment = function () {
+    $(".btnDeleteComment").off('click').click(function () {
+        var id = $(this).attr('data-Id');
+        gsConfirm('' + Messages.deleteConfirm + '', function (result) {
+            if (result) {
+                $.ajax({
+                    type: "POST",
+                    cache: false,
+                    url: '/ControlPanel/DeleteComment',
+                    dataType: "JSON",
+                    data: { 'id': id },
+                    success: function (data) {
+                        if (data.cStatus === "success") {
+                            gsNotifyMsg(data.cMsg, data.cStatus);
+                            commentsDataTableUpdate();
+
+                        } else {
+                            gsNotifyMsg(data.cMsg, data.cStatus);
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        gsNotifyMsg('' + Messages.noResultFound + '', "error");
+                    }
+                });
+            }
+        });
+    });
+};
+var approveComment = function () {
+    $(".btnApproveComment").off('click').click(function () {
+        var id = $(this).attr('data-Id');
+        gsConfirm('' + Messages.approveConfirm + '', function (result) {
+            if (result) {
+                $.ajax({
+                    type: "POST",
+                    cache: false,
+                    url: '/ControlPanel/ApproveComment',
+                    dataType: "JSON",
+                    data: { 'id': id },
+                    success: function (data) {
+                        if (data.cStatus === "success") {
+                            gsNotifyMsg(data.cMsg, data.cStatus);
+                            $(".page-header").find(".btnViewComment[data-id='" + id + "']").remove().remove();
+                            $(".page-header").find(".commentsCounter")
+                                .text(parseInt($(".page-header").find(".commentsCounter").last().text()) - 1);
+                            commentsDataTableUpdate();
 
                         } else {
                             gsNotifyMsg(data.cMsg, data.cStatus);

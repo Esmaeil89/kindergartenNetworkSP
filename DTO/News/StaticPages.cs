@@ -12,14 +12,14 @@ namespace DTO.News
         [DisplayName("Id")]
         public int Id { get; set; }
 
-        [MaxLength(50)]
-        [StringLength(50)]
+        [MaxLength(150)]
+        [StringLength(150)]
         //[Required(ErrorMessage = "<u><b>{0}</b></u>: هذا الحقل إلزامي")]
         [DisplayName("الاسم")]
         public string PageName { get; set; }
 
-        [MaxLength(50)]
-        [StringLength(50)]
+        [MaxLength(500)]
+        [StringLength(500)]
         //[Required(ErrorMessage = "<u><b>{0}</b></u>: هذا الحقل إلزامي")]
         [DisplayName("العنوان")]
         public string Title { get; set; }
@@ -71,5 +71,14 @@ namespace DTO.News
         public Account.UserAccounts OUpdatedBy { get; set; }
     }
 
+    public class StaticData : DbProcess
+    {
 
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Data { get; set; }
+        public string Value { get; set; }
+        public string Icon { get; set; }
+        public int Type { get; set; }
+    }
 }

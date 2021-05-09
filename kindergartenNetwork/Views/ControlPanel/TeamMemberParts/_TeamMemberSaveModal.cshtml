@@ -64,6 +64,20 @@
                                 <input type="text" id="tbInstgramUrl" name="InstgramUrl" class="form-control" placeholder="@kindergartenNetwork.Resources.PublicNews.InstgramUrl" value="@Model.OTeamMember.InstgramUrl" />
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label"></label>
+                            <div class="col-md-8">
+                                <div class="mt-checkbox-inline">
+                                    <div class="formElement">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" id="cbIsWithUs" name="IsWithUs" value="true" @(Model.OTeamMember.IsWithUs ? "checked" : "") data-field="@kindergartenNetwork.Resources.PublicNews.IsWithUs"> @kindergartenNetwork.Resources.PublicNews.IsWithUs
+                                            <span></span>
+                                        </label>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
                     <div class="col-md-3">

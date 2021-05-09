@@ -223,6 +223,15 @@ namespace kindergartenNetwork.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to اعتماد التعليق.
+        /// </summary>
+        public static string ApproveComment {
+            get {
+                return ResourceManager.GetString("ApproveComment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to اللاعبين المعتمدين.
         /// </summary>
         public static string ApprovedPlayers {
@@ -246,6 +255,15 @@ namespace kindergartenNetwork.Resources {
         public static string Arabic {
             get {
                 return ResourceManager.GetString("Arabic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to المقال.
+        /// </summary>
+        public static string Article {
+            get {
+                return ResourceManager.GetString("Article", resourceCulture);
             }
         }
         
@@ -610,6 +628,24 @@ namespace kindergartenNetwork.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  تعليق على مقال.
+        /// </summary>
+        public static string CommentOnArticle {
+            get {
+                return ResourceManager.GetString("CommentOnArticle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to التعليقات.
+        /// </summary>
+        public static string Comments {
+            get {
+                return ResourceManager.GetString("Comments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الجهة المختصة.
         /// </summary>
         public static string CompetentAuthority {
@@ -912,6 +948,15 @@ namespace kindergartenNetwork.Resources {
         public static string Edit {
             get {
                 return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to المصادر التعليمية.
+        /// </summary>
+        public static string EducationalResources {
+            get {
+                return ResourceManager.GetString("EducationalResources", resourceCulture);
             }
         }
         
@@ -1402,6 +1447,15 @@ namespace kindergartenNetwork.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to من نحن.
+        /// </summary>
+        public static string Instructors {
+            get {
+                return ResourceManager.GetString("Instructors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to مفعل.
         /// </summary>
         public static string IsActive {
@@ -1470,6 +1524,15 @@ namespace kindergartenNetwork.Resources {
         public static string IsSolved {
             get {
                 return ResourceManager.GetString("IsSolved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to يعمل معنا.
+        /// </summary>
+        public static string IsWithUs {
+            get {
+                return ResourceManager.GetString("IsWithUs", resourceCulture);
             }
         }
         
@@ -2118,6 +2181,24 @@ namespace kindergartenNetwork.Resources {
         public static string OccasionEn {
             get {
                 return ResourceManager.GetString("OccasionEn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to أهدافنا.
+        /// </summary>
+        public static string OurGoals {
+            get {
+                return ResourceManager.GetString("OurGoals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to آلية العمل في مؤسستنا.
+        /// </summary>
+        public static string OurMethodology {
+            get {
+                return ResourceManager.GetString("OurMethodology", resourceCulture);
             }
         }
         
@@ -2959,6 +3040,15 @@ namespace kindergartenNetwork.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الاحصائيات.
+        /// </summary>
+        public static string Statistics {
+            get {
+                return ResourceManager.GetString("Statistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to البيان.
         /// </summary>
         public static string Statment {
@@ -2973,6 +3063,15 @@ namespace kindergartenNetwork.Resources {
         public static string Status {
             get {
                 return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الأفراد العاملين.
+        /// </summary>
+        public static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         
@@ -3166,6 +3265,15 @@ namespace kindergartenNetwork.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to غير معتمدة.
+        /// </summary>
+        public static string UnApproved {
+            get {
+                return ResourceManager.GetString("UnApproved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to معسكرات الاتحاد.
         /// </summary>
         public static string UnionCamps {
@@ -3315,6 +3423,15 @@ namespace kindergartenNetwork.Resources {
         public static string Year {
             get {
                 return ResourceManager.GetString("Year", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to يمكنك مشاركته على المنصات التالية.
+        /// </summary>
+        public static string YouCanShareIt {
+            get {
+                return ResourceManager.GetString("YouCanShareIt", resourceCulture);
             }
         }
         

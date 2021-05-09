@@ -28,7 +28,7 @@ namespace kindergartenNetwork.Controllers
         {
             var fileName = "";
             var file = Request.Files[0];
-            var albumId = Request.Form["albumId"];
+            var caption = Request.Form["caption"];
             if (file != null && file.ContentLength > 0)
             {
                 fileName = Path.GetFileName(file.FileName);
@@ -47,8 +47,8 @@ namespace kindergartenNetwork.Controllers
             }
 
 
-            DAL.News.Media.MediaSave(new Media { MediaAlbumId = Convert.ToInt32(albumId), FilePath = fileName, MediaType = 11 });
-            return Json(new { result = "success", Filename = fileName, }, JsonRequestBehavior.AllowGet);
+            DAL.News.Media.MediaSave(new Media { Caption = caption, FilePath = fileName, MediaType = 11 });
+            return Json(new { result = "success", Filename = fileName }, JsonRequestBehavior.AllowGet);
 
         }
 
@@ -246,6 +246,56 @@ namespace kindergartenNetwork.Controllers
             return Json(new { cStatus, cMsg }, JsonRequestBehavior.AllowGet);
         }
 
+
+        public ActionResult OurGoals()
+        {
+            var oModel = new StaticDataModel();
+            var getStaticData = DAL.News.StaticData.GetStaticData(new StaticData { Type = 1 });
+            if (getStaticData.HasResult)
+                oModel.LstStaticData = getStaticData.Results;
+            return View(oModel);
+        }
+        public ActionResult Statistics()
+        {
+            var oModel = new StaticDataModel();
+            var getStaticData = DAL.News.StaticData.GetStaticData(new StaticData { Type = 2 });
+            if (getStaticData.HasResult)
+                oModel.LstStaticData = getStaticData.Results;
+            return View(oModel);
+        }
+        public ActionResult OurMethodology()
+        {
+            var oModel = new StaticDataModel();
+            var getStaticData = DAL.News.StaticData.GetStaticData(new StaticData { Type = 3 });
+            if (getStaticData.HasResult)
+                oModel.LstStaticData = getStaticData.Results;
+            return View(oModel);
+        }
+
+        public JsonResult UpdateStaticData(string str)
+        {
+            string cStatus;
+            string cMsg;
+
+            var oStaticData = JsonConvert.DeserializeObject<List<StaticData>>(str);
+            foreach (var s in oStaticData)
+            {
+                var oResult = DAL.News.StaticData.UpdateStaticData(s);
+                if (!oResult.HasResult)
+                {
+                    cStatus = "error";
+                    cMsg = Resources.NotifyMsg.ErrorMsg;
+                    return Json(new { cStatus, cMsg }, JsonRequestBehavior.AllowGet);
+                }
+
+            }
+
+            cStatus = "success";
+            cMsg = Resources.NotifyMsg.SaveSuccessMsg;
+
+            return Json(new { cStatus, cMsg }, JsonRequestBehavior.AllowGet);
+
+        }
         #endregion
 
         #region TeamMembers
@@ -265,7 +315,6 @@ namespace kindergartenNetwork.Controllers
             oMember.SortType = dtProcess.SortType;
             oMember.Page = dtProcess.Page;
             oMember.RowPerPage = dtProcess.RowPerPage;
-            oMember.IsList = true;
             var getTeamMembersList = new List<TeamMembers>();
             var getTeamMembers = DAL.News.TeamMembers.TeamMembersGet(oMember);
 
@@ -326,7 +375,7 @@ namespace kindergartenNetwork.Controllers
             var memberId = Convert.ToInt32(id);
             if (memberId > 0)
             {
-                var getTeamMember = DAL.News.TeamMembers.TeamMembersGet(new TeamMembers { Id = memberId });
+                var getTeamMember = DAL.News.TeamMembers.TeamMembersGet(new TeamMembers { Id = memberId }); 
                 if (getTeamMember.HasResult)
                     oModel.OTeamMember = getTeamMember.Results.FirstOrDefault();
             }
@@ -970,150 +1019,18 @@ namespace kindergartenNetwork.Controllers
         }
         #endregion
 
-        #region MediaAlbums
+        #region Media
         public ActionResult MediaAlbums()
         {
+            var oModel = new MediaModel();
+            oModel.ListMediaType = GeneralHelper.GetConstants(10);
             return View();
         }
-        public JsonResult GetAlbumsDataTable(JQueryDataTableParamModel param)
-        {
-            var oAlbums = new MediaAlbums();
-            if (!string.IsNullOrEmpty(Request.QueryString["Id"]))
-                oAlbums.Id = Convert.ToInt32(Request.QueryString["Id"]);
-
-            DataTableProcessModel m = new DataTableProcessModel();
-            DataTableProcessModel dtProcess = DataTableProcesses.DataTableEslestir(param, m);
-            oAlbums.SortCol = dtProcess.SortCol;
-            oAlbums.SortType = dtProcess.SortType;
-            oAlbums.Page = dtProcess.Page;
-            oAlbums.RowPerPage = dtProcess.RowPerPage;
-
-            var getAlbums = DAL.News.Media.AlbumGet(oAlbums);
-
-            var getAlbumsResult = new List<MediaAlbums>();
-            if (getAlbums.HasResult)
-            {
-                getAlbumsResult = getAlbums.Results;
-
-                int rowCount = getAlbums.RowCount;
-                int lnRowCount = rowCount;
-
-                var result = from q in getAlbumsResult
-                             select new
-                             {
-                                 q.Id,
-                                 q.Name,
-                                 q.Thumbinal
-                             };
-
-                return Json(new
-                {
-                    param.sEcho,
-                    iTotalRecords = rowCount,
-                    iTotalDisplayRecords = lnRowCount,
-                    aaData = result
-                },
-                    JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-
-                int rowCount = getAlbums.RowCount;
-                int lnRowCount = rowCount;
-
-                var result = from q in getAlbumsResult
-                             select new
-                             {
-                                 q.Id,
-                                 q.Name,
-                                 q.Thumbinal
-                             };
-
-                return Json(new
-                {
-                    param.sEcho,
-                    iTotalRecords = rowCount,
-                    iTotalDisplayRecords = lnRowCount,
-                    aaData = result
-                },
-                    JsonRequestBehavior.AllowGet);
-            }
-        }
-        public PartialViewResult SaveAlbumsModal(string id)
-        {
-            var albumId = Convert.ToInt32(id);
-            var oModel = new Models.NewsModels.MediaAlbumsModel();
-            if (albumId > 0)
-            {
-                var getAlbum = DAL.News.Media.AlbumGet(new MediaAlbums { IsList = true, Id = albumId });
-                if (getAlbum.HasResult)
-                    oModel.OMediaAlbum = getAlbum.Results.FirstOrDefault();
-            }
-            else
-            {
-                oModel.OMediaAlbum = new MediaAlbums();
-            }
-
-
-            return PartialView("MediaParts/_MediaAlbumsSaveModal", oModel);
-        }
-        public JsonResult SaveMediaAlbum(MediaAlbums oMediaAlbum)
-        {
-            var cStatus = "error";
-            var cMsg = Resources.NotifyMsg.ErrorMsg;
-            if (ModelState.IsValid)
-            {
-                var oMediaAlbumSave = DAL.News.Media.AlbumSave(oMediaAlbum);
-                if (oMediaAlbumSave.HasResult)
-                {
-                    cStatus = "success";
-                    cMsg = Resources.NotifyMsg.SaveSuccessMsg;
-                    return Json(new { cStatus, cMsg }, JsonRequestBehavior.AllowGet);
-                }
-            }
-            else
-            {
-                return Json(new { cStatus = "notValid", cMsg = GeneralHelper.GetErrorMessage(ModelState, Resources.NotifyMsg.ErrorInField) }, JsonRequestBehavior.AllowGet);
-            }
-            return Json(new { cStatus, cMsg }, JsonRequestBehavior.AllowGet);
-        }
-        public JsonResult DeleteAlbum(int id)
-        {
-            var cStatus = "error";
-            var cMsg = Resources.NotifyMsg.ErrorMsg;
-            var oResult = DAL.News.Media.AlbumDelete(id);
-            if (oResult.HasResult)
-            {
-                cStatus = "success";
-                cMsg = Resources.NotifyMsg.DeleteSuccessMsg;
-            }
-            return Json(new { cStatus, cMsg, }, JsonRequestBehavior.AllowGet);
-        }
-        public JsonResult SearchAutoCompleteAlbum(string id)
-        {
-            var getAlbumResult = new List<MediaAlbums>();
-            var getAlbum = DAL.News.Media.AlbumGet(new MediaAlbums { IsList = true, Name = id.Trim() });
-            if (getAlbum.HasResult)
-            {
-                getAlbumResult = getAlbum.Results;
-                var result = from q in getAlbumResult
-                             select new
-                             {
-                                 q.Name,
-                                 q.Id
-                             };
-                return Json(result, JsonRequestBehavior.AllowGet);
-            }
-
-            return Json(getAlbumResult, JsonRequestBehavior.AllowGet);
-        }
-        #endregion
-        #region Media
         public JsonResult GetMediasDataTable(JQueryDataTableParamModel param)
         {
             var oMedia = new Media();
-            if (!string.IsNullOrEmpty(Request.QueryString["AlbumId"]))
-                oMedia.MediaAlbumId = Convert.ToInt32(Request.QueryString["AlbumId"]);
+            if (!string.IsNullOrEmpty(Request.QueryString["TypeId"]))
+                oMedia.MediaType = Convert.ToInt32(Request.QueryString["TypeId"]);
 
             DataTableProcessModel m = new DataTableProcessModel();
             DataTableProcessModel dtProcess = DataTableProcesses.DataTableEslestir(param, m);
@@ -1141,7 +1058,6 @@ namespace kindergartenNetwork.Controllers
                                  q.Caption,
                                  q.MediaType,
                                  MediaTypeName = q.OMediaType.Name,
-                                 AlbumName = q.MediaAlbum.Name,
                                  FT = GetMimeTypeByWindowsRegistry(q.FilePath)
 
 
@@ -1168,9 +1084,7 @@ namespace kindergartenNetwork.Controllers
                                  q.FilePath,
                                  q.ExternalLink,
                                  CaptionAr = q.Caption,
-                                 q.CaptionEn,
                                  MediaTypeAr = q.OMediaType.Name,
-                                 AlbumAr = q.MediaAlbum.Name,
                                  FT = GetMimeTypeByWindowsRegistry(q.FilePath)
                              };
 
@@ -1187,7 +1101,8 @@ namespace kindergartenNetwork.Controllers
         public PartialViewResult SaveMediaModal(string id)
         {
             var mediaId = Convert.ToInt32(id);
-            var oModel = new Models.NewsModels.MediaModel();
+            var oModel = new MediaModel();
+            oModel.ListMediaType = GeneralHelper.GetConstants(10);
             if (mediaId > 0)
             {
                 var getMedia = DAL.News.Media.MediaGet(new Media { IsList = true, Id = mediaId });
@@ -1198,9 +1113,6 @@ namespace kindergartenNetwork.Controllers
             {
                 oModel.OMedia = new Media();
             }
-            var getAlbums = DAL.News.Media.AlbumGet(new MediaAlbums { IsList = true });
-            if (getAlbums.HasResult)
-                oModel.LstMediaAlbums = getAlbums.Results;
 
             oModel.ListMediaType = GeneralHelper.GetConstants(10);
             return PartialView("MediaParts/_MediaSaveModal", oModel);
@@ -1240,6 +1152,320 @@ namespace kindergartenNetwork.Controllers
                 cMsg = Resources.NotifyMsg.DeleteSuccessMsg;
             }
             return Json(new { cStatus, cMsg, }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+        #region EducationalResources 
+
+        public ActionResult EducationalResources()
+        {
+            var oModel = new EducationalResourceModel();
+            oModel.LstFileTypes = GeneralHelper.GetConstants(1);
+            return View(oModel);
+        }
+        public JsonResult GetEducationalResourcesDataTable(JQueryDataTableParamModel param)
+        {
+            var oAttachment = new EducationalResources();
+            if (!string.IsNullOrEmpty(Request.QueryString["Id"]))
+                oAttachment.Id = Convert.ToInt32(Request.QueryString["Id"]);
+            if (!string.IsNullOrEmpty(Request.QueryString["Type"]))
+                oAttachment.FileType = Convert.ToInt32(Request.QueryString["Type"]);
+
+            DataTableProcessModel m = new DataTableProcessModel();
+            DataTableProcessModel dtProcess = DataTableProcesses.DataTableEslestir(param, m);
+            oAttachment.SortCol = dtProcess.SortCol;
+            oAttachment.SortType = dtProcess.SortType;
+            oAttachment.Page = dtProcess.Page;
+            oAttachment.RowPerPage = dtProcess.RowPerPage;
+
+            var getAttachment = DAL.News.EducationalResources.AttachmentGet(oAttachment);
+
+            var getAttachmentResult = new List<EducationalResources>();
+            if (getAttachment.HasResult)
+            {
+                getAttachmentResult = getAttachment.Results;
+
+                int rowCount = getAttachment.RowCount;
+                int lnRowCount = rowCount;
+
+                var result = from q in getAttachmentResult
+                             select new
+                             {
+                                 q.Id,
+                                 q.FileDescription,
+                                 q.FilePath,
+                                 q.FileTitle,
+                                 q.FileType,
+                                 UserName = q.OUserAccount.Name,
+                                 InsertedDate = q.InsertedDate.ToString("yyyy-MM-dd HH:mm"),
+                                 TypeName = q.OFileType.Name,
+                                 q.OFileType.Icon
+                             };
+                return Json(new
+                {
+                    param.sEcho,
+                    iTotalRecords = rowCount,
+                    iTotalDisplayRecords = lnRowCount,
+                    aaData = result
+                },
+                    JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+
+                int rowCount = getAttachment.RowCount;
+                int lnRowCount = rowCount;
+
+                var result = from q in getAttachmentResult
+                             select new
+                             {
+                                 q.Id,
+                                 q.FileDescription,
+                                 q.FilePath,
+                                 q.FileTitle,
+                                 q.FileType,
+                                 UserName = q.OUserAccount.Name,
+                                 InsertedDate = q.InsertedDate.ToString("yyyy-MM-dd HH:mm"),
+                                 TypeName = q.OFileType.Name,
+                                 q.OFileType.Icon
+                             };
+
+                return Json(new
+                {
+                    param.sEcho,
+                    iTotalRecords = rowCount,
+                    iTotalDisplayRecords = lnRowCount,
+                    aaData = result
+                },
+                    JsonRequestBehavior.AllowGet);
+            }
+        }
+        public PartialViewResult SaveEducationalResourceModal(string id)
+        {
+            var attachmentId = Convert.ToInt32(id);
+            var oModel = new EducationalResourceModel();
+            if (attachmentId > 0)
+            {
+                var getAttachment = DAL.News.EducationalResources.AttachmentGet(new EducationalResources { IsList = true, Id = attachmentId });
+                if (getAttachment.HasResult)
+                    oModel.OEducationalResources = getAttachment.Results.FirstOrDefault();
+            }
+            else
+            {
+                oModel.OEducationalResources = new EducationalResources();
+            }
+
+            oModel.LstFileTypes = GeneralHelper.GetConstants(1);
+            return PartialView("EducationalResourceParts/_EducationalResourceSaveModal", oModel);
+        }
+        public JsonResult SaveEducationalResource(EducationalResources oAttachment)
+        {
+            var cStatus = "error";
+            var cMsg = Resources.NotifyMsg.ErrorMsg;
+            if (ModelState.IsValid)
+            {
+                oAttachment.InsertedBy = User.Id;
+                var oAttachmentSave = DAL.News.EducationalResources.AttachmentSave(oAttachment);
+                if (oAttachmentSave.HasResult)
+                {
+                    cStatus = "success";
+                    cMsg = Resources.NotifyMsg.SaveSuccessMsg;
+                    return Json(new { cStatus, cMsg }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                return Json(new { cStatus = "notValid", cMsg = GeneralHelper.GetErrorMessage(ModelState, Resources.NotifyMsg.ErrorInField) }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { cStatus, cMsg }, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult DeleteEducationalResource(int id)
+        {
+            var cStatus = "error";
+            var cMsg = Resources.NotifyMsg.ErrorMsg;
+            var oResult = DAL.News.EducationalResources.AttachmentDelete(id);
+            if (oResult.HasResult)
+            {
+                cStatus = "success";
+                cMsg = Resources.NotifyMsg.DeleteSuccessMsg;
+            }
+            return Json(new { cStatus, cMsg, }, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult SearchAutoCompleteEducationalResources(string id)
+        {
+            var getAttachmentResult = new List<EducationalResources>();
+            var getAttachment = DAL.News.EducationalResources.AttachmentGet(new EducationalResources { IsList = true, FileTitle = id.Trim() });
+
+            if (getAttachment.HasResult)
+            {
+                getAttachmentResult = getAttachment.Results;
+                var result = from q in getAttachmentResult
+                             select new
+                             {
+                                 q.FileTitle,
+                                 q.Id
+                             };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(getAttachmentResult, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+        #region Comments
+        public ActionResult Comments()
+        {
+            return View();
+        }
+        public JsonResult GetCommentsDataTable(JQueryDataTableParamModel param)
+        {
+            var oComment = new Comments();
+            if (!string.IsNullOrEmpty(Request.QueryString["Name"]))
+                oComment.Name = Request.QueryString["Name"];
+            if (!string.IsNullOrEmpty(Request.QueryString["Email"]))
+                oComment.Email = Request.QueryString["Email"];
+
+            DataTableProcessModel m = new DataTableProcessModel();
+            DataTableProcessModel dtProcess = DataTableProcesses.DataTableEslestir(param, m);
+            oComment.SortCol = dtProcess.SortCol;
+            oComment.SortType = dtProcess.SortType;
+            oComment.Page = dtProcess.Page;
+            oComment.RowPerPage = dtProcess.RowPerPage;
+
+            var getComments = DAL.News.Comments.CommentsGet(oComment);
+
+            var getCommentsResult = new List<Comments>();
+            if (getComments.HasResult)
+            {
+                getCommentsResult = getComments.Results;
+
+                int rowCount = getComments.RowCount;
+                int lnRowCount = rowCount;
+
+                var result = from q in getCommentsResult
+                             select new
+                             {
+                                 q.Id,
+                                 q.ArticleId,
+                                 q.Email,
+                                 q.Name,
+                                 q.Comment,
+                                 Date = q.Date.ToString("yyyy-MM-dd HH:mm"),
+                                 q.IsApproved,
+                                 q.OArticle.Title
+
+
+                             };
+                return Json(new
+                {
+                    param.sEcho,
+                    iTotalRecords = rowCount,
+                    iTotalDisplayRecords = lnRowCount,
+                    aaData = result
+                },
+                    JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+
+                int rowCount = getComments.RowCount;
+                int lnRowCount = rowCount;
+
+                var result = from q in getCommentsResult
+                             select new
+                             {
+                                 q.Id,
+                                 q.ArticleId,
+                                 q.Email,
+                                 q.Name,
+                                 q.Comment,
+                                 Date = q.Date.ToString("yyyy-MM-dd HH:mm"),
+                                 q.IsApproved,
+                                 q.OArticle.Title
+                             };
+
+                return Json(new
+                {
+                    param.sEcho,
+                    iTotalRecords = rowCount,
+                    iTotalDisplayRecords = lnRowCount,
+                    aaData = result
+                },
+                    JsonRequestBehavior.AllowGet);
+            }
+        }
+        public PartialViewResult ViewComment(string id)
+        {
+            var oModel = new CommentModel();
+            int cId = Convert.ToInt32(id);
+            if (cId > 0)
+            {
+                var getComments = DAL.News.Comments.CommentsGet(new Comments { Id = cId });
+                if (getComments.HasResult)
+                {
+                    oModel.OComment = getComments.Results.First();
+                }
+            }
+            return PartialView("LayoutParts/_ViewComment", oModel);
+        }
+        public JsonResult ApproveComment(int id)
+        {
+            var cStatus = "error";
+            var cMsg = Resources.NotifyMsg.ErrorMsg;
+            var oResult = DAL.News.Comments.CommentApprove(id, User.Id);
+            if (oResult.HasResult)
+            {
+                cStatus = "success";
+                cMsg = Resources.NotifyMsg.SuccessMsg;
+            }
+            return Json(new { cStatus, cMsg, }, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult DeleteComment(int id)
+        {
+            var cStatus = "error";
+            var cMsg = Resources.NotifyMsg.ErrorMsg;
+            var oResult = DAL.News.Comments.CommentDelete(id);
+            if (oResult.HasResult)
+            {
+                cStatus = "success";
+                cMsg = Resources.NotifyMsg.DeleteSuccessMsg;
+            }
+            return Json(new { cStatus, cMsg, }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+        #region PagesHdr
+        public ActionResult PagesHdr()
+        {
+            var oModel = new PagesHdrModel();
+            var getPagesHdr = DAL.News.PagesHdr.GetPagesHdr(new PagesHdr());
+            if (getPagesHdr.HasResult)
+                oModel.LstPagesHdrs = getPagesHdr.Results;
+            return View(oModel);
+        }
+        public JsonResult UpdatePagesHdr(string str)
+        {
+            string cStatus;
+            string cMsg;
+
+            var oPagesHdr = JsonConvert.DeserializeObject<List<PagesHdr>>(str);
+            foreach (var s in oPagesHdr)
+            {
+                var oResult = DAL.News.PagesHdr.UpdatePageHdr(s);
+                if (!oResult.HasResult)
+                {
+                    cStatus = "error";
+                    cMsg = Resources.NotifyMsg.ErrorMsg;
+                    return Json(new { cStatus, cMsg }, JsonRequestBehavior.AllowGet);
+                }
+
+            }
+
+            cStatus = "success";
+            cMsg = Resources.NotifyMsg.SaveSuccessMsg;
+
+            return Json(new { cStatus, cMsg }, JsonRequestBehavior.AllowGet);
+
         }
         #endregion
     }

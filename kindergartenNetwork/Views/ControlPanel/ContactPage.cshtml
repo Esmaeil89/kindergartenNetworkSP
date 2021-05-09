@@ -26,48 +26,48 @@
 
                         @Html.AntiForgeryToken()
                         <div class="form-group">
-                            <div class="col-md-12">
-                                <label>رقم جوال</label>
+                            <label class="col-md-2 control-label">رقم جوال</label>
+                            <div class="col-md-10">
                                 <div class="formElement">
                                     <input type="text" id="tbMobile" value="@Model.OStaticPage.Mobile" name="Mobile" class="form-control" placeholder="رقم جوال" data-field="رقم جوال" />
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-md-12">
-                                <label>رقم هاتف</label>
+                            <label class="col-md-2 control-label">رقم هاتف</label>
+                            <div class="col-md-10">
                                 <div class="formElement">
                                     <input type="text" id="tbPhone" value="@Model.OStaticPage.Phone" name="Phone" class="form-control" placeholder="رقم هاتف" data-field="رقم هاتف" />
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-md-12">
-                                <label>إيميل 1</label>
+                            <label class="col-md-2 control-label">إيميل 1</label>
+                            <div class="col-md-10">
                                 <div class="formElement">
                                     <input type="text" id="tbEmail1" value="@Model.OStaticPage.Email1" name="Email1" class="form-control" placeholder="إيميل 1" data-field="إيميل 1" />
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-md-12">
-                                <label>إيميل 2</label>
+                            <label class="col-md-2 control-label">إيميل 2</label>
+                            <div class="col-md-10">
                                 <div class="formElement">
                                     <input type="text" id="tbEmail2" value="@Model.OStaticPage.Email2" name="Email2" class="form-control" placeholder="إيميل 2" data-field="إيميل 2" />
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-md-12">
-                                <label>العنوان</label>
+                            <label class="col-md-2 control-label">العنوان</label>
+                            <div class="col-md-10">
                                 <div class="formElement">
                                     <input type="text" id="tbTitle" value="@Model.OStaticPage.Title" name="Title" class="form-control" placeholder="العنوان" data-field="العنوان" />
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-1 control-label">@kindergartenNetwork.Resources.PublicNews.Description</label>
-                            <div class="col-md-11">
+                            <label class="col-md-2 control-label">@kindergartenNetwork.Resources.PublicNews.Description</label>
+                            <div class="col-md-10">
                                 <div class="formElement">
                                     <textarea id="tbDescription" rows="10" name="Description" class="form-control tbSummerNote" placeholder="@kindergartenNetwork.Resources.PublicNews.Description" data-field="@kindergartenNetwork.Resources.PublicNews.Description">@Model.OStaticPage.Description</textarea>
                                 </div>

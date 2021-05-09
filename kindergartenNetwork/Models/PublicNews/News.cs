@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using DTO.News;
 
 namespace kindergartenNetwork.Models.PublicNews
 {
@@ -10,9 +11,11 @@ namespace kindergartenNetwork.Models.PublicNews
         public News()
         {
             LstNews = new List<DTO.News.News>();
+            LstCategories = new List<DTO.News.Categories>();
             count = 1;
         }
         public List<DTO.News.News> LstNews { get; set; }
+        public List<DTO.News.Categories> LstCategories { get; set; }
         public int count { get; set; }
 
     }
@@ -21,9 +24,10 @@ namespace kindergartenNetwork.Models.PublicNews
         public SingelNews()
         {
             ONews = new DTO.News.News();
+            LstComments = new List<Comments>();
         }
         public DTO.News.News ONews { get; set; }
-
+        public List<Comments> LstComments { get; set; }
     }
     public class StaticPage
     {
@@ -39,16 +43,7 @@ namespace kindergartenNetwork.Models.PublicNews
         public List<DTO.News.Media> LstMedia { get; set; }
         public List<DTO.News.News> LstNews { get; set; }
     }
-    public class Albums
-    {
-        public Albums()
-        {
-            LstAlbums = new List<DTO.News.MediaAlbums>();
-            count = 1;
-        }
-        public List<DTO.News.MediaAlbums> LstAlbums { get; set; }
-        public int count { get; set; }
-    }
+    
     public class Media
     {
         public Media()
@@ -57,14 +52,15 @@ namespace kindergartenNetwork.Models.PublicNews
 
         }
         public List<DTO.News.Media> LstMedia { get; set; }
+        public int Count { get; set; }
     }
     public class Document
     {
         public Document()
         {
-            LstDocument = new List<DTO.News.Attachment>();
+            LstDocument = new List<DTO.News.EducationalResources>();
         }
-        public List<DTO.News.Attachment> LstDocument { get; set; }
+        public List<DTO.News.EducationalResources> LstDocument { get; set; }
     }
     public class ContactUs
     {

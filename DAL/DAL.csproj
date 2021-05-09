@@ -55,7 +55,8 @@
     <Compile Include="Common.cs" />
     <Compile Include="DbConnection.cs" />
     <Compile Include="News\AppSettings.cs" />
-    <Compile Include="News\Attachment.cs" />
+    <Compile Include="News\Comments.cs" />
+    <Compile Include="News\EducationalResources.cs" />
     <Compile Include="News\TeamMembers.cs" />
     <Compile Include="News\ContactUs.cs" />
     <Compile Include="News\ImportantLinks.cs" />

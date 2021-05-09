@@ -139,6 +139,7 @@
     <Compile Include="Controllers\ManagementController.cs" />
     <Compile Include="Controllers\MediaController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Controllers\SourcesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -156,7 +157,7 @@
     <Compile Include="Models\DataTableModels\jQueryDataTableParamModel.cs" />
     <Compile Include="Models\DataTableModels\ObjectProcess.cs" />
     <Compile Include="Models\NewsModels\AppSettingsModel.cs" />
-    <Compile Include="Models\NewsModels\AttachmentModel.cs" />
+    <Compile Include="Models\NewsModels\EducationalResourceModel.cs" />
     <Compile Include="Models\NewsModels\TeamMembersModel.cs" />
     <Compile Include="Models\NewsModels\ContactUsModel.cs" />
     <Compile Include="Models\NewsModels\MediaAlbumsModel.cs" />
@@ -4878,6 +4879,9 @@
     <Content Include="Content\assets\global\plugins\jqvmap\samples\usa.html" />
     <Content Include="Content\assets\global\plugins\jqvmap\samples\world.html" />
     <Content Include="Content\assets\global\plugins\js.cookie.min.js" />
+    <Content Include="Content\assets\global\plugins\jssocials\jssocials-theme-flat.css" />
+    <Content Include="Content\assets\global\plugins\jssocials\jssocials.css" />
+    <Content Include="Content\assets\global\plugins\jssocials\jssocials.min.js" />
     <Content Include="Content\assets\global\plugins\jstree\dist\jstree.js" />
     <Content Include="Content\assets\global\plugins\jstree\dist\jstree.min.js" />
     <Content Include="Content\assets\global\plugins\jstree\dist\themes\default-dark\32px.png" />
@@ -7525,8 +7529,7 @@
     <Content Include="Content\defaultTheme\assets\fonts\Flaticon.ttf" />
     <Content Include="Content\defaultTheme\assets\fonts\Flaticon.woff" />
     <Content Include="Content\defaultTheme\assets\fonts\Flaticon.woff2" />
-    <Content Include="db-5-5-2021.bak" />
-    <Content Include="db-6-5-2021.bak" />
+    <Content Include="db-9-5-2021.bak" />
     <None Include="Scripts\default\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\default\jquery-3.4.1.js" />
     <Content Include="Scripts\default\jquery-3.4.1.min.js" />
@@ -7608,6 +7611,16 @@
     <Content Include="Views\ControlPanel\MediaAlbums.cshtml" />
     <Content Include="Views\ControlPanel\MediaParts\_MediaAlbumsSaveModal.cshtml" />
     <Content Include="Views\ControlPanel\MediaParts\_MediaSaveModal.cshtml" />
+    <Content Include="Views\ControlPanel\OurGoals.cshtml" />
+    <Content Include="Views\ControlPanel\Statistics.cshtml" />
+    <Content Include="Views\ControlPanel\OurMethodology.cshtml" />
+    <Content Include="Views\ControlPanel\EducationalResourceParts\_EducationalResourceSaveModal.cshtml" />
+    <Content Include="Views\ControlPanel\EducationalResources.cshtml" />
+    <Content Include="Views\Sources\EducationalResources.cshtml" />
+    <Content Include="Views\Sources\Instructors.cshtml" />
+    <Content Include="Views\ControlPanel\Comments.cshtml" />
+    <Content Include="Views\Shared\LayoutParts\_ViewComment.cshtml" />
+    <Content Include="Views\ControlPanel\PagesHdr.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\assets\apps\img\" />

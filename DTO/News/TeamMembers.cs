@@ -11,9 +11,6 @@ namespace DTO.News
 {
     public class TeamMembers : DbProcess
     {
-        public TeamMembers()
-        {
-        }
         [Required(ErrorMessage = "<u><b>{0}</b></u>: هذا الحقل إلزامي")]
         [DisplayName("Id")]
         public int Id { get; set; }
@@ -51,6 +48,7 @@ namespace DTO.News
         [DisplayName("الصورة")]
         public string Avatar { get; set; }
 
+        public bool IsWithUs { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

@@ -47,17 +47,6 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">@kindergartenNetwork.Resources.PublicNews.Album</label>
-                                        <div class="col-md-8">
-                                            <select class="selectpicker form-control" name="MediaAlbumId" title="@kindergartenNetwork.Resources.PublicNews.Album" data-live-search="true">
-                                                @foreach (var album in Model.LstMediaAlbums)
-                                                {
-                                                    <option @(album.Id == Model.OMedia.MediaAlbumId ? "selected" : "") value="@album.Id">@album.Name</option>
-                                                }
-                                            </select>
-                                        </div>
-                                    </div>
                                     <div class="form-group divExternalLink">
                                         <label class="col-md-4 control-label">@kindergartenNetwork.Resources.PublicNews.Link</label>
                                         <div class="col-md-8">
@@ -90,7 +79,7 @@
                                                     <span class="btn btn-default btn-file">
                                                         <span class="fileinput-new">@kindergartenNetwork.Resources.PublicNews.SelectImage</span>
                                                         <span class="fileinput-exists">@kindergartenNetwork.Resources.PublicNews.Change</span>
-                                                        <input id="imgUploadUser" type="file" name="Image">
+                                                        <input id="imgUploadUser" type="file" name="Image" accept="image/*">
                                                     </span>
                                                     <a href="#" class="btn btn-default fileinput-exists uploderRemoveImg" data-dismiss="fileinput">@kindergartenNetwork.Resources.PublicNews.Remove</a>
                                                 </div>
@@ -107,12 +96,6 @@
                                     <textarea rows="3" class="form-control" name="Caption" placeholder="@kindergartenNetwork.Resources.PublicNews.DescriptionAr" data-field="@kindergartenNetwork.Resources.PublicNews.DescriptionAr">@Model.OMedia.Caption</textarea>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-md-4 control-label">@kindergartenNetwork.Resources.PublicNews.DescriptionEn</label>
-                                <div class="col-md-8">
-                                    <textarea rows="3" class="form-control" name="CaptionEn" placeholder="@kindergartenNetwork.Resources.PublicNews.DescriptionEn" data-field="@kindergartenNetwork.Resources.PublicNews.DescriptionEn">@Model.OMedia.CaptionEn</textarea>
-                                </div>
-                            </div>
 
                             <div class="modal-footer">
                                 <button type="button" class="btn dark btn-outline" data-dismiss="modal">@kindergartenNetwork.Resources.PublicNews.Close</button>
@@ -125,27 +108,22 @@
                 <div id="menu2" class="tab-pane fade">
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-4 control-label">@kindergartenNetwork.Resources.PublicNews.Album</label>
+                            <label class="col-md-4 control-label">@kindergartenNetwork.Resources.PublicNews.Description</label>
                             <div class="col-md-8">
-                                <select class="selectpicker form-control" id="ddlMediaAlbumId" name="MediaAlbumId" title="@kindergartenNetwork.Resources.PublicNews.Album" data-live-search="true">
-                                    @foreach (var album in Model.LstMediaAlbums)
-                                    {
-                                        <option value="@album.Id">@album.Name</option>
-                                    }
-                                </select>
+                                <textarea rows="3" class="form-control"id="tbmCaption" placeholder="@kindergartenNetwork.Resources.PublicNews.Description" data-field="@kindergartenNetwork.Resources.PublicNews.Description"></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="row">
 
                         <div class="form-group">
-                            <div class="col-md-12 dropz" style="display: none; padding-top: 20px">
+                            <div class="col-md-12 dropz" style="padding-top: 20px">
                                 @*<div id="dropZoneImages" class="dropzone" ></div>*@
 
-                                <form action="/CPanel/UploadSaveAlbumImg" id="dropZoneImages" class="dropzone">
-                                    <input type="hidden" id="hdAlbums" value="" />
+                                <form action="/ControlPanel/UploadSaveAlbumImg" id="dropZoneImages" class="dropzone">
+                                    <input type="hidden" id="hdAlbums" value="" accept="image/*" />
                                     <div class="fallback">
-                                        <input name="file" type="file" multiple />
+                                        <input name="file" type="file" multiple accept="image/*" />
                                     </div>
                                 </form>
                             </div>

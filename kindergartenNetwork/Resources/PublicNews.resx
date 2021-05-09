@@ -171,6 +171,9 @@
   <data name="AnimatedImagesLine" xml:space="preserve">
     <value>شريط الصور المتحرك</value>
   </data>
+  <data name="ApproveComment" xml:space="preserve">
+    <value>اعتماد التعليق</value>
+  </data>
   <data name="ApprovedPlayers" xml:space="preserve">
     <value>اللاعبين المعتمدين</value>
   </data>
@@ -179,6 +182,9 @@
   </data>
   <data name="Arabic" xml:space="preserve">
     <value>العربية</value>
+  </data>
+  <data name="Article" xml:space="preserve">
+    <value>المقال</value>
   </data>
   <data name="Articles" xml:space="preserve">
     <value>المقالات</value>
@@ -300,6 +306,12 @@
   <data name="Comment" xml:space="preserve">
     <value>التعليق</value>
   </data>
+  <data name="CommentOnArticle" xml:space="preserve">
+    <value> تعليق على مقال</value>
+  </data>
+  <data name="Comments" xml:space="preserve">
+    <value>التعليقات</value>
+  </data>
   <data name="CompetentAuthority" xml:space="preserve">
     <value>الجهة المختصة</value>
   </data>
@@ -401,6 +413,9 @@
   </data>
   <data name="Edit" xml:space="preserve">
     <value>تعديل</value>
+  </data>
+  <data name="EducationalResources" xml:space="preserve">
+    <value>المصادر التعليمية</value>
   </data>
   <data name="EffectiveDate" xml:space="preserve">
     <value>تاريخ السريان</value>
@@ -564,6 +579,9 @@
   <data name="InstgramUrl" xml:space="preserve">
     <value>رابط انستغرام</value>
   </data>
+  <data name="Instructors" xml:space="preserve">
+    <value>من نحن</value>
+  </data>
   <data name="IsActive" xml:space="preserve">
     <value>مفعل</value>
   </data>
@@ -587,6 +605,9 @@
   </data>
   <data name="IsSolved" xml:space="preserve">
     <value>تم الحل ؟</value>
+  </data>
+  <data name="IsWithUs" xml:space="preserve">
+    <value>يعمل معنا</value>
   </data>
   <data name="Job" xml:space="preserve">
     <value>العمل</value>
@@ -803,6 +824,12 @@
   </data>
   <data name="OccasionEn" xml:space="preserve">
     <value>المناسبة إنجليزي</value>
+  </data>
+  <data name="OurGoals" xml:space="preserve">
+    <value>أهدافنا</value>
+  </data>
+  <data name="OurMethodology" xml:space="preserve">
+    <value>آلية العمل في مؤسستنا</value>
   </data>
   <data name="Page" xml:space="preserve">
     <value>الصفحة</value>
@@ -1083,11 +1110,17 @@
   <data name="StartDate" xml:space="preserve">
     <value>تاريخ البداية</value>
   </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>الاحصائيات</value>
+  </data>
   <data name="Statment" xml:space="preserve">
     <value>البيان</value>
   </data>
   <data name="Status" xml:space="preserve">
     <value>الحالة</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value>الأفراد العاملين</value>
   </data>
   <data name="Subject" xml:space="preserve">
     <value>الموضوع</value>
@@ -1152,6 +1185,9 @@
   <data name="Type" xml:space="preserve">
     <value>النوع</value>
   </data>
+  <data name="UnApproved" xml:space="preserve">
+    <value>غير معتمدة</value>
+  </data>
   <data name="UnionCamps" xml:space="preserve">
     <value>معسكرات الاتحاد</value>
   </data>
@@ -1202,6 +1238,9 @@
   </data>
   <data name="Year" xml:space="preserve">
     <value>سنة</value>
+  </data>
+  <data name="YouCanShareIt" xml:space="preserve">
+    <value>يمكنك مشاركته على المنصات التالية</value>
   </data>
   <data name="YouHave" xml:space="preserve">
     <value>لديك</value>

@@ -219,7 +219,15 @@
 			type: 'image',
 			gallery: {
 			  enabled:true
-			}
+			},
+            image: {
+				titleSrc: function (item) {
+					var alt = '';
+					if (item.el.find('img').attr('alt') !== undefined)
+                        alt = item.el.find('img').attr('alt');
+                    return alt;
+                }
+            }
 		});
 	});
 

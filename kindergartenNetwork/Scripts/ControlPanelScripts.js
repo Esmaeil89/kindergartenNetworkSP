@@ -8,11 +8,7 @@
 
         });
     };
-    var scrollToTop = function () {
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
-    };
-    var uploadImg = function (uploader, input) {
+    var uploadImg = function (uploader, input, isHdr) {
         var flag = true;
         $(uploader).off('change').change(function () {
             if (flag === true) {
@@ -61,6 +57,8 @@
                         success: function (data) {
                             flag = true;
                             $(input).val(data.Filename);
+                            if (isHdr)
+                                $(uploader).closest('.fileinput').find('.fileinput-filename').text(data.Filename);
                         }
                     });
                 } else {
@@ -266,138 +264,6 @@
                 } else {
                     flag = true;
                     if (size > 2024) {
-                        gsNotifyMsg("حجم الصورة غير مقبول", "error");
-                    } else if (type === false && size > 0) {
-                        gsNotifyMsg("الرجاء اختيار صورة بصيغة صحيحة", "error");
-                    } else {
-                        gsNotifyMsg("الرجاء اختيار صورة", "error");
-                    }
-                }
-            };
-        });
-    };
-    var upLoadMemberClubFile = function () {
-        var flag = true;
-        $("#fileUpload").off('change').change(function () {
-            if (flag === true) {
-                flag = false;
-                var my_file = this.files[0];
-                var size = 0;
-                if (my_file !== undefined)
-                    size = parseInt(this.files[0].size);
-                if (size !== undefined)
-                    size = size / 5120;
-                var file = $(this).val();
-                var extension = file.substr((file.lastIndexOf('.') + 1)).toLowerCase();
-                //var type = false;
-                //if (extension == 'jpg' || extension == 'jpeg' || extension == 'png' || extension == 'gif' || extension == 'bmp')
-                type = true;
-                if (size <= 2024 && type === true) {
-                    //$('.error-message-image').slideUp(500);
-                    var fd = new FormData();
-
-                    fd.append("choose-file", my_file);
-                    $.ajax({
-                        url: '/ControlPanel/UpLoadMemberClubFile',
-                        type: 'POST',
-                        data: fd,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        dataType: "json",
-                        xhr: function () {
-
-                            var xhr = new window.XMLHttpRequest();
-                            xhr.upload.addEventListener('progress',
-                                function (e) {
-                                    // THIS IS ONLY RUNS ONCE!!!
-                                    if (e.lengthComputable) {
-                                        //    $('#progressbar').css('width', (e.loaded / e.total) * 100 + '%');
-                                        console.log((e.loaded / e.total) * 100);
-                                    }
-                                },
-                                false);
-                            return xhr;
-
-                        },
-                        beforeSend: function () {
-                        },
-                        success: function (data) {
-                            flag = true;
-                            $("#hdFileName").val(data.Filename);
-                        }
-                    });
-                } else {
-                    flag = true;
-                    var message = "";
-                    if (size > 2024) {
-                        message = "حجم الصورة غير مقبول";
-                    }
-                    //else if (type == false && size > 0) {
-                    //    message = "الرجاء اختيار صورة بصيغة (JPG, PNG)";
-                    //} 
-                    else {
-                        message = "الرجاء اختيار صورة";
-                    }
-                    gsNotifyMsg(message, "error");
-                }
-            };
-        });
-    };
-    var uploadMemberClubImg = function () {
-        var flag = true;
-        $("#imgUpload").off('change').change(function () {
-            if (flag === true) {
-                flag = false;
-                var my_file = this.files[0];
-                var size = 0;
-                if (my_file !== undefined)
-                    size = parseInt(this.files[0].size);
-                if (size !== undefined)
-                    size = size / 5120;
-                var file = $(this).val();
-                var extension = file.substr((file.lastIndexOf('.') + 1)).toLowerCase();
-                var type = false;
-                if (extension === 'jpg' || extension === 'jpeg' || extension === 'png' || extension === 'gif' || extension === 'bmp')
-                    type = true;
-                if (size <= 5120 && type === true) {
-                    //$('.error-message-image').slideUp(500);
-                    var fd = new FormData();
-
-                    fd.append("choose-file", my_file);
-                    $.ajax({
-                        url: '/ControlPanel/UploadMemberClubImg',
-                        type: 'POST',
-                        data: fd,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        dataType: "json",
-                        xhr: function () {
-
-                            var xhr = new window.XMLHttpRequest();
-                            xhr.upload.addEventListener('progress',
-                                function (e) {
-                                    // THIS IS ONLY RUNS ONCE!!!
-                                    if (e.lengthComputable) {
-                                        //    $('#progressbar').css('width', (e.loaded / e.total) * 100 + '%');
-                                        console.log((e.loaded / e.total) * 100);
-                                    }
-                                },
-                                false);
-                            return xhr;
-
-                        },
-                        beforeSend: function () {
-                        },
-                        success: function (data) {
-                            flag = true;
-                            $("#hdImage").val(data.Filename);
-                        }
-                    });
-                } else {
-                    flag = true;
-                    if (size > 5120) {
                         gsNotifyMsg("حجم الصورة غير مقبول", "error");
                     } else if (type === false && size > 0) {
                         gsNotifyMsg("الرجاء اختيار صورة بصيغة صحيحة", "error");
@@ -846,223 +712,17 @@
             });
         });
     };
-    /************/
-    var albumsDataTable = function () {
-        $('#tblAlbums').dataTable({
-            "language": {
-                "url": lang === "ar" ? "/Content/assets/global/plugins/DataTables-1.10.12/languages/ar.json" : ""
-            },
-            "bServerSide": true,
-            "sAjaxSource": "/ControlPanel/getAlbumsDataTable",
-            "bProcessing": true,
-            "dom": '<"bottom"t<"col-sm-12"p>><"clear">',
-            "aaSorting": [[2, 'asc']],
-            "fnServerParams": function (aoData) {
-                aoData.push({ "name": "Id", "value": $("#txtAlbumSearch").attr("data-id") });
-            },
-            "bStateSave": true,
-            "aoColumns": [
-                { "sType": "html", "sWidth": '10%', "mDataProp": "Thumbinal", "bSortable": false, "sClass": "tdCenter" },
-                { "sType": "html", "sWidth": '45%', "mDataProp": "Name", "bSortable": false },
-                { "sType": "html", "sWidth": '10%', "mDataProp": "Id", "sClass": "tdCenter" }
-            ],
-            "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-                $('td:eq(2)', nRow).html('<div class="btn-group">' +
-                    '<a class="btn btnx  dark btn-outline btn-xs" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">' +
-                    '<i class="fa fa-cog fa-fw fa-xs"></i>' +
-                    '</a>' +
-                    ' <ul class="dropdown-menu pull-right">' +
-                    '<li>' +
-                    '<a href="javascript:;" class="lnk btnSaveAlbum" data-id="' + aData.Id + '"><i class="fa fa-edit fa-fw"></i> ' + Messages.edit + '</a>' +
-                    ' </li>' +
-                    '<li>' +
-                    '<a href="javascript:;" class="lnk btnUploadImages" data-id="' + aData.Id + '"><i class="fa fa-edit fa-fw"></i> ' + Messages.uploadImages + '</a>' +
-                    ' </li>' +
-                    ' <li>' +
-                    '<a href="javascript:;" class="lnk btnDeleteAlbum" data-id ="' + aData.Id + '"><i class="fa fa-trash fa-fw"></i> ' + Messages.delete + '</a>' +
-                    ' </li>' +
-                    '</ul>' +
-                    ' </div>');
-                $('td:eq(0)', nRow).html('<img  style="width: 100px;" alt="" src="/Content/UploadedFile/Albums/Thumbnail/' + aData.Thumbinal + ' " onError="this.onerror=null;this.src=\'/Content/UploadedFile/Albums/Thumbinal/NoImage.png\';"/>');
-
-                $(nRow).dblclick(function () {
-                    saveAlbumsModel($(this).find(".btnSaveAlbum").attr("data-id"), $("#basicModal"));
-                });
-                $(nRow).off("click").click(function () {
-                    $("#hdAlbumId").val(aData.Id);
-                    mediaDataTableUpdateWithReSort();
-                });
-            },
-            "fnDrawCallback": function (oSettings) {
-                getSaveAlbumsModal();
-                deleteAlbum();
-            },
-            "bFilter": false
-            //"sPaginationType": "bootstrap"
-        });
-    };
-    var albumsDataTableUpdate = function () {
-        var oTable = $('#tblAlbums').dataTable();
-        oTable.fnDraw(false);
-    };
-    var saveAlbumsModel = function (id, bsModal) {
-        bsModal.html('');
-        setTimeout(function () {
-            bsModal.load('/ControlPanel/SaveAlbumsModal?id=' + id, '', function () {
-                bsModal.modal('show');
-                resetbooststrapSelect();
-                handleBootstrapSelect();
-                saveAlbum();
-                uploadAlbums();
-            });
-        }, 100);
-    }
-    var getSaveAlbumsModal = function () {
-        var bsModal = $("#basicModal");
-        $(".btnSaveAlbum").off('click').click(function () {
-            var id = $(this).attr("data-id");
-            bsModal.html('');
-            setTimeout(function () {
-                bsModal.load('/ControlPanel/SaveAlbumsModal?id=' + id, '', function () {
-                    bsModal.modal('show');
-                    resetbooststrapSelect();
-                    handleBootstrapSelect();
-                    saveAlbum();
-                    uploadAlbums();
-                });
-            }, 100);
-        });
-    };
-    var saveAlbum = function () {
-        $('#SaveAlbumForm').on("submit", function (event) {
-            var form = this;
-            var postData = $(form).serializeArray();
-            var formUrl = $(form).attr("action");
-            $.ajax({
-                type: "POST",
-                cache: false,
-                url: formUrl,
-                data: postData,
-                dataType: "json",
-                success: function (data) {
-                    gsEnableSubmitButton(form);
-                    if (data.cStatus === "success") {
-                        completedSuccessfuly(data.cMsg);
-                        albumsDataTableUpdate();
-                        gsResetInsertForm(form);
-                    } else if (data.cStatus === "notValid") {
-                        notValidOperations(data.cMsg);
-                    }
-                    else {
-                        notValidOperations(data.cMsg);
-                    }
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    gsNotifyMsg('' + Messages.noResultFound + '', "error");
-                    gsEnableSubmitButton(form);
-                }
-            });
-        });
-    }
-    var deleteAlbum = function () {
-        $(".btnDeleteAlbum").off('click').click(function () {
-            var id = $(this).attr('data-Id');
-            gsConfirm('' + Messages.deleteConfirm + '', function (result) {
-                if (result) {
-                    $.ajax({
-                        type: "POST",
-                        cache: false,
-                        url: '/ControlPanel/DeleteAlbum',
-                        dataType: "JSON",
-                        data: { 'id': id },
-                        success: function (data) {
-                            if (data.cStatus === "success") {
-                                gsNotifyMsg(data.cMsg, data.cStatus);
-                                albumsDataTableUpdate();
-
-                            } else {
-                                gsNotifyMsg(data.cMsg, data.cStatus);
-                            }
-                        },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            gsNotifyMsg('' + Messages.noResultFound + '', "error");
-                        }
-                    });
-                }
-            });
-        });
-    };
-    var albumSearchAutoComplete = function () {
-        if (!$('#txtAlbumSearch').hasClass('tt-input')) {
-            var album = new Bloodhound({
-                datumTokenizer: function (d) { return d.tokens; },
-                queryTokenizer: Bloodhound.tokenizers.whitespace,
-                remote: {
-                    url: '/ControlPanel/SearchAutoCompleteAlbum/%QUERY',
-                    wildcard: '%QUERY'
-                }
-            });
-            album.initialize();
-
-            $('#txtAlbumSearch').typeahead({
-                hint: true,
-                highlight: true,
-                minLength: 1,
-                dir: true
-            }, {
-                    name: 'search-album',
-                    displayKey: 'NameAr',
-                    source: album.ttAdapter(),
-                    limit: 20,
-                    dir: true,
-                    templates: {
-                        empty: [
-                            '<div class="empty-message">',
-                            '' + Messages.noResultFound + '',
-                            '</div>'
-                        ].join('\n'),
-                        suggestion: Handlebars.compile([
-                            '<div class="media">',
-                            '<div class="pull-left">',
-                            '<div class="media-object">',
-                            '</div>',
-                            '</div>',
-                            '<div class="media-body">',
-                            ' ',
-                            ' <h5 class="media-heading">{{NameAr}} </h5>',
-                            '</div>',
-                            '</div>',
-                        ].join(''))
-                    },
-
-                }).on('typeahead:selected', function ($e, datum) {
-                    $("#txtAlbumSearch").attr('data-id', datum.Id);
-                });
-        }
-    };
-    var albumSearch = function () {
-        $("#btnSearch").off('click').click(function () {
-            albumsDataTableUpdate();
-        });
-    };
-    var resetAlbumDataTable = function () {
-        $("#btnClearForm").off("click").click(function () {
-            $("#txtAlbumSearch").removeAttr("data-id");
-            $("#txtAlbumSearch").val("");
-            albumsDataTableUpdate();
-        });
-    };
     /***********/
     var attachmentsDataTable = function () {
         $('#tblAttachments').dataTable({
             "language": {
-                "url": lang === "ar" ? "/Content/assets/global/plugins/DataTables-1.10.12/languages/ar.json" : ""
+                "url": "/Content/assets/global/plugins/DataTables-1.10.12/languages/ar.json"
             },
             "bServerSide": true,
-            "sAjaxSource": "/ControlPanel/getAttachmentsDataTable",
+            "sAjaxSource": "/ControlPanel/getEducationalResourcesDataTable",
             "bProcessing": true,
             "dom": '<"bottom"t<"col-sm-3 "l><"col-sm-4"i><"col-sm-5"p>><"clear">',
-            "aaSorting": [[5, 'asc']],
+            "aaSorting": [[6, 'asc']],
             "fnServerParams": function (aoData) {
                 aoData.push({ "name": "Id", "value": $("#txtAttachmentSearch").attr("data-Id") },
                     { "name": "Type", "value": $("#ddlType").val() });
@@ -1070,14 +730,15 @@
             "bStateSave": true,
             "aoColumns": [
                 { "sType": "html", "sWidth": '5%', "mDataProp": "Icon", "sClass": "tdCenter" },
-                { "sType": "html", "sWidth": '20%', "mDataProp": lang === "ar" ?  "NameAr" : "NameEn" },
-                { "sType": "html", "sWidth": '25%', "mDataProp": "FileDescription" },
-                { "sType": "html", "sWidth": '25%', "mDataProp": "InsertedDate", "bSortable": false },
+                { "sType": "html", "sWidth": '20%', "mDataProp": "FileTitle" },
+                { "sType": "html", "sWidth": '10%', "mDataProp": "TypeName" },
+                { "sType": "html", "sWidth": '20%', "mDataProp": "FileDescription" },
+                { "sType": "html", "sWidth": '20%', "mDataProp": "InsertedDate", "bSortable": false },
                 { "sType": "html", "sWidth": '20%', "mDataProp": "UserName" },
                 { "sType": "html", "sWidth": '5%', "mDataProp": "Id", "sClass": "tdCenter" }
             ],
             "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-                    $('td:eq(5)', nRow).html('<div class="btn-group">' +
+                    $('td:eq(6)', nRow).html('<div class="btn-group">' +
                         '<a class="btn btnx  dark btn-outline btn-xs" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">' +
                         '<i class="fa fa-cog fa-fw fa-xs"></i>' +
                         '</a>' +
@@ -1090,7 +751,7 @@
                         ' </li>' +
                         ' </li>' +
                         ' <li>' +
-                        '<a href="/Content/UploadedFile/Attachments/' + aData.FileName + '" download="' + aData.FileName + '" "target="_blank"  class="lnk btnDeleteAttachment" data-id ="' + aData.Id + '"><i class="fa fa-download fa-fw"></i> تحميل</a>' +
+                        '<a href="/Content/UploadedFile/Attachments/' + aData.FilePath + '" download="' + aData.FileTitle + '" "target="_blank"  class="lnk" data-id ="' + aData.Id + '"><i class="fa fa-download fa-fw"></i> تحميل</a>' +
                         ' </li>' +
                         '</ul>' +
                         ' </div>');
@@ -1117,12 +778,13 @@
     var saveAttachmentModel = function (id, bsModal) {
         bsModal.html('');
         setTimeout(function () {
-            bsModal.load('/ControlPanel/SaveAttachmentModal?id=' + id, '', function () {
+            bsModal.load('/ControlPanel/SaveEducationalResourceModal?id=' + id, '', function () {
                 bsModal.modal('show');
                 resetbooststrapSelect();
                 handleBootstrapSelect();
                 saveAttachment();
                 uploadFile();
+                uploadAlbums();
             });
         }, 100);
     }
@@ -1132,13 +794,13 @@
             var id = $(this).attr("data-id");
             bsModal.html('');
             setTimeout(function () {
-                bsModal.load('/ControlPanel/SaveAttachmentModal?id=' + id, '', function () {
+                bsModal.load('/ControlPanel/SaveEducationalResourceModal?id=' + id, '', function () {
                     bsModal.modal('show');
                     resetbooststrapSelect();
                     handleBootstrapSelect();
                     saveAttachment();
                     uploadFile();
-
+                    uploadAlbums();
                 });
             }, 100);
         });
@@ -1209,7 +871,7 @@
                 datumTokenizer: function (d) { return d.tokens; },
                 queryTokenizer: Bloodhound.tokenizers.whitespace,
                 remote: {
-                    url: '/ControlPanel/SearchAutoCompleteAttachment/%QUERY',
+                    url: '/ControlPanel/SearchAutoCompleteEducationalResource/%QUERY',
                     wildcard: '%QUERY'
                 }
             });
@@ -1222,7 +884,7 @@
                 dir: true
             }, {
                     name: 'search-attachment',
-                    displayKey: 'FileDescription',
+                    displayKey: 'FileTitle',
                     source: attachment.ttAdapter(),
                     limit: 20,
                     dir: true,
@@ -1240,7 +902,7 @@
                             '</div>',
                             '<div class="media-body">',
                             ' ',
-                            ' <h5 class="media-heading">{{FileDescription}} </h5>',
+                            ' <h5 class="media-heading">{{FileTitle}} </h5>',
                             '</div>',
                             '</div>',
                         ].join(''))
@@ -1267,7 +929,7 @@
     var staticPagesDataTable = function () {
         $('#tblStaticPages').dataTable({
             "language": {
-                "url": lang === "ar" ? "/Content/assets/global/plugins/DataTables-1.10.12/languages/ar.json" : ""
+                "url": "/Content/assets/global/plugins/DataTables-1.10.12/languages/ar.json"
             },
             "bServerSide": true,
             "sAjaxSource": "/ControlPanel/getStaticPagesDataTable",
@@ -1388,8 +1050,9 @@
     var intiDropZone = function () {
         $("#dropZoneImages").dropzone({
             maxFilesize: 700,
+            acceptedFiles: 'image/*',
             sending: function (file, xhr, data) {
-                data.append('albumId', $("#ddlMediaAlbumId").val());
+                data.append('caption', $("#tbmCaption").val());
             },
             queuecomplete: function (file, response) {
                 gsNotifyMsg("تم رفع الصور بنجاح", "success");
@@ -1398,34 +1061,28 @@
 
         });
     };
-    var ddlAlbumChange = function () {
-        $("#ddlMediaAlbumId").change(function () {
-            $(".dropz").show();
-        });
-    };
     var mediaDataTable = function () {
         $('#tblMedia').dataTable({
             "language": {
-                "url": lang === "ar" ? "/Content/assets/global/plugins/DataTables-1.10.12/languages/ar.json" : ""
+                "url": "/Content/assets/global/plugins/DataTables-1.10.12/languages/ar.json"
             },
             "bServerSide": true,
             "sAjaxSource": "/ControlPanel/GetMediasDataTable",
             "bProcessing": true,
             "dom": '<"bottom"t<"col-sm-3 "l><"col-sm-4"i><"col-sm-5"p>><"clear">',
-            "aaSorting": [[4, 'asc']],
+            "aaSorting": [[3, 'desc']],
             "fnServerParams": function (aoData) {
-                aoData.push({ "name": "AlbumId", "value": $("#hdAlbumId").val() });
+                aoData.push({ "name": "TypeId", "value": $("#ddlTypes").val() });
             },
             "bStateSave": true,
             "aoColumns": [
                 { "sType": "html", "sWidth": '25%', "mDataProp": "FilePath", "sClass": "tdCenter" },
                 { "sType": "html", "sWidth": '25%', "mDataProp": "MediaTypeName", "bSortable": false },
-                { "sType": "html", "sWidth": '20%', "mDataProp": "Caption" },
-                { "sType": "html", "sWidth": '25%', "mDataProp": "AlbumName" , "bSortable": false },
+                { "sType": "html", "sWidth": '45%', "mDataProp": "Caption" },
                 { "sType": "html", "sWidth": '5%', "mDataProp": "Id", "sClass": "tdCenter" }
             ],
             "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-                    $('td:eq(4)', nRow).html('<div class="btn-group">' +
+                    $('td:eq(3)', nRow).html('<div class="btn-group">' +
                         '<a class="btn btnx  dark btn-outline btn-xs" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">' +
                         '<i class="fa fa-cog fa-fw fa-xs"></i>' +
                         '</a>' +
@@ -1483,7 +1140,6 @@
                 saveMedia();
                 uploadAlbums();
                 intiDropZone();
-                ddlAlbumChange();
 
                 handelChangeType();
             });
@@ -1502,7 +1158,6 @@
                     saveMedia();
                     uploadAlbums();
                     intiDropZone();
-                    ddlAlbumChange();
                     handelChangeType();
                 });
             }, 100);
@@ -1585,300 +1240,6 @@
         });
     };
     /**********************/
-    var adsDataTable = function () {
-        $('#tblAds').dataTable({
-            "language": {
-                "url": lang === "ar" ? "/Content/assets/global/plugins/DataTables-1.10.12/languages/ar.json" : ""
-            },
-            "bServerSide": true,
-            "sAjaxSource": "/ControlPanel/GetAdssDataTable",
-            "bProcessing": true,
-            "dom": '<"bottom"t<"col-sm-3 "l><"col-sm-4"i><"col-sm-5"p>><"clear">',
-            "aaSorting": [[5, 'asc']],
-            "bStateSave": true,
-            "aoColumns": [
-                { "sType": "html", "sWidth": '15%', "mDataProp": "FilePath", "sClass": "tdCenter" },
-                { "sType": "html", "sWidth": '25%', "mDataProp": "StartDate" },
-                { "sType": "html", "sWidth": '25%', "mDataProp": "EndDate" },
-                { "sType": "html", "sWidth": '20%', "mDataProp": lang === "ar" ? "NameAr" : "NameEn" },
-                { "sType": "html", "sWidth": '25%', "mDataProp": "IsActive" },
-                { "sType": "html", "sWidth": '5%', "mDataProp": "Id", "sClass": "tdCenter" }
-            ],
-            "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-                    $('td:eq(5)', nRow).html('<div class="btn-group">' +
-                        '<a class="btn btnx  dark btn-outline btn-xs" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">' +
-                        '<i class="fa fa-cog fa-fw fa-xs"></i>' +
-                        '</a>' +
-                        ' <ul class="dropdown-menu pull-right">' +
-                        '<li>' +
-                        '<a href="javascript:;" class="lnk btnSaveAds" data-id="' + aData.Id + '"><i class="fa fa-edit fa-fw"></i> ' + Messages.edit + '</a>' +
-                        ' </li>' +
-                        ' <li>' +
-                        '<a href="javascript:;" class="lnk btnDeleteAds" data-id ="' + aData.Id + '"><i class="fa fa-trash fa-fw"></i> ' + Messages.delete + '</a>' +
-                        ' </li>' +
-                        '</ul>' +
-                        ' </div>');
-                    if (aData.Ext === "swf") {
-                        $('td:eq(0)', nRow).html('<a class="colorBoxVideoSound" href="/Content/UploadedFile/Attachments/' + aData.FilePath + '"><object width="150" height="100"><param name="" value="/Content/UploadedFile/Attachments/' + aData.FilePath + '"><embed src="/Content/UploadedFile/Attachments/' + aData.FilePath + '" width="150" height="100"></embed></object></a>');
-                    }
-                    else {
-                        $('td:eq(0)', nRow).html('<a class="colorBox" href="/Content/UploadedFile/Attachments/' + aData.FilePath + '"><img  style="width: 150px;" alt="" src="/Content/UploadedFile/Attachments/' + aData.FilePath + ' " onError="this.onerror=null;this.src=\'/Content/UploadedFile/Albums/Thumbinal/NoImage.png\';"/></a>');
-                    }
-                    if (aData.IsActive === true) {
-                        $('td:eq(4)', nRow).html("<span class='font-green-meadow fa fa-fw fa-check-circle-o fa-lg'></span>");
-                    } else {
-                        $('td:eq(4)', nRow).html("<span class='font-red-thunderbird fa fa-fw fa-times-circle-o fa-lg'></span>");
-                    }
-                    //$('td:eq(3)', nRow).html('<span>' + aData.NameAr + '-' + aData.NameEn + '</span>');
-                $(nRow).dblclick(function () {
-                    saveAdsModel($(this).find(".btnSaveAds").attr("data-id"), $("#basicModal"));
-                });
-            },
-            "fnDrawCallback": function (oSettings) {
-                getSaveAdsModal();
-                deleteAds();
-                $(".colorBox").colorbox({ photo: true });
-                $(".colorBoxVideoSound").colorbox({ iframe: true, innerWidth: 640, innerHeight: 390 });
-            },
-            "bFilter": false
-            //"sPaginationType": "bootstrap"
-        });
-    };
-    var adsDataTableUpdate = function () {
-        var oTable = $('#tblAds').dataTable();
-        oTable.fnDraw(false);
-    };
-    var saveAdsModel = function (id, bsModal) {
-        bsModal.html('');
-        setTimeout(function () {
-            bsModal.load('/ControlPanel/SaveAdsModal?id=' + id, '', function () {
-                bsModal.modal('show');
-                resetbooststrapSelect();
-                handleBootstrapSelect();
-                saveAds();
-                uploadFile();
-                handleDatePickers();
-            });
-        }, 100);
-    }
-    var getSaveAdsModal = function () {
-        var bsModal = $("#basicModal");
-        $(".btnSaveAds").off('click').click(function () {
-            var id = $(this).attr("data-id");
-            bsModal.html('');
-            setTimeout(function () {
-                bsModal.load('/ControlPanel/SaveAdsModal?id=' + id, '', function () {
-                    bsModal.modal('show');
-                    resetbooststrapSelect();
-                    handleBootstrapSelect();
-                    saveAds();
-                    uploadFile();
-                    handleDatePickers();
-                });
-            }, 100);
-        });
-    };
-    var saveAds = function () {
-        $('#SaveAdsForm').submit(function () {
-            var form = this;
-            var postData = $(form).serializeArray();
-            var formUrl = $(form).attr("action");
-            $.ajax({
-                type: "POST",
-                cache: false,
-                url: formUrl,
-                data: postData,
-                dataType: "json",
-                success: function (data) {
-                    gsEnableSubmitButton(form);
-                    if (data.cStatus === "success") {
-                        completedSuccessfuly(data.cMsg);
-                        adsDataTableUpdate();
-
-                        $(".scroll-to-top").click();
-                    } else if (data.cStatus === "notValid") {
-                        notValidOperations(data.cMsg);
-                    }
-                    else {
-                        notValidOperations(data.cMsg);
-                    }
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    gsNotifyMsg('' + Messages.noResultFound + '', "error");
-                    gsEnableSubmitButton(form);
-                }
-            });
-        });
-    }
-    var deleteAds = function () {
-        $(".btnDeleteAds").off('click').click(function () {
-            var id = $(this).attr('data-Id');
-            gsConfirm('' + Messages.deleteConfirm + '', function (result) {
-                if (result) {
-                    $.ajax({
-                        type: "POST",
-                        cache: false,
-                        url: '/ControlPanel/DeleteAds',
-                        dataType: "JSON",
-                        data: { 'id': id },
-                        success: function (data) {
-                            if (data.cStatus === "success") {
-                                gsNotifyMsg(data.cMsg, data.cStatus);
-                                adsDataTableUpdate();
-
-                            } else {
-                                gsNotifyMsg(data.cMsg, data.cStatus);
-                            }
-                        },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            gsNotifyMsg('' + Messages.noResultFound + '', "error");
-                        }
-                    });
-                }
-            });
-        });
-    };
-    /*****************/
-    var importantLinksDataTable = function () {
-        $('#tblImportantLinks').dataTable({
-            "language": {
-                "url": lang === "ar" ? "/Content/assets/global/plugins/DataTables-1.10.12/languages/ar.json" : ""
-            },
-            "bServerSide": true,
-            "sAjaxSource": "/ControlPanel/GetImportantLinkssDataTable",
-            "bProcessing": true,
-            "dom": '<"bottom"t<"col-sm-3 "l><"col-sm-4"i><"col-sm-5"p>><"clear">',
-            "aaSorting": [[3, 'asc']],
-            "bStateSave": true,
-            "aoColumns": [
-                { "sType": "html", "sWidth": '10%', "mDataProp": "Image", "sClass": "tdCenter" },
-                { "sType": "html", "sWidth": '80%', "mDataProp": "Name" },
-                { "sType": "html", "sWidth": '5%', "mDataProp": "IsActive" },
-                { "sType": "html", "sWidth": '5%', "mDataProp": "Id", "sClass": "tdCenter" }
-            ],
-            "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-                    $('td:eq(3)', nRow).html('<div class="btn-group">' +
-                        '<a class="btn btnx  dark btn-outline btn-xs" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">' +
-                        '<i class="fa fa-cog fa-fw fa-xs"></i>' +
-                        '</a>' +
-                        ' <ul class="dropdown-menu pull-right">' +
-                        '<li>' +
-                        '<a href="javascript:;" class="lnk btnSaveImportantLinks" data-id="' + aData.Id + '"><i class="fa fa-edit fa-fw"></i> ' + Messages.edit + '</a>' +
-                        ' </li>' +
-                        ' <li>' +
-                        '<a href="javascript:;" class="lnk btnDeleteImportantLinks" data-id ="' + aData.Id + '"><i class="fa fa-trash fa-fw"></i> ' + Messages.delete + '</a>' +
-                        ' </li>' +
-                        '</ul>' +
-                        ' </div>');
-                    $('td:eq(1)', nRow).html("<a target='_blank' href='" + aData.Link + "'>" + aData.Name + "</a>");
-                    $('td:eq(0)', nRow).html('<img  style="width: 100px;" alt="" src="/Content/UploadedFile/Albums/Thumbnail/' + aData.Image + ' " onError="this.onerror=null;this.src=\'/Content/UploadedFile/Albums/Thumbinal/NoImage.png\';"/>');
-                
-                if (aData.IsActive === true) {
-                    $('td:eq(2)', nRow).html("<span class='font-green-meadow fa fa-fw fa-check-circle-o fa-lg'></span>");
-                } else {
-                    $('td:eq(2)', nRow).html("<span class='font-red-thunderbird fa fa-fw fa-times-circle-o fa-lg'></span>");
-                }
-                $(nRow).dblclick(function () {
-                    saveImportantLinksModel($(this).find(".btnSaveImportantLinks").attr("data-id"), $("#basicModal"));
-                });
-            },
-            "fnDrawCallback": function (oSettings) {
-                getSaveImportantLinksModal();
-                deleteImportantLinks();
-            },
-            "bFilter": false
-            //"sPaginationType": "bootstrap"
-        });
-    };
-    var importantLinksDataTableUpdate = function () {
-        var oTable = $('#tblImportantLinks').dataTable();
-        oTable.fnDraw(false);
-    };
-    var saveImportantLinksModel = function (id, bsModal) {
-        bsModal.html('');
-        setTimeout(function () {
-            bsModal.load('/ControlPanel/SaveImportantLinksModal?id=' + id, '', function () {
-                bsModal.modal('show');
-                saveImportantLinks();
-                uploadAlbums();
-            });
-        }, 100);
-    }
-    var getSaveImportantLinksModal = function () {
-        var bsModal = $("#basicModal");
-        $(".btnSaveImportantLinks").off('click').click(function () {
-            var id = $(this).attr("data-id");
-            bsModal.html('');
-            setTimeout(function () {
-                bsModal.load('/ControlPanel/SaveImportantLinksModal?id=' + id, '', function () {
-                    bsModal.modal('show');
-                    saveImportantLinks();
-                    uploadAlbums();
-                });
-            }, 100);
-        });
-    };
-    var saveImportantLinks = function () {
-        $('#SaveImportantLinksForm').submit(function () {
-            var form = this;
-            var postData = $(form).serializeArray();
-            var formUrl = $(form).attr("action");
-            $.ajax({
-                type: "POST",
-                cache: false,
-                url: formUrl,
-                data: postData,
-                dataType: "json",
-                success: function (data) {
-                    gsEnableSubmitButton(form);
-                    if (data.cStatus === "success") {
-                        completedSuccessfuly(data.cMsg);
-                        importantLinksDataTableUpdate();
-
-                        $(".scroll-to-top").click();
-                    } else if (data.cStatus === "notValid") {
-                        notValidOperations(data.cMsg);
-                    }
-                    else {
-                        notValidOperations(data.cMsg);
-                    }
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    gsNotifyMsg('' + Messages.noResultFound + '', "error");
-                    gsEnableSubmitButton(form);
-                }
-            });
-        });
-    }
-    var deleteImportantLinks = function () {
-        $(".btnDeleteImportantLinks").off('click').click(function () {
-            var id = $(this).attr('data-Id');
-            gsConfirm('' + Messages.deleteConfirm + '', function (result) {
-                if (result) {
-                    $.ajax({
-                        type: "POST",
-                        cache: false,
-                        url: '/ControlPanel/DeleteImportantLinks',
-                        dataType: "JSON",
-                        data: { 'id': id },
-                        success: function (data) {
-                            if (data.cStatus === "success") {
-                                gsNotifyMsg(data.cMsg, data.cStatus);
-                                importantLinksDataTableUpdate();
-
-                            } else {
-                                gsNotifyMsg(data.cMsg, data.cStatus);
-                            }
-                        },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            gsNotifyMsg('' + Messages.noResultFound + '', "error");
-                        }
-                    });
-                }
-            });
-        });
-    };
-    /*****************/
     var saveSn = function () {
         $('#btnAdd').off('click').click(function () {
             var lst = [];
@@ -1915,11 +1276,80 @@
 
         });
     }
+    var savePagesHdr = function () {
+        $('#btnAdd').off('click').click(function () {
+            var lst = [];
+            $.each($(".pagehdr"), function (indexh, cb) {
+
+                var pageHdr = {
+                    Id: $(cb).attr('SID'),
+                    Image: $(cb).val()
+
+                }
+                lst.push(pageHdr);
+            });
+
+            var str = JSON.stringify(lst, null, 2);
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: '/ControlPanel/UpdatePagesHdr',
+                data: { 'str': str },
+                success: function (data) {
+                    gsNotifyMsg(data.cMsg, data.cStatus);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    gsNotifyMsg('حدث خطأ ما! , الرجاء المحاولة ثانية', 'error');
+                }
+            });
+
+
+        });
+    }
+    var saveSd = function () {
+        $('#btnAdd').off('click').click(function () {
+            var lst = [];
+            $.each($(".static"), function (indexh, cb) {
+
+                var static = {
+                    Id: $(cb).attr('SID'),
+                    Title: $(cb).find('.txtTitle').val(),
+                    Data: $(cb).find('.txtData').val(),
+                    Value: $(cb).find('.txtValue').val(),
+                    Icon: $(cb).find('.txtIcon').val()
+
+                }
+                lst.push(static);
+            });
+
+            var str = JSON.stringify(lst, null, 2);
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: '/ControlPanel/UpdateStaticData',
+                data: { 'str': str },
+                success: function (data) {
+                    if ($('.jquery-notific8-notification').length > 0) {
+                        $('.jquery-notific8-notification').remove();
+                    }
+                    gsNotifyMsg(data.cMsg, data.cStatus);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    if ($('.jquery-notific8-notification').length > 0) {
+                        $('.jquery-notific8-notification').remove();
+                    }
+                    gsNotifyMsg('حدث خطأ ما! , الرجاء المحاولة ثانية', 'error');
+                }
+            });
+
+
+        });
+    }
 
     var appSettingsDataTable = function () {
         $('#tblAppSettings').dataTable({
             "language": {
-                "url": lang === "ar" ? "/Content/assets/global/plugins/DataTables-1.10.12/languages/ar.json" : ""
+                "url": "/Content/assets/global/plugins/DataTables-1.10.12/languages/ar.json" 
             },
             "bServerSide": true,
             "sAjaxSource": "/ControlPanel/getAppSettingsDataTable",
@@ -1932,8 +1362,8 @@
             //},
             "bStateSave": true,
             "aoColumns": [
-                { "sType": "html", "sWidth": '10%', "mDataProp": "KeyNameAr", "sClass": "tdCenter" },
-                { "sType": "html", "sWidth": '15%', "mDataProp": "ValueNameAr" },
+                { "sType": "html", "sWidth": '10%', "mDataProp": "KeyName", "sClass": "tdCenter" },
+                { "sType": "html", "sWidth": '15%', "mDataProp": "ValueName" },
                 { "sType": "html", "sWidth": '5%', "mDataProp": "ConKey", "sClass": "tdCenter" }
             ],
             "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
@@ -2209,10 +1639,10 @@
             categoriesDataTable();
         },
         initMedia: function() {
-            albumsDataTable();
-            albumSearchAutoComplete();
-            albumSearch();
-            resetAlbumDataTable();
+            //albumsDataTable();
+            //albumSearchAutoComplete();
+            //albumSearch();
+            //resetAlbumDataTable();
             mediaDataTable();
         },
         initAttachments: function() {
@@ -2242,8 +1672,30 @@
         initSocial: function() {
             saveSn();
         },
+        initPagesHdr: function () {
+            uploadImg($("#fileUpload_1"), $("#hdImage_1"), true);
+            uploadImg($("#fileUpload_2"), $("#hdImage_2"), true);
+            uploadImg($("#fileUpload_3"), $("#hdImage_3"), true);
+            uploadImg($("#fileUpload_4"), $("#hdImage_4"), true);
+            uploadImg($("#fileUpload_5"), $("#hdImage_5"), true);
+            uploadImg($("#fileUpload_6"), $("#hdImage_6"), true);
+            uploadImg($("#fileUpload_7"), $("#hdImage_7"), true);
+            uploadImg($("#fileUpload_8"), $("#hdImage_8"), true);
+            uploadImg($("#fileUpload_9"), $("#hdImage_9"), true);
+            uploadImg($("#fileUpload_10"), $("#hdImage_10"), true);
+            savePagesHdr();
+        },
+        initStaticData: function() {
+            saveSd();
+        },
         initContactUs() {
             contactUsDataTable();
+        },
+        initComments() {
+            commentsDataTable();
+            commentsSearch();
+            resetCommentsDataTable();
+            approveComment();
         },
         initAppSettings() {
             appSettingsDataTable();

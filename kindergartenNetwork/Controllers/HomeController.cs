@@ -16,6 +16,26 @@ namespace kindergartenNetwork.Controllers
         {
             var oModel = new StaticPageModel();
             oModel.OStaticPage = DAL.News.StaticPages.StaticPagesGet(new StaticPages{Id = 1}).Results.FirstOrDefault();
+            var getNews = DAL.News.News.NewsGet(new News { CategoryId = Convert.ToInt32(1), Page = Convert.ToInt32(1), RowPerPage = 4, SortCol = "PublishDate" }, 0);
+            if (getNews.HasResult)
+            {
+                oModel.LstNews = getNews.Results;
+            }
+            var getSocials = DAL.News.SocialNW.GetSocialNW(new SocialNW { IsList = true});
+            if (getSocials.HasResult)
+            {
+                oModel.LstSocials = getSocials.Results;
+            }
+            var getStatics = DAL.News.StaticData.GetStaticData(new StaticData { Type = 1});
+            if (getStatics.HasResult)
+            {
+                oModel.LstOurGoals = getStatics.Results;
+            }
+            getStatics = DAL.News.StaticData.GetStaticData(new StaticData { Type = 2});
+            if (getStatics.HasResult)
+            {
+                oModel.LstStatistics = getStatics.Results;
+            }
             return View(oModel);
         }
 
@@ -23,6 +43,22 @@ namespace kindergartenNetwork.Controllers
         {
             var oModel = new StaticPageModel();
             oModel.OStaticPage = DAL.News.StaticPages.StaticPagesGet(new StaticPages { Id = 2 }).Results.FirstOrDefault();
+
+            var getMembers = DAL.News.TeamMembers.TeamMembersGet(new TeamMembers { Page = Convert.ToInt32(1), RowPerPage = 4, SortCol = "Id", IsWithUs = true});
+            if (getMembers.HasResult)
+            {
+                oModel.LstTeamMembers = getMembers.Results;
+            }
+            var getStatics = DAL.News.StaticData.GetStaticData(new StaticData { Type = 1 });
+            if (getStatics.HasResult)
+            {
+                oModel.LstOurGoals = getStatics.Results;
+            }
+            getStatics = DAL.News.StaticData.GetStaticData(new StaticData { Type = 3 });
+            if (getStatics.HasResult)
+            {
+                oModel.OurMethodology = getStatics.Results;
+            }
             return View(oModel);
         }
 

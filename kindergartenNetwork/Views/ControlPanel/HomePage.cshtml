@@ -26,18 +26,18 @@
 
                         @Html.AntiForgeryToken()
                         <input type="hidden" id="hdImage" name="Image" value="@Model.OStaticPage.Image"/>
-                        @*<input type="hidden" id="hdImage2" name="Image2" value="@Model.OStaticPage.Image2"/>*@
+                        <input type="hidden" id="hdImage2" name="Image2" value="@Model.OStaticPage.Image2"/>
                         <div class="form-group">
-                            <div class="col-md-12">
-                                <label>العنوان</label>
+                            <label class="col-md-2 control-label">العنوان</label>
+                            <div class="col-md-10">
                                 <div class="formElement">
                                     <input type="text" id="tbTitle" value="@Model.OStaticPage.Title" name="Title" class="form-control" placeholder="العنوان" data-field="العنوان" />
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-1 control-label">@kindergartenNetwork.Resources.PublicNews.Image</label>
-                            <div class="col-md-11">
+                            <label class="col-md-2 control-label">@kindergartenNetwork.Resources.PublicNews.Image <span dir="ltr">(600 x 700)</span></label>
+                            <div class="col-md-10">
                                 <div class="fileinput fileinput-new @*@(Model.ONews.Image != null ? " fileinput fileinput-exists" : "fileinput fileinput-new" )*@" data-provides="fileinput" style="width: 100%">
                                     <div class="fileinput-new thumbnail" style="width: 100%;">
                                         <img id="img" src="@(Model.OStaticPage.Id > 0 ? "/Content/UploadedFile/News/Large/" + Model.OStaticPage.Image : "http://www.placehold.it/600x250/EFEFEF/AAAAAA&amp;text=no+image")" alt=""/>
@@ -57,9 +57,9 @@
 
                             </div>
                         </div>
-                        @*<div class="form-group">
-                            <label class="col-md-1 control-label">@kindergartenNetwork.Resources.PublicNews.BackgroundImage</label>
-                            <div class="col-md-11">
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">@kindergartenNetwork.Resources.PublicNews.BackgroundImage <span dir="ltr">(1920 x 1080)</span></label>
+                            <div class="col-md-10">
                                 <div class="fileinput fileinput-new" data-provides="fileinput" style="width: 100%">
                                     <div class="fileinput-new thumbnail" style="width: 100%;">
                                         <img id="img2" src="@(Model.OStaticPage.Id > 0 ? "/Content/UploadedFile/News/Large/" + Model.OStaticPage.Image2 : "http://www.placehold.it/600x250/EFEFEF/AAAAAA&amp;text=no+image")" alt=""/>
@@ -78,10 +78,10 @@
                                 </div>
 
                             </div>
-                        </div>*@
+                        </div>
                         <div class="form-group">
-                            <label class="col-md-1 control-label">@kindergartenNetwork.Resources.PublicNews.Description</label>
-                            <div class="col-md-11">
+                            <label class="col-md-2 control-label">@kindergartenNetwork.Resources.PublicNews.Description</label>
+                            <div class="col-md-10">
                                 <div class="formElement">
                                     <textarea id="tbDescription" rows="10" name="Description" class="form-control tbSummerNote" placeholder="@kindergartenNetwork.Resources.PublicNews.Description" data-field="@kindergartenNetwork.Resources.PublicNews.Description">@Model.OStaticPage.Description</textarea>
                                 </div>

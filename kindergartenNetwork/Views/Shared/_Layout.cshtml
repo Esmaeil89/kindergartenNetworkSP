@@ -105,6 +105,8 @@
             $('.active .open').parents('.sub-menu').closest('li').addClass('active open');
             jQuery(document).ready(function () {
                 menuSearch();
+                getViewContactUsModal();
+                getViewCommentModal();
                 @RenderSection("OnReadyScripts", required: false)
             });
             ManagementScripts.initMyProfile();

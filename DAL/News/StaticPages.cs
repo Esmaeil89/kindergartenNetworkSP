@@ -163,4 +163,91 @@ namespace DAL.News
             return oResult;
         }
     }
+
+    public class StaticData
+    {
+        public static ModelResult<int> UpdateStaticData(DTO.News.StaticData oStaticData)
+        {
+            var oResult = new ModelResult<int>();
+            using (var conn = new SqlConnection(DbConnection.ConnectionString))
+            {
+                try
+                {
+                    using (var cmd = new SqlCommand())
+                    {
+                        cmd.Connection = conn;
+                        cmd.CommandText = "SP_UpdateStaticData";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@Id", oStaticData.Id);
+                        cmd.Parameters.AddWithValue("@Title", oStaticData.Title);
+                        cmd.Parameters.AddWithValue("@Data", oStaticData.Data);
+                        cmd.Parameters.AddWithValue("@Value", oStaticData.Value);
+                        cmd.Parameters.AddWithValue("@Icon", oStaticData.Icon);
+                        conn.Open();
+                        oResult.Results = Convert.ToInt32(cmd.ExecuteScalar());
+                        oResult.HasResult = true;
+                    }
+                }
+                catch
+                {
+                    conn.Close();
+                    throw;
+                }
+                return oResult;
+            }
+        }
+
+        public static ModelResult<List<DTO.News.StaticData>> GetStaticData(DTO.News.StaticData oStaticData)
+        {
+            var oResult = new ModelResult<List<DTO.News.StaticData>>();
+            var conn = new SqlConnection(DbConnection.ConnectionString);
+            try
+            {
+                using (conn)
+                {
+                    using (var cmd = new SqlCommand())
+                    {
+                        cmd.Connection = conn;
+                        cmd.CommandText = @"select * from StaticData where 1=1 ";
+                        if (oStaticData.Type > 0)
+                        {
+                            cmd.CommandText += "and Type=@Type ";
+                            cmd.Parameters.AddWithValue("@Type", oStaticData.Type);
+                        }
+                        cmd.CommandText += " order by Id asc ";
+                        cmd.CommandType = CommandType.Text;
+                        conn.Open();
+
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        var lstResult = new List<DTO.News.StaticData>();
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                var objStaticData = new DTO.News.StaticData();
+                                objStaticData.Id = Convert.ToInt32(reader["Id"]);
+                                objStaticData.Title = reader["Title"].ToString();
+                                objStaticData.Data = reader["Data"].ToString();
+                                objStaticData.Value = reader["Value"].ToString();
+                                objStaticData.Icon = reader["Icon"].ToString();
+                                objStaticData.Type = Convert.ToInt32(reader["Type"].ToString());
+                                lstResult.Add(objStaticData);
+                            }
+                        }
+                        if (lstResult.Count > 0)
+                        {
+                            oResult.HasResult = true;
+                            oResult.Results = lstResult;
+                            oResult.RowCount = lstResult.Count;
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return oResult;
+        }
+    }
 }

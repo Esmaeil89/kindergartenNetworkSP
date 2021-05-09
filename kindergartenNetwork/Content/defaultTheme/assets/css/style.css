@@ -884,7 +884,7 @@ Nav Area Style
 Banner Area Style
 ======================================================*/
 .banner-area {
-  background-image: url(../../assets/img/banner-img/banner-bg.png);
+  
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -3127,28 +3127,8 @@ Page Title Area Style
   z-index: -1;
 }
 
-.page-title-area.bg-1 {
-  background-image: url(../../assets/img/page-bg/page-bg-111.jpg);
-}
-
-.page-title-area.bg-2 {
-  background-image: url(../../assets/img/page-bg/page-bg-77.jpg);
-}
-
 .page-title-area.bg-3 {
   background-image: url(../../assets/img/page-bg/page-bg-3.jpg);
-}
-
-.page-title-area.bg-4 {
-  background-image: url(../../assets/img/page-bg/page-bg-66.jpg);
-}
-
-.page-title-area.bg-5 {
-  background-image: url(../../assets/img/page-bg/page-bg-55.jpg);
-}
-
-.page-title-area.bg-6 {
-  background-image: url(../../assets/img/page-bg/page-bg-66.jpg);
 }
 
 .page-title-area.bg-7 {
@@ -3177,14 +3157,6 @@ Page Title Area Style
 
 .page-title-area.bg-13 {
   background-image: url(../../assets/img/page-bg/page-bg-13.jpg);
-}
-
-.page-title-area.bg-14 {
-  background-image: url(../../assets/img/page-bg/page-bg-99.jpg);
-}
-
-.page-title-area.bg-15 {
-  background-image: url(../../assets/img/page-bg/page-bg-155.jpg);
 }
 
 .page-title-area.bg-16 {
@@ -3217,10 +3189,6 @@ Page Title Area Style
 
 .page-title-area.bg-23 {
   background-image: url(../../assets/img/page-bg/page-bg-4.jpg);
-}
-
-.page-title-area.bg-24 {
-  background-image: url(../../assets/img/page-bg/page-bg-55.jpg);
 }
 
 .page-title-area.bg-25 {
@@ -3861,10 +3829,10 @@ Single Blog Area Style
   font-weight: 500;
 }
 
-.single-blog-content .social-wrap li a {
+/*.single-blog-content .social-wrap li a {
   font-size: 16px;
   margin-right: 10px;
-}
+}*/
 
 .single-blog-content .social-wrap li a:hover {
   -webkit-transform: translateY(-2px);

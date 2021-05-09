@@ -17,7 +17,7 @@ namespace kindergartenNetwork.Controllers
             {
                 page = 1;
             }
-            var getNews = DAL.News.News.NewsGet(new News { CategoryId = Convert.ToInt32(1), Page = Convert.ToInt32(page), RowPerPage = 4, SortCol = "PublishDate" }, 0);
+            var getNews = DAL.News.News.NewsGet(new News { CategoryId = Convert.ToInt32(1), Page = Convert.ToInt32(page), RowPerPage = 4, SortCol = "PublishDate", SortType = "desc" }, 0);
             if (getNews.HasResult)
             {
                 oModel.LstNews = getNews.Results;
@@ -27,9 +27,25 @@ namespace kindergartenNetwork.Controllers
                 return RedirectToAction("index", "Home");
             return View(oModel);
         }
-        public ActionResult Details()
+        public ActionResult Details(int? id)
         {
-            return View();
+            if (id.HasValue)
+            {
+                var oModel = new Models.PublicNews.SingelNews();
+                var getSNews = DAL.News.News.NewsGet(new News {IsList = true, Id = id.Value}, 0);
+                if (getSNews.HasResult)
+                {
+                    oModel.ONews = getSNews.Results.FirstOrDefault();
+                    ViewBag.MetaDescription = oModel.ONews.Title;
+                    ViewBag.MetaKeywords = string.IsNullOrEmpty(oModel.ONews.Keywords)
+                        ? ""
+                        : oModel.ONews.Keywords.TrimEnd(',');
+
+                    return View(oModel);
+                }
+            }
+
+            return RedirectToAction("index", "News");
         }
     }
 }

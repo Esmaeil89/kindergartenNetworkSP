@@ -14,4 +14,12 @@ namespace kindergartenNetwork.Models.NewsModels
         }
         public List<SocialNW> LstSocial { get; set; }
     }
+    public class PagesHdrModel
+    {
+        public PagesHdrModel()
+        {
+            LstPagesHdrs = new List<PagesHdr>();
+        }
+        public List<PagesHdr> LstPagesHdrs { get; set; }
+    }
 }

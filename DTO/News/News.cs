@@ -31,8 +31,8 @@ namespace DTO.News
         [DisplayName("العنوان")]
         public string Title { get; set; }
 
-        [MaxLength(250)]
-        [StringLength(250)]
+        [MaxLength(500)]
+        [StringLength(500)]
         [DisplayName("الملخص")]
         public string Summary { get; set; }
 

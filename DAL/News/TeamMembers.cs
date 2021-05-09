@@ -26,6 +26,11 @@ namespace DAL.News
                             command += " AND Id = @Id";
                             cmd.Parameters.AddWithValue("@Id", oMember.Id);
                         }
+                        if (oMember.IsWithUs)
+                        {
+                            command += " AND IsWithUs = @IsWithUs";
+                            cmd.Parameters.AddWithValue("@IsWithUs", oMember.IsWithUs);
+                        }
                         if (!oMember.IsList)
                         {
                             command += " order by @SortCol @SortType OFFSET(@Page - 1) * @RowsPerPage ROWS FETCH NEXT @RowsPerPage ROWS ONLY";
@@ -53,6 +58,7 @@ namespace DAL.News
                                 obMember.LinkedInUrl = Convert.ToString(reader["LinkedInUrl"]);
                                 obMember.FaceBookUrl = Convert.ToString(reader["FaceBookUrl"]);
                                 obMember.InstgramUrl = Convert.ToString(reader["InstgramUrl"]);
+                                obMember.IsWithUs = Convert.ToBoolean(reader["IsWithUs"]);
                                 lstTeamMembers.Add(obMember);
                             }
                         }
@@ -69,6 +75,11 @@ namespace DAL.News
                                     {
                                         command += " AND Id = @Id";
                                         cmdCount.Parameters.AddWithValue("@Id", oMember.Id);
+                                    }
+                                    if (oMember.IsWithUs)
+                                    {
+                                        command += " AND IsWithUs = @IsWithUs";
+                                        cmdCount.Parameters.AddWithValue("@IsWithUs", oMember.IsWithUs);
                                     }
 
                                     cmdCount.CommandText = command;
@@ -116,6 +127,7 @@ namespace DAL.News
                         cmd.Parameters.AddWithValue("@LinkedInUrl", oMember.LinkedInUrl);
                         cmd.Parameters.AddWithValue("@FaceBookUrl", oMember.FaceBookUrl);
                         cmd.Parameters.AddWithValue("@InstgramUrl", oMember.InstgramUrl);
+                        cmd.Parameters.AddWithValue("@IsWithUs", oMember.IsWithUs);
 
 
                         conn.Open();
