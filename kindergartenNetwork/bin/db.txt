@@ -1,0 +1,1 @@
+Data Source=.; initial catalog=kindergartenNetwork;persist security info=True; Integrated Security=SSPI;
