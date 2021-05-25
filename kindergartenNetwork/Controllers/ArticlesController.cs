@@ -8,7 +8,7 @@ using kindergartenNetwork.Helper;
 
 namespace kindergartenNetwork.Controllers
 {
-    public class ArticlesController : Controller
+    public class ArticlesController : PublicBaseController
     {
         // GET: Articles
         public ActionResult Index(int? page, int? category, string search)

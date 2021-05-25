@@ -1447,7 +1447,7 @@ namespace kindergartenNetwork.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to من نحن.
+        ///   Looks up a localized string similar to مصادر المعلومات.
         /// </summary>
         public static string Instructors {
             get {

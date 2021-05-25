@@ -14,8 +14,6 @@ namespace kindergartenNetwork.Controllers
         // GET: Login
         public ActionResult Index(string returnUrl)
         {
-            //if (MadarUser != null)
-            //    return RedirectToAction("Index", "Dashboard");
             ViewBag.returnUrl = returnUrl;
             return View();
         }
@@ -39,12 +37,11 @@ namespace kindergartenNetwork.Controllers
                 return Json(new { cStatus = "error", cMsg = "You cant Enter empty username or password !!" });
             }
 
-            var getUserAccountResult = new UserAccounts();
             var getUserAccount = DAL.Account.UserAccounts.UserLogin(oUserAccount);
             if (getUserAccount.HasResult)
             {
                 // ReSharper disable once AssignNullToNotNullAttribute
-                getUserAccountResult = getUserAccount.Results.FirstOrDefault();
+                var getUserAccountResult = getUserAccount.Results.FirstOrDefault();
                 cStatus = "success";
                 cMsg = "انتهت العملية بنجاح";
                 if (getUserAccountResult.IsActive.Value && !getUserAccountResult.IsDeleted)

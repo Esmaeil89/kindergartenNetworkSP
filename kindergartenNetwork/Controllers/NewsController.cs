@@ -7,7 +7,7 @@ using DTO.News;
 
 namespace kindergartenNetwork.Controllers
 {
-    public class NewsController : Controller
+    public class NewsController : PublicBaseController
     {
         // GET: News
         public ActionResult Index(int? page)
@@ -17,7 +17,7 @@ namespace kindergartenNetwork.Controllers
             {
                 page = 1;
             }
-            var getNews = DAL.News.News.NewsGet(new News { CategoryId = Convert.ToInt32(1), Page = Convert.ToInt32(page), RowPerPage = 4, SortCol = "PublishDate", SortType = "desc" }, 0);
+            var getNews = DAL.News.News.NewsGet(new News { CategoryId = Convert.ToInt32(1), Page = Convert.ToInt32(page), RowPerPage = 6, SortCol = "PublishDate", SortType = "desc" }, 0);
             if (getNews.HasResult)
             {
                 oModel.LstNews = getNews.Results;

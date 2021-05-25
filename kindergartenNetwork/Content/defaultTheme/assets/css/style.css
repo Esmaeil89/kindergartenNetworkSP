@@ -1744,6 +1744,17 @@ Counter Area Style
 .single-counter .counter-shape.shape-4 h2 {
   color: #fc2f5c;
 }
+.single-counter .counter-shape.shape-6 h2 {
+  color: #925eca;
+}
+
+.single-counter .counter-shape.shape-7 h2 {
+  color: #fa9231;
+}
+
+.single-counter .counter-shape.shape-8 h2 {
+  color: #fc2f5c;
+}
 
 .single-counter p {
   font-weight: 500;

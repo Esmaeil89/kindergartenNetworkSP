@@ -7,7 +7,7 @@ using DTO.News;
 
 namespace kindergartenNetwork.Controllers
 {
-    public class SourcesController : Controller
+    public class SourcesController : PublicBaseController
     {
         // GET: Sources
         public ActionResult EducationalResources(int? page, int? category, string search)

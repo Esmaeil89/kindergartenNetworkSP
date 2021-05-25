@@ -67,6 +67,8 @@ namespace DAL.News
                                     obStaticPages.UpdatedBy = Convert.ToInt32(reader["UpdatedBy"]);
                                 if (reader["UpdatedDate"] != DBNull.Value)
                                     obStaticPages.UpdatedDate = Convert.ToDateTime(reader["UpdatedDate"]);
+                                if (reader["IsImageView"] != DBNull.Value)
+                                    obStaticPages.IsImageView = Convert.ToBoolean(reader["IsImageView"]);
                                 lstStaticPages.Add(obStaticPages);
                             }
                         }
@@ -108,7 +110,7 @@ namespace DAL.News
                         {
                             cmd.Parameters.AddWithValue("@Id", oStaticPage.Id);
                         }
-                        //cmd.Parameters.AddWithValue("@PageNameAr", oStaticPage.PageNameAr);
+                        cmd.Parameters.AddWithValue("@Title", oStaticPage.Title);
                         cmd.Parameters.AddWithValue("@UpdatedBy", oStaticPage.UpdatedBy);
                         cmd.Parameters.AddWithValue("@Description", oStaticPage.Description);
                         //if (!string.IsNullOrEmpty(oStaticPage.PageNameEn))
@@ -147,6 +149,10 @@ namespace DAL.News
                         {
                             cmd.Parameters.AddWithValue("@UpdatedDate", oStaticPage.UpdatedDate.Value);
                         }
+                        if (oStaticPage.IsImageView)
+                        {
+                            cmd.Parameters.AddWithValue("@IsImageView", oStaticPage.IsImageView);
+                        }
 
 
                         conn.Open();
@@ -181,7 +187,7 @@ namespace DAL.News
                         cmd.Parameters.AddWithValue("@Id", oStaticData.Id);
                         cmd.Parameters.AddWithValue("@Title", oStaticData.Title);
                         cmd.Parameters.AddWithValue("@Data", oStaticData.Data);
-                        cmd.Parameters.AddWithValue("@Value", oStaticData.Value);
+                        cmd.Parameters.AddWithValue("@Status", oStaticData.Status);
                         cmd.Parameters.AddWithValue("@Icon", oStaticData.Icon);
                         conn.Open();
                         oResult.Results = Convert.ToInt32(cmd.ExecuteScalar());
@@ -228,7 +234,7 @@ namespace DAL.News
                                 objStaticData.Id = Convert.ToInt32(reader["Id"]);
                                 objStaticData.Title = reader["Title"].ToString();
                                 objStaticData.Data = reader["Data"].ToString();
-                                objStaticData.Value = reader["Value"].ToString();
+                                objStaticData.Status = Convert.ToBoolean(reader["Status"].ToString());
                                 objStaticData.Icon = reader["Icon"].ToString();
                                 objStaticData.Type = Convert.ToInt32(reader["Type"].ToString());
                                 lstResult.Add(objStaticData);

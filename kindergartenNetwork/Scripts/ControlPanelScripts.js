@@ -1315,7 +1315,7 @@
                     Id: $(cb).attr('SID'),
                     Title: $(cb).find('.txtTitle').val(),
                     Data: $(cb).find('.txtData').val(),
-                    Value: $(cb).find('.txtValue').val(),
+                    Status: $(cb).find('.cpStatus').prop("checked"),
                     Icon: $(cb).find('.txtIcon').val()
 
                 }

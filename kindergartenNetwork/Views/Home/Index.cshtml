@@ -22,12 +22,14 @@
                     </a>
                 </div>
             </div>
-
-            <div class="col-lg-6">
-                <div class="banner-img wow fadeInRight" data-wow-delay="0.3s">
-                    <img src="/Content/UploadedFile/News/Original/@Model.OStaticPage.Image" width="600" alt="Image">
+            @if (Model.OStaticPage.IsImageView)
+            {
+                <div class="col-lg-6">
+                    <div class="banner-img wow fadeInRight" data-wow-delay="0.3s">
+                        <img src="/Content/UploadedFile/News/Original/@Model.OStaticPage.Image" width="600" alt="Image">
+                    </div>
                 </div>
-            </div>
+            }
         </div>
 
         <!-- Start Social Wrap -->
@@ -105,23 +107,23 @@
     </section>
     <!-- End Achieve Area -->
     <!-- Start Counter Area -->
-    <section class="counter-area ebeef5-bg-color pt-100 pb-70">
-        <div class="container">
-            <div class="row">
-                @if (Model.LstStatistics != null)
-                {
-                    var i = 0;
-                    foreach (var num in Model.LstStatistics)
+    @if (Model.LstStatistics != null && Model.LstStatistics.Count > 0)
+    {
+        var i = 0;
+        <section class="counter-area ebeef5-bg-color pt-100 pb-70">
+            <div class="container">
+                <div class="row rs-carousel owl-carousel" data-loop="true" data-items="4" data-margin="20" data-autoplay="true" data-autoplay-timeout="5000" data-smart-speed="2000" data-dots="false" data-nav="false" data-nav-speed="false" data-mobile-device="1" data-mobile-device-nav="false" data-mobile-device-dots="false" data-ipad-device="2" data-ipad-device-nav="false" data-ipad-device-dots="false" data-ipad-device2="2" data-ipad-device-nav2="false" data-ipad-device-dots2="false" data-md-device="4" data-md-device-nav="false" data-md-device-dots="false">
+
+                    @foreach (var num in Model.LstStatistics)
                     {
                         i++;
                         var src = "/Content/defaultTheme/assets/img/counter-shape/counter-shape-" + i + ".png";
-                        <div class="col-lg-3 col-sm-6">
+                        <div class="item">
                             <div class="single-counter">
                                 <div class="counter-shape shape-@i">
-                                    <img src="@src" alt="Image">
-
+                                    <img src="@src"style="width: 125px !important; margin: auto" alt="Image">
                                     <h2>
-                                        <span class="odometer" data-count="@num.Data">@num.Value</span>
+                                        <span class="odometer" data-count="@num.Data" dir="ltr">00</span>
                                         @if (!string.IsNullOrEmpty(num.Icon))
                                         {
                                             <span class="target">@num.Icon</span>
@@ -133,10 +135,10 @@
                             </div>
                         </div>
                     }
-                }
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    }
     <!-- End Counter Area -->
     <!-- Start Events Area -->
     <section class="event-area ptb-70">

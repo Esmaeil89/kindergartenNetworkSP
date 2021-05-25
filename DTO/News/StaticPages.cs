@@ -68,6 +68,7 @@ namespace DTO.News
 
         [DisplayName("Updated Date")]
         public DateTime? UpdatedDate { get; set; }
+        public bool IsImageView { get; set; }
         public Account.UserAccounts OUpdatedBy { get; set; }
     }
 
@@ -77,7 +78,7 @@ namespace DTO.News
         public int Id { get; set; }
         public string Title { get; set; }
         public string Data { get; set; }
-        public string Value { get; set; }
+        public bool Status { get; set; }
         public string Icon { get; set; }
         public int Type { get; set; }
     }

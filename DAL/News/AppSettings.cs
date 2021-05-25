@@ -20,7 +20,7 @@ namespace DAL.News
                     {
                         cmd.Connection = conn;
                         #region SQLCOMMAND Builder
-                        var command = @"SELECT TBL1.*,TBL2.NameAr KeyNameAr,TBL2.NameEn KeyNameEn,TBL3.NameEn ValueNameEn,TBL3.NameAr ValueNameAr FROM AppSettings TBL1 JOIN Constant TBL2 ON TBL1.ConKey = TBL2.Id JOIN Constant TBL3 ON TBL1.ConValue = TBL3.Id WHERE 1=1 ";
+                        var command = @"SELECT TBL1.*,TBL2.Name KeyName,TBL3.Name ValueName FROM AppSettings TBL1 JOIN Constant TBL2 ON TBL1.ConKey = TBL2.Id JOIN Constant TBL3 ON TBL1.ConValue = TBL3.Id WHERE 1=1 ";
                         if (key > 0)
                         {
                             command += " AND TBL1.ConKey = @Key ";

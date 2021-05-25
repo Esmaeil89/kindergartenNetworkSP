@@ -22,29 +22,39 @@
                     @foreach (var data in Model.LstStaticData)
                     {
                         i++;
-                        <div class="form-group static" id="txt_@data.Id" SID="@data.Id">
-                            <label class="col-md-1 control-label"> @i</label>
-                            <div class="col-md-3">
-                                <div class="formElement">
-                                    <input type="text" name="txtTitle" value="@data.Title" class="form-control txtTitle" placeholder="@kindergartenNetwork.Resources.PublicNews.Title" />
-                                </div>
+                    <div class="form-group static" id="txt_@data.Id" SID="@data.Id">
+                        <label class="col-md-1 control-label"> @i</label>
+                        <div class="col-md-3">
+                            <div class="formElement">
+                                <input type="text" name="txtTitle" value="@data.Title" class="form-control txtTitle" placeholder="@kindergartenNetwork.Resources.PublicNews.Title" />
                             </div>
-                            <div class="col-md-2">
-                                <div class="formElement">
-                                    <input type="text" name="txtData" value="@data.Data" class="form-control txtData" placeholder="@kindergartenNetwork.Resources.PublicNews.From" />
-                                </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="formElement">
+                                <input type="text" name="txtData" value="@data.Data" class="form-control txtData" placeholder="@kindergartenNetwork.Resources.PublicNews.From" />
                             </div>
-                            <div class="col-md-2">
-                                <div class="formElement">
-                                    <input type="text" name="txtValue" value="@data.Value" class="form-control txtValue" placeholder="@kindergartenNetwork.Resources.PublicNews.To" />
-                                </div>
+                        </div>
+                        @*<div class="col-md-2">
+            <div class="formElement">
+                <input type="text" name="txtValue" value="@data.Value" class="form-control txtValue" placeholder="@kindergartenNetwork.Resources.PublicNews.To" />
+            </div>
+        </div>*@
+                        <div class="col-md-1">
+                            <div class="formElement">
+                                <input type="text" name="txtIcon" value="@data.Icon" class="form-control txtIcon" placeholder="@kindergartenNetwork.Resources.PublicNews.Code" />
                             </div>
-                            <div class="col-md-1">
+                        </div>
+                        <div class="col-md-2">
+                            <div class="mt-checkbox-inline">
                                 <div class="formElement">
-                                    <input type="text" name="txtIcon" value="@data.Icon" class="form-control txtIcon" placeholder="@kindergartenNetwork.Resources.PublicNews.Code" />
+                                    <label class="mt-checkbox">
+                                        <input type="checkbox" class="cpStatus" value="true" @(data.Status ? "checked" : "") data-field="@kindergartenNetwork.Resources.PublicNews.IsActive"> @kindergartenNetwork.Resources.PublicNews.IsActive
+                                        <span></span>
+                                    </label>
                                 </div>
                             </div>
                         </div>
+                    </div>
                     }
                 </div>
             </div>

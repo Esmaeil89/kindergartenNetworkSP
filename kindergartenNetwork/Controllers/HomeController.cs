@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
+using DTO.Account;
 using DTO.News;
 using kindergartenNetwork.Helper;
 using kindergartenNetwork.Models;
 using kindergartenNetwork.Models.NewsModels;
+using Newtonsoft.Json;
 
 namespace kindergartenNetwork.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : PublicBaseController
     {
         public ActionResult Index()
         {
@@ -34,7 +37,7 @@ namespace kindergartenNetwork.Controllers
             getStatics = DAL.News.StaticData.GetStaticData(new StaticData { Type = 2});
             if (getStatics.HasResult)
             {
-                oModel.LstStatistics = getStatics.Results;
+                oModel.LstStatistics = getStatics.Results.Where(x=>x.Status == true).ToList();
             }
             return View(oModel);
         }
@@ -88,6 +91,108 @@ namespace kindergartenNetwork.Controllers
                 return Json(new { cStatus = "notValid", cMsg = GeneralHelper.GetErrorMessage(ModelState, Resources.NotifyMsg.ErrorInField) }, JsonRequestBehavior.AllowGet);
             }
             return Json(new { cStatus, cMsg }, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult Login(string returnUrl)
+        {
+            ViewBag.returnUrl = returnUrl;
+            return View();
+        }
+
+        public ActionResult LogOut()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Login", "Home", Request.Url);
+        }
+        public JsonResult LoginFn(LoginModel oVisitor)
+        {
+            var cStatus = "error";
+            var cMsg = "User Name or Password invalid";
+
+            if (string.IsNullOrEmpty(oVisitor.Email) || string.IsNullOrEmpty(oVisitor.Password))
+            {
+                return Json(new { cStatus = "error", cMsg = "You cant Enter empty username or password !!" });
+            }
+
+            var getVisitorResult = new Visitors();
+            var getVisitor = DAL.News.Visitors.VisitorLogin(oVisitor);
+            if (getVisitor.HasResult)
+            {
+                // ReSharper disable once AssignNullToNotNullAttribute
+                getVisitorResult = getVisitor.Results.FirstOrDefault();
+                cStatus = "success";
+                cMsg = "انتهت العملية بنجاح";
+                if (getVisitorResult.IsApproved.Value)
+                {
+                    CustomPrincipalSerializeModel serializeModel = new CustomPrincipalSerializeModel();
+                    serializeModel.Id = getVisitorResult.Id;
+                    serializeModel.Name = getVisitorResult.Name;
+                    serializeModel.Password = getVisitorResult.Pass;
+                    serializeModel.Email = getVisitorResult.Email;
+                    serializeModel.Avatar = getVisitorResult.Avatar;
+
+
+                    string userData = JsonConvert.SerializeObject(serializeModel);
+                    HttpCookie cookie = FormsAuthentication.GetAuthCookie(serializeModel.Name, false);
+                    var ticket = FormsAuthentication.Decrypt(cookie.Value);
+                    if (ticket != null)
+                    {
+                        var newticket = new FormsAuthenticationTicket(ticket.Version, ticket.Name, ticket.IssueDate,
+                            ticket.Expiration, true, userData, ticket.CookiePath);
+                        cookie.Value = FormsAuthentication.Encrypt(newticket);
+                        if (oVisitor.Remember == 1)
+                        {
+                            cookie.Expires = newticket.Expiration.AddDays(7);
+                        }
+                    }
+
+                    HttpContext.Response.Cookies.Set(cookie);
+                    string url = Url.Action("Index", "Home");
+
+                    return Json(
+                        new
+                        {
+                            cStatus, isRedirect = true,
+                            redirectUrl = (string.IsNullOrEmpty(oVisitor.ReturnUrl) ? url : oVisitor.ReturnUrl)
+                        }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    cStatus = "error";
+                    cMsg = "The account is deactivated, please contact Admin";
+                }
+            }
+            return Json(new { cStatus, cMsg }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Registration()
+        {
+            return View();
+        }
+
+        public JsonResult RegistrationFn(Visitors oVisitor)
+        {
+            var cStatus = "error";
+            var cMsg = "User Name or Password invalid";
+
+            if (string.IsNullOrEmpty(oVisitor.Email) || string.IsNullOrEmpty(oVisitor.Pass))
+            {
+                return Json(new { cStatus = "error", cMsg = "You cant Enter empty username or password !!" });
+            }
+
+            oVisitor.IsApproved = true;
+            var getVisitor = DAL.News.Visitors.AddEditVisitor(oVisitor);
+            if (getVisitor.HasResult)
+            {
+                cStatus = "success";
+                cMsg = "انتهت العملية بنجاح";
+                   
+            }
+            return Json(new { cStatus, cMsg }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult RecoverPassword()
+        {
+            return View();
         }
     }
 }

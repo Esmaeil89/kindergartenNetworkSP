@@ -74,7 +74,7 @@
             <div class="col-lg-12 col-md-12">
                 <div class="pagination-area">
                     @{
-                        var totalPages = Convert.ToInt32(Math.Ceiling(Model.count / 4.0));
+                        var totalPages = Convert.ToInt32(Math.Ceiling(Model.count / 6.0));
                         var currentPage = Request.QueryString["page"] != null ? Convert.ToInt32(Request.QueryString["page"]) : 1;
                         var startPage = currentPage - 5;
                         var endPage = currentPage + 4;

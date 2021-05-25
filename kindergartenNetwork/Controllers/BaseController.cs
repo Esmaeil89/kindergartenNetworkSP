@@ -25,7 +25,7 @@ namespace kindergartenNetwork.Controllers
             if (getPages.HasResult)
             {
                 var getPageResult = getPages.Results.FirstOrDefault();
-                if (filterContext.HttpContext.Request.IsAuthenticated)
+                if (filterContext.HttpContext.Request.IsAuthenticated && User.UserTypeId > 0)
                 {
                     var fileContents = System.IO.File.ReadAllText(Server.MapPath(@"~/App_Data/Language.json"));
                     var languages = JsonConvert.DeserializeObject<List<Models.Common.LanguageModel>>(fileContents);

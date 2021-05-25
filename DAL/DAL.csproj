@@ -64,6 +64,7 @@
     <Compile Include="News\News.cs" />
     <Compile Include="News\SocialNW.cs" />
     <Compile Include="News\StaticPages.cs" />
+    <Compile Include="News\Visitors.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

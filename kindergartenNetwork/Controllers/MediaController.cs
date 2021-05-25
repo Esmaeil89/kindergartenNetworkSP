@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace kindergartenNetwork.Controllers
 {
-    public class MediaController : Controller
+    public class MediaController : PublicBaseController
     {
         // GET: Media
         public ActionResult ImagesGallery()

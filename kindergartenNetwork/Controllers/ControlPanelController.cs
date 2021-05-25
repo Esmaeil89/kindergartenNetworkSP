@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Web.Mvc;
+using System.Web.Security;
+using DAL;
 using DTO.Account;
 using DTO.News;
 using kindergartenNetwork.Helper;
@@ -1467,6 +1469,277 @@ namespace kindergartenNetwork.Controllers
             return Json(new { cStatus, cMsg }, JsonRequestBehavior.AllowGet);
 
         }
+        #endregion
+
+        #region Visitors
+        public ActionResult Visitors()
+        {
+            var oModel = new VisitorModel();
+
+            return View(oModel);
+        }
+        public PartialViewResult SaveVisitorModal(string id)
+        {
+            var oModel = new InsertUpdateVisitorModel();
+            var userId = Convert.ToInt32(id);
+            if (userId > 0)
+            {
+                oModel.OVisitor.Id = userId;
+                oModel.OVisitor.IsList = true;
+                var getVisitor = DAL.News.Visitors.VisitorsGet(oModel.OVisitor);
+                if (getVisitor.HasResult)
+                    oModel.OVisitor = getVisitor.Results.FirstOrDefault();
+            }
+            return PartialView("VisitorParts/_SaveVisitorModal", oModel);
+        }
+        public JsonResult GetVisitorsDataTable(JQueryDataTableParamModel param)
+        {
+            var oVisitor = new Visitors();
+
+            if (!string.IsNullOrEmpty(Request.QueryString["Name"]))
+                oVisitor.Name = Request.QueryString["Name"];
+
+            DataTableProcessModel m = new DataTableProcessModel();
+            DataTableProcessModel dtProcess = DataTableProcesses.DataTableEslestir(param, m);
+            oVisitor.SortCol = dtProcess.SortCol;
+            oVisitor.SortType = dtProcess.SortType;
+            oVisitor.Page = dtProcess.Page;
+            oVisitor.RowPerPage = dtProcess.RowPerPage;
+            var getVisitors = DAL.News.Visitors.VisitorsGet(oVisitor);
+
+            var getVisitorsResult = new List<Visitors>();
+            if (getVisitors.HasResult)
+            {
+                getVisitorsResult = getVisitors.Results;
+                int rowCount = getVisitors.RowCount;
+                int lnRowCount = rowCount;
+
+                var result = from q in getVisitorsResult
+                             select new
+                             {
+                                 q.Id,
+                                 q.Name,
+                                 q.IsApproved,
+                                 q.Email,
+                                 q.Avatar
+                             };
+
+                return Json(new
+                {
+                    param.sEcho,
+                    iTotalRecords = rowCount,
+                    iTotalDisplayRecords = lnRowCount,
+                    aaData = result
+                },
+                    JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+
+                int rowCount = getVisitors.RowCount;
+                int lnRowCount = rowCount;
+
+                var result = from q in getVisitorsResult
+                             select new
+                             {
+                                 q.Id,
+                                 q.Name,
+                                 q.IsApproved,
+                                 q.Email,
+                                 q.Avatar
+                             };
+
+                return Json(new
+                {
+                    param.sEcho,
+                    iTotalRecords = rowCount,
+                    iTotalDisplayRecords = lnRowCount,
+                    aaData = result
+                },
+                    JsonRequestBehavior.AllowGet);
+            }
+        }
+        public JsonResult SaveVisitor([Bind(Exclude = "Id")] Visitors oVisitor)
+        {
+            var cStatus = "error";
+            var cMsg = Resources.NotifyMsg.ErrorMsg;
+            if (ModelState.IsValid)
+            {
+                var id = oVisitor.Id;
+                var oVisitorInsert = DAL.News.Visitors.AddEditVisitor(oVisitor);
+                if (oVisitorInsert.HasResult)
+                {
+                    cStatus = "success";
+                    cMsg = id > 0 ? Resources.NotifyMsg.UpdateSuccessMsg : Resources.NotifyMsg.InsertSuccessMsg;
+                    return Json(new { cStatus, cMsg }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                return Json(new { cStatus = "notValid", cMsg = Resources.NotifyMsg.NotValidMsg }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { cStatus, cMsg }, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult UploadVisitorImg()
+        {
+            var fileName = "";
+            var file = Request.Files[0];
+            //var LogInUser = new UserAccounts();
+            //var OUserType = new UserAccounts();
+
+            if (file != null && file.ContentLength > 0)
+            {
+                //imageName = Path.GetFileNameWithoutExtension(file.FileName);
+                fileName = Path.GetFileName(file.FileName);
+                if (fileName != null)
+                {
+                    string ext = fileName.Split('.')[fileName.Split('.').Length - 1];
+                    string n = Guid.NewGuid().ToString();
+                    fileName = n + "." + ext;
+                    var path = Path.Combine(Server.MapPath("/Content/UploadedFile/Account/Avatar/Original/"), fileName);
+                    file.SaveAs(path);
+
+
+                    var thumbPath = Path.Combine(Server.MapPath("/Content/UploadedFile/Account/Avatar/Thumbnail/"), fileName);
+                    var largePath = Path.Combine(Server.MapPath("/Content/UploadedFile/Account/Avatar/Large/"), fileName);
+                    GeneralHelper.ResizeImage(path, thumbPath, 250, ext, true);
+                    GeneralHelper.ResizeImage(path, largePath, 950, ext, false);
+                }
+            }
+            return Json(new { result = "success", Filename = fileName, }, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult ApproveVisitor(int id)
+        {
+            var cStatus = "error";
+            var cMsg = Resources.NotifyMsg.ErrorMsg;
+
+            var oResult = DAL.News.Visitors.VisitorApprove(id, User.Id);
+            if (oResult.HasResult)
+            {
+                cStatus = "success";
+                cMsg = Resources.NotifyMsg.DeleteSuccessMsg;
+            }
+            return Json(new { cStatus, cMsg, }, JsonRequestBehavior.AllowGet);
+
+        }
+        public JsonResult DeleteVisitor(int id)
+        {
+            var cStatus = "error";
+            var cMsg = Resources.NotifyMsg.ErrorMsg;
+
+            var oResult = DAL.News.Visitors.VisitorDelete(id);
+            if (oResult.HasResult)
+            {
+                cStatus = "success";
+                cMsg = Resources.NotifyMsg.DeleteSuccessMsg;
+            }
+            return Json(new { cStatus, cMsg, }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        //[Bind(Include = "Id,Name,Email,Mobile,Gender,Avatar")]
+        //public PartialViewResult VisitorProfileModal()
+        //{
+
+        //    var oModel = new ProfileModel();
+
+        //    if (User.Id > 0)
+        //    {
+        //        oModel.OVisitorProfile.Id = User.Id;
+        //        var getUser = DAL.News.Visitors.VisitorProfileGet(oModel.OVisitorProfile);
+        //        if (getUser.HasResult)
+        //            oModel.OVisitorProfile = getUser.Results.FirstOrDefault();
+        //    }
+
+        //    return PartialView("VisitorParts/_VisitorProfileModel", oModel);
+        //}
+        public JsonResult UpdateVisitorProfile([Bind(Exclude = "Pass")] Visitors oVisitor)
+        {
+            var cStatus = "error";
+            var cMsg = Resources.NotifyMsg.ErrorMsg;
+            if (ModelState.IsValid)
+            {
+                var oUserUpdate = DAL.News.Visitors.AddEditVisitor(oVisitor);
+                if (oUserUpdate.HasResult)
+                {
+                    cStatus = "success";
+                    cMsg = Resources.NotifyMsg.UpdateSuccessMsg;
+                    return Json(new { cStatus, cMsg }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                return Json(new { cStatus = "notValid", cMsg = Resources.NotifyMsg.NotValidMsg }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { cStatus, cMsg }, JsonRequestBehavior.AllowGet);
+        }
+        public PartialViewResult ChangePasswordModal()
+        {
+            return PartialView("VisitorParts/_ChangePasswordModel");
+        }
+        //public JsonResult UpdatePassword([Bind(Include = "CurrentPassword,NewPassword,ConfirmPassword")] VisitorProfile oVisitorProfile)
+        //{
+        //    string cStatus;
+        //    string cMsg;
+        //    String oldPass = oVisitorProfile.CurrentPassword;
+        //    String newPass = oVisitorProfile.NewPassword;
+        //    //String confirmPass = oUserProfile.ConfirmPassword;
+        //    int tryNo = oVisitorProfile.tryNo;
+        //    if (tryNo < 4)
+        //    {
+        //        string encrpOldPass = Common.Md5(oldPass);
+        //        if (User.Password == encrpOldPass)
+        //        {
+
+        //            var oProfile = new UserAccounts();
+        //            oProfile.Id = User.Id;
+        //            oProfile.Pass = newPass;
+        //            var oUserPassWord = DAL.Account.UserAccounts.AddEditAccount(oProfile);
+        //            if (oUserPassWord.HasResult)
+        //            {
+        //                cStatus = "success";
+        //                cMsg = Resources.NotifyMsg.UpdateSuccessMsg;
+        //                return Json(new { cStatus, cMsg }, JsonRequestBehavior.AllowGet);
+        //            }
+
+        //            return Json(new { cStatus = "notValid", cMsg = Resources.NotifyMsg.NotValidMsg }, JsonRequestBehavior.AllowGet);
+
+
+        //        }
+
+        //        return Json(new { cStatus = "notValid", cMsg = Resources.NotifyMsg.ErrorIncorrect }, JsonRequestBehavior.AllowGet);
+
+        //    }
+
+        //    FormsAuthentication.SignOut();
+        //    return Json(new
+        //    {
+        //        cStatus = "error",
+        //        cMsg = Resources.NotifyMsg.ErrorPass,
+        //        isRedirect = true,
+        //        redirectUrl = Url.Action("LoginRedirect", "Login")
+        //    }, JsonRequestBehavior.AllowGet);
+
+        //}
+        public JsonResult VisitorsSearchAutoComplete(string id)
+        {
+            var getVisitorsResult = new List<Visitors>();
+            var getVisitors = DAL.News.Visitors.VisitorsGet(new Visitors { Name = id, IsList = true });
+
+            if (getVisitors.HasResult)
+            {
+                getVisitorsResult = getVisitors.Results;
+                var result = from q in getVisitorsResult
+                             select new
+                             {
+                                 q.Name,
+                                 q.Id
+                             };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            return Json(getVisitorsResult, JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
     }
 }
