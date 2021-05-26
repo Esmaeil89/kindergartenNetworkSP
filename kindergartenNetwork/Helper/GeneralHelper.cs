@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using DTO.Account;
 using kindergartenNetwork;
 using kindergartenNetwork.Models;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace kindergartenNetwork.Helper
 {
@@ -77,6 +80,19 @@ namespace kindergartenNetwork.Helper
                 bitmap.Dispose();
             }
         }
-
+        public static Boolean SendGridExecute(string userEmail, string userName, string plainTextContent,
+            string htmlContent, string subject)
+        {
+            var apiKey = "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";
+            var client = new SendGridClient(apiKey);
+            var from = new EmailAddress("info@kindergartenNetwork.com", "kindergartenNetwork");
+            //var subject = "Sending with SendGrid is Fun";
+            var to = new EmailAddress(userEmail, userName);
+            //var plainTextContent = "and easy to do anywhere, even with C#";
+            //var htmlContent = "<strong>and easy to do anywhere, even with C#</strong>";
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var response = client.SendEmailAsync(msg);
+            return true;
+        }
     }
 }

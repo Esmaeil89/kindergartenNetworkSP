@@ -21,7 +21,7 @@
     reject: 'رفض',
     deleteConfirm: 'هل أنت متأكد من عملية الحذف ؟',
     cancelConfirm: 'هل أنت متأكد من عملية الإلغاء ؟',
-    approveConfirm: 'هل أنت نتأكد ؟',
+    approveConfirm: 'هل أنت متأكد ؟',
     waiting: 'قيد الإنتظار',
     accepted: 'مقبول',
     accept: 'قبول',
@@ -53,5 +53,7 @@
     ApproveStatment: "بيان الإعتماد",
     ApproveCommittee: "لجنة الإعتماد",
     Statment: "البيان",
+    activate: "تفعيل",
+    deactivate: "تعطيل",
     Close: "إغلاق"
 };

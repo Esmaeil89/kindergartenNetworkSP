@@ -67,6 +67,7 @@
     <Compile Include="News\ImportantLinks.cs" />
     <Compile Include="News\Media.cs" />
     <Compile Include="News\News.cs" />
+    <Compile Include="News\NewsletterSubscribers.cs" />
     <Compile Include="News\SocialNW.cs" />
     <Compile Include="News\StaticPages.cs" />
     <Compile Include="News\TeamMembers.cs" />

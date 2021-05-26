@@ -15,6 +15,7 @@ namespace DTO.News
         [EmailAddress]
         public string Email { get; set; }
         public string Avatar { get; set; }
+        public string ResetPassToken { get; set; }
         public bool? IsApproved { get; set; }
     }
 
@@ -30,6 +31,7 @@ namespace DTO.News
         public string ConfirmPassword { get; set; }
         public string Email { get; set; }
         public string Avatar { get; set; }
+        public string ResetPassToken { get; set; }
         public int tryNo { get; set; }
         
       

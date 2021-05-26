@@ -91,6 +91,8 @@ namespace DAL.News
                             cmd.Parameters.AddWithValue("@Email", oVisitor.Email);
                         if (!string.IsNullOrEmpty(oVisitor.Pass))
                             cmd.Parameters.AddWithValue("@Pass", Common.Md5(oVisitor.Pass));
+                        if (!string.IsNullOrEmpty(oVisitor.ResetPassToken))
+                            cmd.Parameters.AddWithValue("@ResetPassToken", oVisitor.ResetPassToken);
                         if (oVisitor.IsApproved.HasValue)
                             cmd.Parameters.AddWithValue("@IsApproved", oVisitor.IsApproved.Value);
                         conn.Open();
@@ -126,12 +128,18 @@ namespace DAL.News
                         var command = "";
                         command = @"SELECT *
                                     FROM Visitors 
-                                    WHERE 1=1 AND TBL1.IsDeleted = 0 ";
+                                    WHERE 1=1  ";
 
                         if (oVisitor.Id > 0)
                         {
                             command += " AND Id = @Id";
                             cmd.Parameters.AddWithValue("@Id", oVisitor.Id);
+
+                        }
+                        if (!string.IsNullOrEmpty(oVisitor.Email))
+                        {
+                            command += " AND Email = @Email";
+                            cmd.Parameters.AddWithValue("@Email", oVisitor.Email);
 
                         }
                         if (!string.IsNullOrEmpty(oVisitor.Name))
@@ -175,6 +183,8 @@ namespace DAL.News
                                     obUsers.IsApproved = Convert.ToBoolean(reader["IsApproved"]);
                                 if (reader["Avatar"] != DBNull.Value)
                                     obUsers.Avatar = Convert.ToString(reader["Avatar"]);
+                                if (reader["ResetPassToken"] != DBNull.Value)
+                                    obUsers.ResetPassToken = Convert.ToString(reader["ResetPassToken"]);
 
                                 
 
@@ -342,6 +352,8 @@ namespace DAL.News
                                     obUsers.CurrentPassword = Convert.ToString(reader["Pass"]);
                                 if (reader["Avatar"] != DBNull.Value)
                                     obUsers.Avatar = Convert.ToString(reader["Avatar"]);
+                                if (reader["ResetPassToken"] != DBNull.Value)
+                                    obUsers.ResetPassToken = Convert.ToString(reader["ResetPassToken"]);
                                
 
                                 #endregion

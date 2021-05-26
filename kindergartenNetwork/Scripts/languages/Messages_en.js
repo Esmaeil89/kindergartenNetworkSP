@@ -52,5 +52,7 @@
     ApproveStatment: "Approve Statment",
     ApproveCommittee: "Approve Committee",
     Statment: "Statment",
+    activate: "Activate",
+    deactivate: "Deactivate",
     Close: "Close"
 };

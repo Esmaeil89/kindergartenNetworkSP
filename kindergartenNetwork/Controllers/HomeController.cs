@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -72,7 +75,7 @@ namespace kindergartenNetwork.Controllers
             return View(oModel);
         }
         [ValidateOnlyIncomingValues]
-        public JsonResult SaveContactUs([Bind(Exclude = "Reply")] DTO.News.ContactUs oContactUs)
+        public JsonResult SaveContactUs([Bind(Exclude = "Reply")] ContactUs oContactUs)
         {
             var cStatus = "error";
             var cMsg = Resources.NotifyMsg.ErrorMsg;
@@ -92,16 +95,11 @@ namespace kindergartenNetwork.Controllers
             }
             return Json(new { cStatus, cMsg }, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult Login(string returnUrl)
         {
             ViewBag.returnUrl = returnUrl;
             return View();
-        }
-
-        public ActionResult LogOut()
-        {
-            FormsAuthentication.SignOut();
-            return RedirectToAction("Login", "Home", Request.Url);
         }
         public JsonResult LoginFn(LoginModel oVisitor)
         {
@@ -163,12 +161,16 @@ namespace kindergartenNetwork.Controllers
             }
             return Json(new { cStatus, cMsg }, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult LogOut()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Login", "Home", Request.Url);
+        }
 
         public ActionResult Registration()
         {
             return View();
         }
-
         public JsonResult RegistrationFn(Visitors oVisitor)
         {
             var cStatus = "error";
@@ -193,6 +195,91 @@ namespace kindergartenNetwork.Controllers
         public ActionResult RecoverPassword()
         {
             return View();
+        }
+        public ActionResult ForgetPassword(string email)
+        {
+            var cStatus = "error";
+            var cMsg = "User Name or Password invalid";
+            var user = new Visitors();
+            if (email == null)
+            {
+                cMsg = "Email is Null";
+                return Json(new { cStatus, cMsg }, JsonRequestBehavior.AllowGet);
+            }
+            var getUser = DAL.News.Visitors.VisitorsGet(new Visitors{Email = email, IsList = true});
+            if (getUser.HasResult)
+            {
+                user = getUser.Results.First();
+            }
+            else
+            {
+                cMsg = "Email is not registered";
+                return Json(new {cStatus, cMsg}, JsonRequestBehavior.AllowGet);
+            }
+
+            var token = Guid.NewGuid().ToString();
+            var confirmLink = $"http://" + Request.Url.Authority + $"/Home/ResetPassword?id={user.Id}&token={token}";
+            var txt = "To Reset Password Click Here ";
+            var link = "<a href=\"" + confirmLink + "\">Recover Password</a>";
+            var title = "Recover Password";
+            if (GeneralHelper.SendGridExecute(user.Email, user.Name, txt, link, title))
+            {
+                DAL.News.Visitors.AddEditVisitor(new Visitors {Id = user.Id, ResetPassToken = token});
+                cStatus = "success";
+                cMsg = " يرجى مراجعة ايميلك و الضفط على رابط اعادة تعيين كلمة المرور لأكمال العملية";
+            }
+
+            return Json(new { cStatus, cMsg }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ResetPassword(string id, string token)
+        {
+            return View();
+        }
+        public ActionResult ResetPasswordFn(string id, string token, string newPass)
+        {
+            var cStatus = "error";
+            var cMsg = "User Id or User token or Password invalid";
+
+            if (string.IsNullOrEmpty(newPass))
+            {
+                return Json(new { cStatus = "error", cMsg = "You cant Enter empty u password !!" });
+            }
+
+            var getUser = DAL.News.Visitors.VisitorsGet(new Visitors {Id = Convert.ToInt32(id)});
+            if (getUser.HasResult)
+            {
+                var user = getUser.Results.First();
+                if (token == user.ResetPassToken)
+                {
+                    var updatePass = DAL.News.Visitors.AddEditVisitor(new Visitors {Id = Convert.ToInt32(id), Pass = newPass});
+                    if (updatePass.HasResult)
+                    {
+                        cStatus = "success";
+                        cMsg = "انتهت العملية بنجاح";
+                    }
+                }
+            }
+            return Json(new { cStatus, cMsg }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult SubscribeInNewsletter(string email)
+        {
+            var cStatus = "error";
+            var cMsg = "Email Exists";
+
+            if (string.IsNullOrEmpty(email) )
+            {
+                return Json(new { cStatus = "error", cMsg = "You cant Enter empty Email !!" });
+            }
+            var subscribeInNewsletter = DAL.News.NewsletterSubscribers.NewsletterSubscriberSave(new NewsletterSubscribers{Email = email });
+            if (subscribeInNewsletter.HasResult)
+            {
+                cStatus = "success";
+                cMsg = "تم الاشتراك بنجاح";
+
+            }
+            return Json(new { cStatus, cMsg }, JsonRequestBehavior.AllowGet);
         }
     }
 }

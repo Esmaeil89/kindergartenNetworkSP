@@ -63,7 +63,7 @@
                                 <div class="mt-checkbox-inline">
                                     <div class="formElement">
                                         <label class="mt-checkbox">
-                                            <input type="checkbox" id="cbIsImageView" name="IsImageView" value="true" data-field="@kindergartenNetwork.Resources.PublicNews.InMainPage"> @kindergartenNetwork.Resources.PublicNews.InMainPage
+                                            <input type="checkbox" id="cbIsImageView" name="IsImageView" value="true" @(Model.OStaticPage.IsImageView ? "checked":"") data-field="@kindergartenNetwork.Resources.PublicNews.InMainPage"> @kindergartenNetwork.Resources.PublicNews.InMainPage
                                             <span></span>
                                         </label>
                                     </div>

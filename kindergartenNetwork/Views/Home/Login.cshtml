@@ -33,48 +33,51 @@
             <div class="contact-form-action">
                 @using (Html.BeginForm("LoginFn", "Home", FormMethod.Post, new { onsubmit = "return false;", id = "loginForm", name = "loginForm" }))
                 {
-                    <div class="row">
+                <div class="row">
 
-                        <div class="alert alert-danger" style="display: none">
-                            <button class="close" data-close="alert"></button>
-                            <span>@kindergartenNetwork.Resources.PublicNews.EnterAnyUsernameAndPassword</span>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label>البريد الإلكتروني</label>
-                                <input class="form-control" type="text" name="Email">
-                            </div>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label>كلمة المرور</label>
-                                <input class="form-control" type="password" name="Password">
-                            </div>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="login-action">
-                                <span class="log-rem">
-                                    <input id="remember" name="Remember" value="true" type="checkbox">
-                                    <label for="remember">تذكرني</label>
-                                </span>
-                                <span class="forgot-login">
-                                    <a href="@Url.Action("RecoverPassword", "Home", null, Request.Url.Scheme)">نسيت كلمة المرور؟</a>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="col-12">
-                            <button class="default-btn" type="submit">
-                                دخول
-                            </button>
-                        </div>
-
-                        <div class="col-12">
-                            <p>هل لديك حساب؟ <a href="@Url.Action("Registration", "Home", null, Request.Url.Scheme)">سجل الأن!</a></p>
+                    <div class="alert alert-danger" style="display: none">
+                        <button class="close" data-close="alert"></button>
+                        <span>@kindergartenNetwork.Resources.PublicNews.EnterAnyUsernameAndPassword</span>
+                    </div>
+                    <div class="alert alert-success" style="display: none">
+                        <button class="close" data-close="alert"></button>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>البريد الإلكتروني</label>
+                            <input class="form-control" type="text" name="Email">
                         </div>
                     </div>
+
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>كلمة المرور</label>
+                            <input class="form-control" type="password" name="Password">
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="login-action">
+                            <span class="log-rem">
+                                <input id="remember" name="Remember" value="true" type="checkbox">
+                                <label for="remember">تذكرني</label>
+                            </span>
+                            <span class="forgot-login">
+                                <a href="@Url.Action("RecoverPassword", "Home", null, Request.Url.Scheme)">نسيت كلمة المرور؟</a>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <button class="default-btn" type="submit">
+                            دخول
+                        </button>
+                    </div>
+
+                    <div class="col-12">
+                        <p>هل لديك حساب؟ <a href="@Url.Action("Registration", "Home", null, Request.Url.Scheme)">سجل الأن!</a></p>
+                    </div>
+                </div>
                 }
             </div>
         </div>

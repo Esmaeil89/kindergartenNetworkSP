@@ -1619,6 +1619,119 @@
     };
 
 
+    /********NewsletterSubscribers**********/
+    var newsletterSubscribersDataTable = function () {
+        $('#tbl').dataTable({
+            "language": {
+                "url": "/Content/assets/global/plugins/DataTables-1.10.12/languages/ar.json"
+            },
+            "bServerSide": true,
+            "sAjaxSource": "/ControlPanel/getNewsletterSubscribersDataTable",
+            "bProcessing": true,
+            "dom": '<"bottom"t<"col-sm-3 "l><"col-sm-4"i><"col-sm-5"p>><"clear">',
+            "aaSorting": [[2, 'asc']],
+            //"fnServerParams": function (aoData) {
+            //    aoData.push({ "name": "Name", "value": $("#txtNewsSearch").val() },
+            //        { "name": "NewsTypeId", "value": $("#ddlNewsType").val() });
+            //},
+            "bStateSave": true,
+            "aoColumns": [
+                { "sType": "html", "sWidth": '75%', "mDataProp": "Email", "bSortable": false, "sClass": "tdCenter" },
+                { "sType": "html", "sWidth": '75%', "mDataProp": "IsActive", "bSortable": false, "sClass": "tdCenter" },
+                { "sType": "html", "sWidth": '10%', "mDataProp": "Id", "sClass": "tdCenter" }
+            ],
+            "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                if (aData.IsActive === true) {
+                    $('td:eq(1)', nRow).html("<span class='font-green-meadow fa fa-fw fa-check-circle-o fa-lg'></span>");
+                } else {
+                    $('td:eq(1)', nRow).html("<span class='font-red-thunderbird fa fa-fw fa-times-circle-o fa-lg'></span>");
+                }
+                var html = '<div class="btn-group">' +
+                    '<a class="btn btnx  dark btn-outline btn-xs" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">' +
+                    '<i class="fa fa-cog fa-fw fa-xs"></i>' +
+                    '</a>' +
+                    ' <ul class="dropdown-menu pull-right">';
+                if (aData.IsActive === true) {
+                    html += ' <li>' +
+                        '<a href="javascript:;" class="lnk btnDisable" data-id ="' + aData.Id + '" ><i class="fa fa-times fa-fw"></i> ' + Messages.deactivate + '</a>' +
+                        ' </li>';
+                } else {
+                    html += ' <li>' +
+                        '<a href="javascript:;" class="lnk btnActivate" data-id ="' + aData.Id + '"><i class="fa fa-check fa-fw"></i> ' + Messages.activate + '</a>' +
+                        ' </li>';
+                }
+
+                html +=
+                    '</ul> </div>';
+                $('td:eq(2)', nRow).html(html);
+            },
+            "fnDrawCallback": function (oSettings) {
+                disableEmail();
+                activateEmail();
+            },
+            "bFilter": false
+            //"sPaginationType": "bootstrap"
+        });
+    };
+    var newsletterSubscribersDataTableUpdate = function () {
+        var oTable = $('#tbl').dataTable();
+        oTable.fnDraw(false);
+    };
+
+    var disableEmail = function () {
+        $(".btnDisable").off("click").click(function () {
+                var id = parseInt($(this).attr('data-Id'));
+                $.ajax({
+                    type: "POST",
+                    cache: false,
+                    url: '/ControlPanel/NewsletterSubscriberChangeStatus',
+                    dataType: "JSON",
+                    async: false,
+                    data: { 'id': id, 'status': false },
+                    success: function (data) {
+                        if (data.cStatus === "success") {
+                            gsNotifyMsg(data.cMsg, data.cStatus);
+                            newsletterSubscribersDataTableUpdate();
+                        } else {
+                            gsNotifyMsg(data.cMsg, data.cStatus);
+                        }
+
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        gsNotifyMsg('' + Messages.noResultFound + '', "error");
+                        gsEnableSubmitButton(form);
+                    }
+                });
+            });
+    };
+    var activateEmail = function () {
+        $(".btnActivate").off("click").click(function () {
+                var id = parseInt($(this).attr('data-Id'));
+                $.ajax({
+                    type: "POST",
+                    cache: false,
+                    url: '/ControlPanel/NewsletterSubscriberChangeStatus',
+                    dataType: "JSON",
+                    async: false,
+                    data: { 'id': id, 'status': true },
+                    success: function (data) {
+                        if (data.cStatus === "success") {
+                            gsNotifyMsg(data.cMsg, data.cStatus);
+                            newsletterSubscribersDataTableUpdate();
+                            location.reload(true);
+                        } else {
+                            gsNotifyMsg(data.cMsg, data.cStatus);
+                        }
+
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        gsNotifyMsg('' + Messages.noResultFound + '', "error");
+                        gsEnableSubmitButton(form);
+                    }
+                });
+            });
+    };
+
     return {
         initNews: function() {
             newsDataTable(false);
@@ -1705,6 +1818,9 @@
         },
         initAgeCategory: function() {
             AgeCategoryDataTable();
+        },
+        initNewsletterSubscribers: function() {
+            newsletterSubscribersDataTable();
         }
 
     };

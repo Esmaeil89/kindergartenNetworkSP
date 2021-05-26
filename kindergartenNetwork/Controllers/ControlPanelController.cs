@@ -1741,5 +1741,91 @@ namespace kindergartenNetwork.Controllers
         }
 
         #endregion
+
+        #region NewsletterSubscribers
+        public ActionResult NewsletterSubscribers()
+        {
+            return View();
+        }
+        public JsonResult GetNewsletterSubscribersDataTable(JQueryDataTableParamModel param)
+        {
+            var oSubscriber = new NewsletterSubscribers();
+
+            DataTableProcessModel m = new DataTableProcessModel();
+            DataTableProcessModel dtProcess = DataTableProcesses.DataTableEslestir(param, m);
+            oSubscriber.SortCol = dtProcess.SortCol;
+            oSubscriber.SortType = dtProcess.SortType;
+            oSubscriber.Page = dtProcess.Page;
+            oSubscriber.RowPerPage = dtProcess.RowPerPage;
+
+            var getNewsletterSubscribers = DAL.News.NewsletterSubscribers.NewsletterSubscribersGet(oSubscriber);
+
+            var getNewsletterSubscribersResult = new List<DTO.News.NewsletterSubscribers>();
+            if (getNewsletterSubscribers.HasResult)
+            {
+                getNewsletterSubscribersResult = getNewsletterSubscribers.Results;
+
+                int rowCount = getNewsletterSubscribers.RowCount;
+                int lnRowCount = rowCount;
+
+                var result = from q in getNewsletterSubscribersResult
+                             select new
+                             {
+                                 q.Id,
+                                 q.Email,
+                                 q.IsActive
+
+
+                             };
+                return Json(new
+                {
+                    param.sEcho,
+                    iTotalRecords = rowCount,
+                    iTotalDisplayRecords = lnRowCount,
+                    aaData = result
+                },
+                    JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+
+                int rowCount = getNewsletterSubscribers.RowCount;
+                int lnRowCount = rowCount;
+
+                var result = from q in getNewsletterSubscribersResult
+                             select new
+                             {
+                                 q.Id,
+                                 q.Email,
+                                 q.IsActive
+                             };
+
+                return Json(new
+                {
+                    param.sEcho,
+                    iTotalRecords = rowCount,
+                    iTotalDisplayRecords = lnRowCount,
+                    aaData = result
+                },
+                    JsonRequestBehavior.AllowGet);
+            }
+        }
+        public JsonResult NewsletterSubscriberChangeStatus(string id, bool status)
+        {
+            var cStatus = "error";
+            var cMsg = Resources.NotifyMsg.ErrorMsg;
+            int cId = Convert.ToInt32(id);
+            if (cId > 0)
+            {
+                var changeStatus = DAL.News.NewsletterSubscribers.NewsletterSubscriberChangeStatus(cId, status);
+                if (changeStatus.HasResult)
+                { 
+                    cStatus = "success";
+                    cMsg = Resources.NotifyMsg.DeleteSuccessMsg;
+                }
+            }
+            return Json(new { cStatus, cMsg, }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
     }
 }
